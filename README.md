@@ -1,12 +1,21 @@
 J.E.L - Java Enterprise Library
 ===
 
-Description:
+Description
+-------
 
-Modules:
-	* parent
-	* test
-	* logservice
-	* base
+Java enterpise library.
 
-Links:
+Modules
+-------
+
+### parent
+	
+### test
+	
+### logservice
+	
+### base
+
+Links
+-------
