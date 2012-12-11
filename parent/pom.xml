@@ -255,7 +255,7 @@
                             <showWarnings>true</showWarnings>
                             <encoding>UTF-8</encoding>
                             <executable>/opt/jdk/jdk1.7.0/bin/javac</executable>
-                            <fork>false</fork>
+                            <fork>true</fork>
                             <compilerArgument>-proc:none</compilerArgument>
                         </configuration>
                     </plugin>
