@@ -23,10 +23,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 import java.util.UUID;
 import javax.xml.datatype.DatatypeFactory;
@@ -278,7 +280,17 @@ public final class MockGenerator {
                             }
 
                             setProperty(field, data, list);
+                        } else if (Set.class.isAssignableFrom(type)) {
+                            int count = random.nextInt(5) + 1;
+                            Set set = new HashSet();
+                            for (int i = 0; i < count; i++) {
+                                Stack copy = new Stack();
+                                copy.addAll(parents);
+                                Object obj1 = createMockData((Class<T>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0], copy, impl, parentClass);
+                                set.add(obj1);
+                            }
 
+                            setProperty(field, data, set);
                         } else if (type.isInterface()) {
                             Object value = null;
                             if (impl != null && !impl.isEmpty()) {
