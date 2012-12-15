@@ -229,7 +229,7 @@ public final class MockGenerator {
                             case FLOAT:
                                 value = random.nextFloat() * 1000;
                             case STRING:
-                                value = field.getName() + random.nextInt(1000);
+                                value = UUID.randomUUID().toString();
                                 break;
                             case XMLGREGORIANCALENDAR:
                                 value = DatatypeFactory.newInstance().newXMLGregorianCalendarDate(random.nextInt(30) + 1990, random.nextInt(11) + 1, random.nextInt(27) + 1, 0);
