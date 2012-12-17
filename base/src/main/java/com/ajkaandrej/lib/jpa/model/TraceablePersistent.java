@@ -15,6 +15,7 @@
  */
 package com.ajkaandrej.lib.jpa.model;
 
+import com.ajkaandrej.lib.jpa.listeners.TraceableListener;
 import java.util.Date;
 import javax.persistence.*;
 
@@ -26,6 +27,7 @@ import javax.persistence.*;
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 @MappedSuperclass
+@EntityListeners(TraceableListener.class)
 public class TraceablePersistent extends Persistent {
 
     /**
@@ -54,24 +56,6 @@ public class TraceablePersistent extends Persistent {
     @Column(name = "C_MODIFICATIONDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
-
-    /**
-     * Marks the entity as created.
-     */
-    @PrePersist
-    public void markCreated() {
-        Date date = new Date();
-        creationDate = date;
-        modificationDate = date;
-    }
-
-    /**
-     * Marks the entity as changed.
-     */
-    @PreUpdate
-    public void markChanged() {
-        modificationDate = new Date();
-    }
 
     /**
      * Gets the creation date.

@@ -15,6 +15,7 @@
  */
 package com.ajkaandrej.interceptors.common;
 
+import com.ajkaandrej.lib.util.CommonUtil;
 import com.ajkaandrej.log.service.LogService;
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -34,10 +35,7 @@ public abstract class AbstractInterceptor implements Serializable {
      * The UID for this class.
      */
     private static final long serialVersionUID = -5329282064003891498L;
-    /**
-     * The no user name.
-     */
-    private static final String NO_USER = "anonymous";
+
     /**
      * The time constant.
      */
@@ -75,7 +73,7 @@ public abstract class AbstractInterceptor implements Serializable {
         String clazz = getClassName(ic.getTarget().getClass());
         String user = getUser();
         if (user == null) {
-            user = NO_USER;
+            user = CommonUtil.DEFAULT_USER;
         }
         List<String> logParams = LogService.getValues(ic.getParameters());
 

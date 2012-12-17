@@ -13,36 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.ajkaandrej.lib.jpa.model.util;
-
-import com.ajkaandrej.lib.jpa.model.Persistent;
+package com.ajkaandrej.lib.util;
 
 /**
- * The persistent utility.
- *
+ * The common utility class.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public final class PersistentUtil {
-
+public final class CommonUtil {
+   
+    /**
+     * The default user name.
+     */
+    public static final String DEFAULT_USER = "anonymous";    
     /**
      * The default constructor.
      */
-    private PersistentUtil() {
-        // empty constructor
+    private CommonUtil() {
+        // empty constructor.
     }
-
-    /**
-     * Gets the object GUID.
-     *
-     * @param object the object.
-     * @return the object GUID.
-     */
-    public static String getGuid(Persistent object) {
-        String result = null;
-        if (object != null) {
-            result = object.getGuid();
-        }
-        return result;
-    }
-
 }
