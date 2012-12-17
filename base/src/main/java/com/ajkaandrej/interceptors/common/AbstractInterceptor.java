@@ -16,6 +16,7 @@
 package com.ajkaandrej.interceptors.common;
 
 import com.ajkaandrej.log.service.LogService;
+import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.logging.Logger;
@@ -27,8 +28,12 @@ import javax.interceptor.InvocationContext;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
-public abstract class AbstractInterceptor {
+public abstract class AbstractInterceptor implements Serializable {
 
+    /**
+     * The UID for this class.
+     */
+    private static final long serialVersionUID = -5329282064003891498L;
     /**
      * The no user name.
      */
