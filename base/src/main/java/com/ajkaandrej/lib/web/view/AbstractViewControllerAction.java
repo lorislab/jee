@@ -77,8 +77,9 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
      * The execution method of button.
      *
      * @return the value of the web site navigation.
+     * @throws Exception if the method fails.
      */
-    public Object execute() {
+    public Object execute() throws Exception {
         return null;
     }
 }
