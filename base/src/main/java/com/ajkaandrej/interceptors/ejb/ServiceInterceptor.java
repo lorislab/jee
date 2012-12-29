@@ -16,6 +16,7 @@
 package com.ajkaandrej.interceptors.ejb;
 
 import com.ajkaandrej.interceptors.common.AbstractInterceptor;
+import java.lang.reflect.Method;
 import java.security.Principal;
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
@@ -27,6 +28,10 @@ import javax.ejb.EJBContext;
  */
 public class ServiceInterceptor extends AbstractInterceptor {
 
+    /**
+     * The UID for this class.
+     */
+    private static final long serialVersionUID = 8762320723239369806L;
     /**
      * The EJB context.
      */
@@ -53,5 +58,13 @@ public class ServiceInterceptor extends AbstractInterceptor {
     @Override
     protected String getClassName(Class clazz) {
         return clazz.getName();
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isContextLogger(Method method) {
+        return true;
     }
 }

@@ -31,4 +31,7 @@ import javax.interceptor.*;
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 public @interface FacesServiceMethod {
+    
+    boolean contextLogger() default true;
+    
 }

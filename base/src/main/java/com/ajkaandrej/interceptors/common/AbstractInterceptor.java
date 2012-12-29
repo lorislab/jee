@@ -35,7 +35,6 @@ public abstract class AbstractInterceptor implements Serializable {
      * The UID for this class.
      */
     private static final long serialVersionUID = -5329282064003891498L;
-
     /**
      * The time constant.
      */
@@ -57,6 +56,13 @@ public abstract class AbstractInterceptor implements Serializable {
     protected abstract String getClassName(Class clazz);
 
     /**
+     * Returns <code>true</code> if the context logger is enabled.
+     * @param method the method.
+     * @return <code>true</code> if the context logger is enabled.
+     */
+    protected abstract boolean isContextLogger(Method method);
+
+    /**
      * The main interceptor method.
      *
      * @param ic the invocation context.
@@ -66,33 +72,46 @@ public abstract class AbstractInterceptor implements Serializable {
     @AroundInvoke
     public Object methodExecution(final InvocationContext ic) throws Exception {
         long startTime = System.nanoTime();
-
+        Logger logger = null;
+        String user = null;
+        String clazz = null;
+        String name = null;
+        List<String> logParams = null;
+        
         Object result = null;
         Method method = ic.getMethod();
-        String name = method.getName();
-        String clazz = getClassName(ic.getTarget().getClass());
-        String user = getUser();
-        if (user == null) {
-            user = CommonUtil.DEFAULT_USER;
+        
+        boolean contextLog = isContextLogger(method);
+        
+        if (contextLog) {
+            name = method.getName();
+            clazz = getClassName(ic.getTarget().getClass());
+            user = getUser();
+            if (user == null) {
+                user = CommonUtil.DEFAULT_USER;
+            }
+            logParams = LogService.getValues(ic.getParameters());
+
+            logger = Logger.getLogger(clazz);
+            String startMsg = LogService.getContextLogger().getLogStart(user, clazz, name, logParams);
+            logger.info(startMsg);
         }
-        List<String> logParams = LogService.getValues(ic.getParameters());
-
-        Logger logger = Logger.getLogger(clazz);
-        String startMsg = LogService.getContextLogger().getLogStart(user, clazz, name, logParams);
-        logger.info(startMsg);
-
         try {
             result = ic.proceed();
 
-            String resultObject = null;
-            if (!method.getReturnType().equals(Void.TYPE)) {
-                resultObject = LogService.getValue(result);
+            if (contextLog) {
+                String resultObject = null;
+                if (!method.getReturnType().equals(Void.TYPE)) {
+                    resultObject = LogService.getValue(result);
+                }
+                String succeedMsg = LogService.getContextLogger().getLogSucceed(user, clazz, name, logParams, geTime(startTime), resultObject);
+                logger.info(succeedMsg);
             }
-            String succeedMsg = LogService.getContextLogger().getLogSucceed(user, clazz, name, logParams, geTime(startTime), resultObject);
-            logger.info(succeedMsg);
         } catch (Throwable ex) {
-            String failedMsg = LogService.getContextLogger().getLogFailed(user, clazz, user, logParams, geTime(startTime));
-            logger.info(failedMsg);
+            if (contextLog) {
+                String failedMsg = LogService.getContextLogger().getLogFailed(user, clazz, user, logParams, geTime(startTime));
+                logger.info(failedMsg);
+            }
             throw ex;
         }
         return result;

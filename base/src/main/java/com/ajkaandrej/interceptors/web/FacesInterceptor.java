@@ -17,9 +17,12 @@ package com.ajkaandrej.interceptors.web;
 
 import com.ajkaandrej.interceptors.common.AbstractInterceptor;
 import com.ajkaandrej.interceptors.web.annotations.FacesServiceMethod;
+import com.ajkaandrej.lib.web.util.FacesResourceUtil;
+import java.lang.reflect.Method;
 import java.security.Principal;
 import javax.faces.context.FacesContext;
 import javax.interceptor.Interceptor;
+import javax.interceptor.InvocationContext;
 
 /**
  * The faces interceptor.
@@ -59,6 +62,33 @@ public class FacesInterceptor extends AbstractInterceptor {
         int index = result.indexOf('$');
         if (index != -1) {
             result = result.substring(0, index);
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Object methodExecution(InvocationContext ic) throws Exception {
+        Object result = null;
+        try {
+            result = super.methodExecution(ic);
+        } catch (Exception ex) {
+            FacesResourceUtil.handleExceptionMessage(ex);
+        }
+        return result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected boolean isContextLogger(Method method) {
+        boolean result = true;
+        FacesServiceMethod ano = method.getAnnotation(FacesServiceMethod.class);
+        if (ano != null) {
+            result = ano.contextLogger();
         }
         return result;
     }
