@@ -32,6 +32,7 @@ public class BasicLogParamater implements ClassLogParameter {
     @Override
     public List<Class<?>> getClasses() {
         List<Class<?>> result = new ArrayList<>();
+        result.add(Class.class);
         result.add(int.class);
         result.add(double.class);
         result.add(float.class);
