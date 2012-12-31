@@ -27,11 +27,27 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;
 import javax.interceptor.*;
 
+/**
+ * The faces service method.
+ *
+ * @author Andrej Petras <andrej@ajka-andrej.com>
+ */
 @InterceptorBinding
 @Target({TYPE, METHOD})
 @Retention(RUNTIME)
 public @interface FacesServiceMethod {
-    
+
+    /**
+     * The context logger flag.
+     *
+     * @return the context logger flag.
+     */
     boolean contextLogger() default true;
-    
+
+    /**
+     * The handle exception flag.
+     *
+     * @return the handle exception flag.
+     */
+    boolean handleException() default true;
 }

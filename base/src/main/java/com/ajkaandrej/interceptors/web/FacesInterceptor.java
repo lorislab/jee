@@ -75,7 +75,15 @@ public class FacesInterceptor extends AbstractInterceptor {
         try {
             result = super.methodExecution(ic);
         } catch (Exception ex) {
-            FacesResourceUtil.handleExceptionMessage(ex);
+            boolean handleException = true;
+            Method method = ic.getMethod();
+            FacesServiceMethod ano = method.getAnnotation(FacesServiceMethod.class);
+            if (ano != null) {
+                handleException = ano.handleException();
+            }
+            if (handleException) {
+                FacesResourceUtil.handleExceptionMessage(ex);
+            }
         }
         return result;
     }
