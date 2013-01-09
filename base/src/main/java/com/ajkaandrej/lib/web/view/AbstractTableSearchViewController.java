@@ -15,113 +15,41 @@
  */
 package com.ajkaandrej.lib.web.view;
 
+import com.ajkaandrej.lib.base.criteria.AbstractSearchCriteria;
 import com.ajkaandrej.lib.jpa.model.Persistent;
-import com.ajkaandrej.lib.web.util.FacesResourceUtil;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
- * The abstract table search view controller.
+ * The abstract table view controller.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  * @param <T> the model.
  */
-public abstract class AbstractTableSearchViewController<T extends Persistent> implements Serializable {
+public abstract class AbstractTableSearchViewController<T extends Persistent, S extends AbstractSearchCriteria> extends AbstractTableViewController<T> {
 
     /**
      * The UID for this class.
      */
     private static final long serialVersionUID = 8552218747873068051L;
     /**
-     * The result list.
+     * The search criteria.
      */
-    private List<T> result;
-    /**
-     * The hash map with object and table index.
-     */
-    private Map<Object, Integer> tmp;
+    private S criteria;
 
     /**
-     * The default constructor.
+     * Sets the search criteria.
+     *
+     * @param criteria the search criteria.
      */
-    public AbstractTableSearchViewController() {
-        result = new ArrayList<>();
-        tmp = new HashMap<>();
+    protected void setCriteria(S criteria) {
+        this.criteria = criteria;
     }
 
     /**
-     * Gets the result list.
+     * Gets the search criteria.
      *
-     * @return the result list.
+     * @return the search criteria.
      */
-    public List<T> getResult() {
-        return result;
+    public S getCriteria() {
+        return criteria;
     }
-
-    /**
-     * Search the results.
-     */
-    public void search() {
-        try {
-            tmp = new HashMap<>();
-            result = doSearch();
-            if (result != null) {
-                int i = 0;
-                for (T item : result) {
-                    tmp.put(item.getGuid(), i++);
-                }
-            }
-        } catch (Exception ex) {
-            FacesResourceUtil.handleExceptionMessage(ex);
-        }
-    }
-
-    /**
-     * Deletes object from table.
-     *
-     * @param model the model.
-     *
-     * @return the removed model.
-     */
-    public T tableDelete(T model) {
-        if (result != null && model != null) {
-            Integer index = tmp.remove(model.getGuid());
-            if (index != null) {
-                result.remove(model);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Updates the model in the result table.
-     *
-     * @param model the model.
-     *
-     * @return the updated model.
-     */
-    public T tableUpdate(T model) {
-        if (result != null && model != null) {
-            Integer index = tmp.get(model.getGuid());
-            if (index != null) {
-                result.set(index, model);
-            } else {
-                tmp.put(model.getGuid(), result.size());
-                result.add(model);
-            }
-        }
-        return model;
-    }
-
-    /**
-     * Search method for the result table.
-     *
-     * @return the result list.
-     *
-     * @throws Exception if the method fails.
-     */
-    protected abstract List<T> doSearch() throws Exception;
 }
