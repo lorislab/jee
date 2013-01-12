@@ -64,18 +64,14 @@ public abstract class AbstractTableViewController<T extends Persistent> implemen
     /**
      * Search the results.
      */
-    public void search() {
-        try {
-            tmp = new HashMap<>();
-            result = doSearch();
-            if (result != null) {
-                int i = 0;
-                for (T item : result) {
-                    tmp.put(item.getGuid(), i++);
-                }
+    public void search() throws Exception {
+        tmp = new HashMap<>();
+        result = doSearch();
+        if (result != null) {
+            int i = 0;
+            for (T item : result) {
+                tmp.put(item.getGuid(), i++);
             }
-        } catch (Exception ex) {
-            FacesResourceUtil.handleExceptionMessage(ex);
         }
     }
 
