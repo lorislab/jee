@@ -16,7 +16,6 @@
 package com.ajkaandrej.lib.web.view;
 
 import com.ajkaandrej.lib.jpa.model.Persistent;
-import com.ajkaandrej.lib.web.util.FacesResourceUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

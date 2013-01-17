@@ -67,7 +67,8 @@ public final class ReflectionUtil {
         StringBuilder sb = new StringBuilder();
 
         if (object != null) {
-            sb.append(object.getClass().getName()).append("@").append(Integer.toHexString(object.hashCode()));
+            //sb.append(object.getClass().getName()).append("@").append(Integer.toHexString(object.hashCode()));
+            sb.append(object.getClass().getSimpleName());
             List<Field> fields = findAllFields(object.getClass());
             if (fields != null && !fields.isEmpty()) {
                 sb.append('[');

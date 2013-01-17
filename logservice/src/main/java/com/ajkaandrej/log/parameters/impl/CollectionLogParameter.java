@@ -52,6 +52,6 @@ public class CollectionLogParameter implements InstanceOfLogParameter {
             return "empty " + name;
         }
         Object item = tmp.iterator().next();
-        return name + " " + tmp.size() + " of " + item.getClass().getName();
+        return name + " " + tmp.size() + " of " + item.getClass().getSimpleName();
     }
 }
