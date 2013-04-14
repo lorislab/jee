@@ -1,5 +1,5 @@
 language: java
 jdk:
   - oraclejdk7
-install: mvn install -DskipTests=true -q
+install: mvn install -DskipTests=true --batch-mode
 script: mvn test
