@@ -113,7 +113,7 @@ public abstract class AbstractInterceptor implements Serializable {
             }
         } catch (Throwable ex) {
             if (contextLog) {
-                String failedMsg = LogService.getContextLogger().getLogFailed(user, clazz, user, logParams, geTime(startTime));
+                String failedMsg = LogService.getContextLogger().getLogFailed(user, clazz, name, logParams, geTime(startTime));
                 logger.info(failedMsg);
             }
             throw ex;
