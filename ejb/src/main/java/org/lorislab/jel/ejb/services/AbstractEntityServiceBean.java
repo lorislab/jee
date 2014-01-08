@@ -57,55 +57,66 @@ public abstract class AbstractEntityServiceBean<T extends Persistent> extends Ab
     }
 
     /**
-     * Initialized the EAO class.
+     * Initialised the EAO class.
      */
     @PostConstruct
-    public void init() {
+    protected void init() {
         baseEAO = new AbstractEAO<>(this.getClass());
     }
 
     /**
      * Gets all entities.
      *
+     * @return the list of all entities.
+     * 
      * @see AbstractServiceEAO#getAll()
      */
-    public final List<T> getAll() {
+    protected final List<T> getAll() {
         return getBaseEAO().getAll();
     }
 
     /**
      * Gets the entity by id.
      *
+     * @param id the entity id.
+     * @return the entity corresponding to the id.
      * @see AbstractServiceEAO#findById(java.lang.Object)
      */
-    public final T getById(final Object id) {
+    protected final T getById(final Object id) {
         return getBaseEAO().findById(id);
     }
 
     /**
      * Save the entity.
      *
+     * @param entity the entity
+     * @return the saved entity.
+     *
      * @see AbstractServiceEAO#save(com.ajkaandrej.lib.jpa.model.Persistent)
      */
-    public final T save(final T entity) {
+    protected final T save(final T entity) {
         return getBaseEAO().save(entity);
     }
 
     /**
      * Saves the list of entities.
      *
+     * @param entities the list of entities.
+     * @return the list of saved entities.
      * @see AbstractServiceEAO#saveAll(java.util.List)
      */
-    public final List<T> saveAll(final List<T> entities) {
+    protected final List<T> saveAll(final List<T> entities) {
         return getBaseEAO().saveAll(entities);
     }
 
     /**
      * Deletes the entity.
      *
-     * @see AbstractServiceEAO#delete(com.ajkaandrej.lib.jpa.model.Persistent)
+     * @param enitity the entity.
+     * @return <code>true</code> if the entity was correctly deleted.
+     * @see AbstractServiceEAO#delete(org.lorislab.jpa.model.Persistent)
      */
-    public final boolean delete(final T enitity) {
+    protected final boolean delete(final T enitity) {
         return getBaseEAO().delete(enitity);
     }
 }
