@@ -68,7 +68,7 @@ public abstract class AbstractEntityServiceBean<T extends Persistent> extends Ab
      * Gets all entities.
      *
      * @return the list of all entities.
-     * 
+     *
      * @see AbstractServiceEAO#getAll()
      */
     protected final List<T> getAll() {
@@ -118,5 +118,16 @@ public abstract class AbstractEntityServiceBean<T extends Persistent> extends Ab
      */
     protected final boolean delete(final T enitity) {
         return getBaseEAO().delete(enitity);
+    }
+
+    /**
+     * Deletes the entity.
+     *
+     * @param id the ID.
+     * @return <code>true</code> if the entity was correctly deleted.
+     * @see AbstractServiceEAO#delete(java.lang.String)
+     */
+    protected final boolean delete(final Object id) {
+        return getBaseEAO().delete(id);
     }
 }

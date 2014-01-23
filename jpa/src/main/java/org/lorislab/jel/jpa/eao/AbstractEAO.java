@@ -319,6 +319,18 @@ public class AbstractEAO<T extends Persistent> {
         return findSingleByNamedQuery(namedQuery, null);
     }
 
+    
+    public final boolean delete(Object id) {
+        if (id != null) {
+            T tmp = findById(id);
+            if (tmp != null) {
+                remove(tmp);
+                return true;
+            }
+        }
+        return false;        
+    }
+    
     /**
      * Deletes the entity.
      *
@@ -327,11 +339,7 @@ public class AbstractEAO<T extends Persistent> {
      */
     public final boolean delete(final T entity) {
         if (entity != null) {
-            T tmp = findById(entity.getGuid());
-            if (tmp != null) {
-                remove(tmp);
-                return true;
-            }
+            return delete(entity.getGuid());
         }
         return false;
     }
@@ -357,7 +365,7 @@ public class AbstractEAO<T extends Persistent> {
      * @return the saved entity.
      */
     public final T save(final T entity) {
-        T result = null;
+        T result;
         if (entity.isNew()) {
             persist(entity);
             result = findById(entity.getGuid());
@@ -405,6 +413,16 @@ public class AbstractEAO<T extends Persistent> {
      * @param criteria the criteria.
      * @return the type query.
      */
+    public final <E> TypedQuery<E> createQuery(CriteriaQuery<E> criteria) {
+        return getManager().createQuery(criteria);
+    }
+    
+    /**
+     * Creates the type query from the criteria.
+     *
+     * @param criteria the criteria.
+     * @return the type query.
+     */
     public final TypedQuery<T> createTypedQuery(CriteriaQuery<T> criteria) {
         return getManager().createQuery(criteria);
     }
@@ -412,6 +430,8 @@ public class AbstractEAO<T extends Persistent> {
     /**
      * Creates the criteria query.
      *
+     * @param <S> the criteria query
+     * @param clazz the class.
      * @return the criteria query.
      */
     public final <S> CriteriaQuery<S> createCriteriaQuery(Class<S> clazz) {
