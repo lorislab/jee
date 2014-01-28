@@ -282,7 +282,7 @@
 	<distributionManagement>
 		<repository>
 			<id>bintray</id>
-			<url>https://api.bintray.com/maven/lorislab/maven/release</url>
+			<url>https://api.bintray.com/maven/lorislab/maven/jel</url>
 		</repository>
 	</distributionManagement>
 
