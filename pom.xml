@@ -16,6 +16,13 @@
 		<module>jsf</module>
 	</modules>
 	
+	<scm>
+		<connection>scm:git:https://github.com/lorislab/jel.git</connection>
+		<developerConnection>scm:git:git@github.com:lorislab/jel.git</developerConnection>
+		<url>https://github.com/lorislab/jel</url>
+		<tag>HEAD</tag>
+	</scm>
+	
 	<licenses>
 		<license>
 			<name>Apache License 2.0</name>
