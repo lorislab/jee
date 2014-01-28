@@ -257,6 +257,13 @@
 		</pluginManagement>
 	</build>
 
+	<distributionManagement>
+		<repository>
+			<id>bintray</id>
+			<url>https://api.bintray.com/maven/lorislab/maven/release</url>
+		</repository>
+	</distributionManagement>
+
 	<repositories>
 		<repository>
 			<id>jboss-public-repository-group</id>
