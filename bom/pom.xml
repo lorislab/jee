@@ -6,7 +6,7 @@
     <artifactId>jel-bom</artifactId>
 	<name>jel-bom</name>
 	<packaging>pom</packaging>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.4</version>
 	    
     <!-- Runtime dependency management -->
     <dependencyManagement>
