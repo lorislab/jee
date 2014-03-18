@@ -13,6 +13,9 @@
 		<module>log</module>
 		<module>jpa</module>
 		<module>jsf</module>
+		<module>cdi</module>
+		<module>rs</module>
+		<module>bom</module>
 	</modules>
 	
 	<scm>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">    
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>org.lorislab.jel</groupId>
+    <artifactId>jel-bom</artifactId>
+	<name>jel-bom</name>
+	<packaging>pom</packaging>
+	<version>0.0.4-SNAPSHOT</version>
+	    
+    <!-- Runtime dependency management -->
+    <dependencyManagement>
+        <dependencies>	
+            <dependency>
+                <groupId>org.lorislab.jel</groupId>
+                <artifactId>jel-base</artifactId>
+                <version>${project.version}</version>
+            </dependency>       			
+            <dependency>
+                <groupId>org.lorislab.jel</groupId>
+                <artifactId>jel-ejb</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.lorislab.jel</groupId>
+                <artifactId>jel-jpa</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.lorislab.jel</groupId>
+                <artifactId>jel-jsf</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.lorislab.jel</groupId>
+                <artifactId>jel-log</artifactId>
+                <version>${project.version}</version>
+            </dependency>			
+            <dependency>
+                <groupId>org.lorislab.jel</groupId>
+                <artifactId>jel-cdi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.lorislab.jel</groupId>
+                <artifactId>jel-rs</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+</project>

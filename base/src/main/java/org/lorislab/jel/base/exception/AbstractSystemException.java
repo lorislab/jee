@@ -32,16 +32,7 @@ public abstract class AbstractSystemException extends Exception implements Seria
     /**
      * Resource manager for localised message.
      */
-    protected ResourceMessage message;
-
-    /**
-     * The constructor with the cause.
-     *
-     * @param cause the throwable cause.
-     */
-    protected AbstractSystemException(final Throwable cause) {
-        super(cause);
-    }
+    protected final ResourceMessage message;
 
     /**
      * The constructor with the resource key.
@@ -49,7 +40,7 @@ public abstract class AbstractSystemException extends Exception implements Seria
      * @param key the resource key.
      */
     protected AbstractSystemException(final Enum<?> key) {
-        message = new ResourceMessage(key);
+        this(key, null);
     }
 
     /**
@@ -57,20 +48,10 @@ public abstract class AbstractSystemException extends Exception implements Seria
      *
      * @param key the resource key.
      * @param arguments the resource key arguments.
+     * @param reference the reference.
      */
-    protected AbstractSystemException(final Enum<?> key, Object... arguments) {
-        this.message = new ResourceMessage(key, arguments);
-    }
-
-    /**
-     * The constructor with the resource key and cause.
-     *
-     * @param key the resource key.
-     * @param cause the throwable cause.
-     */
-    protected AbstractSystemException(final Enum<?> key, final Throwable cause) {
-        super(cause);
-        message = new ResourceMessage(key);
+    protected AbstractSystemException(final Enum<?> key, final Serializable reference, Object... arguments) {
+        this(key, reference, null, arguments);
     }
 
     /**
@@ -78,11 +59,12 @@ public abstract class AbstractSystemException extends Exception implements Seria
      *
      * @param key the resource key.
      * @param arguments the resource key arguments.
-     * @param cause the throwable cause.
+     * @param cause the throw able cause.
+     * @param reference the reference.
      */
-    protected AbstractSystemException(final Enum<?> key, final Throwable cause, Object... arguments) {
+    protected AbstractSystemException(final Enum<?> key, final Serializable reference, final Throwable cause, Object... arguments) {
         super(cause);
-        message = new ResourceMessage(key, arguments);
+        message = new ResourceMessage(key, reference, arguments);
     }
 
     /**

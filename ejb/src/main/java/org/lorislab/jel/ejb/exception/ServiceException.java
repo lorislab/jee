@@ -15,6 +15,7 @@
  */
 package org.lorislab.jel.ejb.exception;
 
+import java.io.Serializable;
 import org.lorislab.jel.base.exception.AbstractSystemException;
 import javax.ejb.ApplicationException;
 
@@ -31,51 +32,36 @@ public class ServiceException extends AbstractSystemException {
      */
     private static final long serialVersionUID = -221717440785277228L;
 
-   /**
-     * The constructor with the cause.
-     *
-     * @param cause the throwable cause.
-     */
-    public ServiceException(final Throwable cause) {
-        super(cause);
-    }
-
     /**
      * The constructor with the resource key.
      *
      * @param key the resource key.
      */
     public ServiceException(final Enum<?> key) {
-        super(key);
+        this(key, null);
     }
 
     /**
      * The constructor with the resource key.
      *
      * @param key the resource key.
+     * @param arguments the arguments.
+     * @param reference the reference.
      */
-    public ServiceException(final Enum<?> key, Object... arguments) {
-        super(key, arguments);
-    }
-    
-    /**
-     * The constructor with the resource key and cause.
-     *
-     * @param key the resource key.
-     * @param cause the throwable cause.
-     */
-    public ServiceException(final Enum<?> key, final Throwable cause) {
-        super(key, cause);
+    public ServiceException(final Enum<?> key, final Serializable reference, Object... arguments) {
+        this(key, reference, null, arguments);
     }
 
     /**
      * The constructor with the resource key and cause.
      *
      * @param key the resource key.
-     * @param cause the throwable cause.
+     * @param cause the throw able cause.
+     * @param arguments the arguments.
+     * @param reference the reference.
      */
-    public ServiceException(final Enum<?> key, final Throwable cause, Object... arguments) {
-        super(key, cause, arguments);
+    public ServiceException(final Enum<?> key, final Serializable reference,final Throwable cause, Object... arguments) {
+        super(key, reference, cause, arguments);
     }
 
     

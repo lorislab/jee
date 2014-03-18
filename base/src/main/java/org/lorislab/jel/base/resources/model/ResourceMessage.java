@@ -19,7 +19,7 @@ import java.io.Serializable;
 
 /**
  * The message of resource.
- * 
+ *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class ResourceMessage implements Serializable {
@@ -30,32 +30,30 @@ public class ResourceMessage implements Serializable {
     private static final long serialVersionUID = -4266822500859564754L;
 
     /**
+     * The reference object.
+     */
+    private final Serializable reference;
+
+    /**
      * The key of resource.
      */
-    private Enum<?> resourceKey;
+    private final Enum<?> resourceKey;
 
     /**
      * The arguments for the message.
      */
-    private Object[] arguments;
-
-    /**
-     * The default constructor with resource key.
-     * 
-     * @param resourceKey the resource key
-     */
-    public ResourceMessage(final Enum<?> resourceKey) {
-        this.resourceKey = resourceKey;
-    }
+    private final Serializable[] arguments;
 
     /**
      * Creates the message of resource from the resource key and the arguments.
      *
      * @param resourceKey the key of resource.
      * @param arguments the arguments of message.
+     * @param reference the reference key.
      */
-    public ResourceMessage(final Enum<?> resourceKey, final Object... arguments) {
-        this(resourceKey);
+    public ResourceMessage(final Enum<?> resourceKey, final Serializable reference, final Serializable... arguments) {
+        this.resourceKey = resourceKey;
+        this.reference = reference;
         this.arguments = arguments;
     }
 
@@ -73,16 +71,16 @@ public class ResourceMessage implements Serializable {
      *
      * @return the arguments of the message.
      */
-    public final Object[] getArguments() {
+    public final Serializable[] getArguments() {
         return arguments.clone();
     }
 
     /**
-     * Sets the arguments for the message.
+     * Gets the reference.
      *
-     * @param arguments the arguments for the message.
+     * @return the reference.
      */
-    public final void setArguments(final Object... arguments) {
-        this.arguments = arguments;
+    public final Serializable getReference() {
+        return reference;
     }
 }

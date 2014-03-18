@@ -22,7 +22,7 @@ import java.util.Map.Entry;
 /**
  * The map instances log parameter.
  *
- * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @author Andrej Petras
  */
 public class MapLogParameter implements InstanceOfLogParameter {
 
@@ -53,6 +53,6 @@ public class MapLogParameter implements InstanceOfLogParameter {
             return "empty " + name;
         }
         Entry<?, ?> item = tmp.entrySet().iterator().next();
-        return name + " " + tmp.size() + " of [" + item.getKey().getClass().getName() + "," + item.getValue().getClass() + "]";
+        return name + " " + tmp.size() + " of [" + item.getKey().getClass().getSimpleName() + "," + item.getValue().getClass().getSimpleName() + "]";
     }
 }

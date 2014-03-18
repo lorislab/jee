@@ -72,9 +72,11 @@ public final class ResourceUtil {
      */
     public static String getBundleKey(final String prefix, final String constantName) {
         if (prefix != null && !prefix.isEmpty()) {
-            return prefix.trim() + '.' + convertConstantToCamelCase(constantName);
+            //return prefix.trim() + '.' + convertConstantToCamelCase(constantName);
+            return prefix.trim() + '.' + constantName;
         } else {
-            return convertConstantToCamelCase(constantName);
+            //return convertConstantToCamelCase(constantName);
+            return constantName;
         }
     }
 }

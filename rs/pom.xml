@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    
+    <artifactId>jel-rs</artifactId> 
+    <name>jel-rs</name>
+
+    <parent>
+        <groupId>org.lorislab.jel</groupId>
+        <artifactId>jel</artifactId>
+        <version>0.0.4-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+    </parent>
+    
+    <dependencies>    
+		<dependency>
+			<groupId>org.lorislab.jel</groupId>
+			<artifactId>jel-base</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<!-- RS -->
+        <dependency>
+            <groupId>org.jboss.spec.javax.ws.rs</groupId>
+            <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
+        </dependency>
+		<!-- SERVLER -->
+		<dependency>
+			<groupId>org.jboss.spec.javax.servlet</groupId>
+			<artifactId>jboss-servlet-api_3.0_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>			
+    </dependencies>  
+	
+</project>

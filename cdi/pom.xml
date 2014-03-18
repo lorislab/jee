@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     
-    <artifactId>jel-jsf</artifactId> 
-    <name>jel-jsf</name>
+    <artifactId>jel-cdi</artifactId> 
+    <name>jel-cdi</name>
 
     <parent>
         <groupId>org.lorislab.jel</groupId>
@@ -14,33 +14,15 @@
     <dependencies>    
 		<dependency>
 			<groupId>org.lorislab.jel</groupId>
-			<artifactId>jel-base</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.lorislab.jel</groupId>
 			<artifactId>jel-log</artifactId>
 			<version>${project.version}</version>
 		</dependency>	
-		<dependency>
-			<groupId>org.lorislab.jel</groupId>
-			<artifactId>jel-jpa</artifactId>
-			<version>${project.version}</version>
-		</dependency>			
         <!-- CDI -->
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
-        </dependency>        
-        
-        <!-- JSF -->
-        <dependency>
-            <groupId>org.jboss.spec.javax.faces</groupId>
-            <artifactId>jboss-jsf-api_2.1_spec</artifactId>
-            <scope>provided</scope>
-        </dependency>
-      
+        </dependency>              
     </dependencies>  
 	
 </project>

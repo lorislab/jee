@@ -15,6 +15,7 @@
  */
 package org.lorislab.jel.base.resources;
 
+import java.io.Serializable;
 import org.lorislab.jel.base.resources.annotations.ResourceKey;
 import org.lorislab.jel.base.resources.model.ResourceList;
 import org.lorislab.jel.base.resources.model.ResourceMessage;
@@ -47,7 +48,7 @@ public final class ResourceManager {
      * @return the resource bundle.
      */
     private static ResourceBundle lookupBundle(final String bundleName, final Locale locale, final ClassLoader loader) {
-        ResourceBundle bundle = null;
+        ResourceBundle bundle;
         if (loader != null && locale != null) {
             bundle = ResourceBundle.getBundle(bundleName, locale, loader);
         } else if (locale != null) {
@@ -110,7 +111,7 @@ public final class ResourceManager {
      * @param arguments the arguments for the message.
      * @return the message of the resource key.
      */
-    public static String getMessage(final Enum<?> key, final Locale locale, final Object... arguments) {
+    public static String getMessage(final Enum<?> key, final Locale locale, final Serializable... arguments) {
         return getMessage(key, locale, null, arguments);
     }
 
@@ -123,8 +124,8 @@ public final class ResourceManager {
      * @param loader the loader of class.
      * @return the message of the resource key.
      */
-    public static String getMessage(final Enum<?> key, final Locale locale, final ClassLoader loader, final Object... arguments) {
-        String result = null;
+    public static String getMessage(final Enum<?> key, final Locale locale, final ClassLoader loader, final Serializable... arguments) {
+        String result;
         try {
             ClassLoader classLoader = loader;
             if (classLoader == null) {
@@ -174,7 +175,8 @@ public final class ResourceManager {
             }
         }
         ResourceBundle bundle = lookupBundle(bundleName, locale, classLoader);
-        String value = bundle.getString(ResourceUtil.getBundleKey(keyPrefix, key.name()));
+        String tmp = ResourceUtil.getBundleKey(keyPrefix, key.name());
+        String value = bundle.getString(tmp);
         return value;
     }
 
@@ -184,7 +186,7 @@ public final class ResourceManager {
      * @param arguments the arguments.
      * @return the list of parameters.
      */
-    private static Object[] createParameters(Object... arguments) {
+    private static Object[] createParameters(Serializable... arguments) {
         Object[] params = null;
         if (arguments != null && arguments.length > 0) {
 
