@@ -3,7 +3,7 @@
 
 	<groupId>org.lorislab.jel</groupId>
 	<artifactId>jel</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.5</version>
 	<packaging>pom</packaging>    
 	<name>jel</name>
         
@@ -22,7 +22,7 @@
 		<connection>scm:git:https://github.com/lorislab/jel.git</connection>
 		<developerConnection>scm:git:git@github.com:lorislab/jel.git</developerConnection>
 		<url>https://github.com/lorislab/jel</url>
-		<tag>HEAD</tag>
+		<tag>jel-0.0.5</tag>
 	</scm>
 	
 	<licenses>
