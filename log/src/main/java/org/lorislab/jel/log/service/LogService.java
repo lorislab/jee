@@ -39,11 +39,11 @@ public final class LogService {
     /**
      * The map of class and logger parameter.
      */
-    private static final Map<Class<?>, ClassLogParameter> tmpClasses = new HashMap<>();
+    private static final Map<Class<?>, ClassLogParameter> TMP_CLASSES = new HashMap<>();
     /**
      * The instance logger parameter.
      */
-    private static final List<InstanceOfLogParameter> tmpInstanceOf = new ArrayList<>();
+    private static final List<InstanceOfLogParameter> TMP_INSTANCE_OF = new ArrayList<>();
     /**
      * The default logger parameter.
      */
@@ -57,41 +57,59 @@ public final class LogService {
      * Static block of code.
      */
     static {
-        LogServiceConfiguration config = null;
         ServiceLoader<LogServiceConfiguration> list = ServiceLoader.load(LogServiceConfiguration.class);
         if (list != null) {
             Iterator<LogServiceConfiguration> iter = list.iterator();
-            if (iter.hasNext()) {
-                config = iter.next();
-            }
-        }
+            while (iter.hasNext()) {
+                LogServiceConfiguration config = iter.next();
+                LogParameter dp = config.getDefaultLogParameter();
+                if (dp != null) {
+                    defaultParam = dp;
+                }
 
-        if (config != null) {
+                ContextLogger cn = config.getContextLogger();
+                if (cn != null) {
+                    contextLogger = cn;
+                }
 
-            LogParameter dp = config.getDefaultLogParameter();
-            if (dp != null) {
-                defaultParam = dp;
-            }
-
-            ContextLogger cn = config.getContextLogger();
-            if (cn != null) {
-                contextLogger = cn;
-            }
-
-            List<ClassLogParameter> cParams = config.getClassLogParameters();
-            if (cParams != null) {
-                for (ClassLogParameter p : cParams) {
-                    if (p.getClasses() != null) {
-                        for (Class<?> clazz : p.getClasses()) {
-                            tmpClasses.put(clazz, p);
+                List<ClassLogParameter> cParams = config.getClassLogParameters();
+                if (cParams != null) {
+                    for (ClassLogParameter p : cParams) {
+                        if (p.getClasses() != null) {
+                            for (Class<?> clazz : p.getClasses()) {
+                                TMP_CLASSES.put(clazz, p);
+                            }
                         }
                     }
                 }
-            }
 
-            List<InstanceOfLogParameter> iParams = config.getInstanceOfLogParameters();
-            if (iParams != null) {
-                tmpInstanceOf.addAll(iParams);
+                List<InstanceOfLogParameter> iParams = config.getInstanceOfLogParameters();
+                if (iParams != null) {
+                    TMP_INSTANCE_OF.addAll(iParams);
+                }
+            }
+        }
+
+        // load the instance of log parameters from services files.
+        ServiceLoader<InstanceOfLogParameter> insLogParam = ServiceLoader.load(InstanceOfLogParameter.class);
+        if (insLogParam != null) {
+            Iterator<InstanceOfLogParameter> iter = insLogParam.iterator();
+            while (iter.hasNext()) {
+                TMP_INSTANCE_OF.add(iter.next());
+            }
+        }
+
+        // load the classes of log parameters from services files.
+        ServiceLoader<ClassLogParameter> classLogParam = ServiceLoader.load(ClassLogParameter.class);
+        if (classLogParam != null) {
+            Iterator<ClassLogParameter> iter = classLogParam.iterator();
+            while (iter.hasNext()) {
+                ClassLogParameter p = iter.next();
+                if (p.getClasses() != null) {
+                    for (Class<?> clazz : p.getClasses()) {
+                        TMP_CLASSES.put(clazz, p);
+                    }
+                }
             }
         }
     }
@@ -114,9 +132,9 @@ public final class LogService {
         if (parameter != null) {
             Class clazz = parameter.getClass();
 
-            LogParameter logParam = tmpClasses.get(clazz);
-            if (logParam == null && !tmpInstanceOf.isEmpty()) {
-                Iterator<InstanceOfLogParameter> iter = tmpInstanceOf.iterator();
+            LogParameter logParam = TMP_CLASSES.get(clazz);
+            if (logParam == null && !TMP_INSTANCE_OF.isEmpty()) {
+                Iterator<InstanceOfLogParameter> iter = TMP_INSTANCE_OF.iterator();
                 while (iter.hasNext() && logParam == null) {
                     InstanceOfLogParameter item = iter.next();
                     if (item.instanceOfClasses(parameter)) {
