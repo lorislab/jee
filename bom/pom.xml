@@ -15,7 +15,12 @@
 	    
     <!-- Runtime dependency management -->
     <dependencyManagement>
-        <dependencies>	
+        <dependencies>
+		    <dependency>
+                <groupId>org.lorislab.jel</groupId>
+                <artifactId>jel-util</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.lorislab.jel</groupId>
                 <artifactId>jel-base</artifactId>
