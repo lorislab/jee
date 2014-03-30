@@ -45,7 +45,7 @@ public class SystemException extends AbstractSystemException {
      * @param arguments the arguments.
      * @param reference the reference.
      */
-    public SystemException(final Enum<?> key, final Serializable reference, Object... arguments) {
+    public SystemException(final Enum<?> key, final Serializable reference, final Serializable... arguments) {
         this(key, reference, null, arguments);
     }
 
@@ -57,7 +57,7 @@ public class SystemException extends AbstractSystemException {
      * @param arguments the arguments.
      * @param reference the reference.
      */
-    public SystemException(final Enum<?> key, final Serializable reference, final Throwable cause, Object... arguments) {
+    public SystemException(final Enum<?> key, final Serializable reference, final Throwable cause, final Serializable... arguments) {
         super(key, reference, cause, arguments);
     }
 

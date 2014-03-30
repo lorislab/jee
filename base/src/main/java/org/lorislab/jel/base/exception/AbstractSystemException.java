@@ -50,7 +50,7 @@ public abstract class AbstractSystemException extends Exception implements Seria
      * @param arguments the resource key arguments.
      * @param reference the reference.
      */
-    protected AbstractSystemException(final Enum<?> key, final Serializable reference, Object... arguments) {
+    protected AbstractSystemException(final Enum<?> key, final Serializable reference, Serializable... arguments) {
         this(key, reference, null, arguments);
     }
 
@@ -62,7 +62,7 @@ public abstract class AbstractSystemException extends Exception implements Seria
      * @param cause the throw able cause.
      * @param reference the reference.
      */
-    protected AbstractSystemException(final Enum<?> key, final Serializable reference, final Throwable cause, Object... arguments) {
+    protected AbstractSystemException(final Enum<?> key, final Serializable reference, final Throwable cause, Serializable... arguments) {
         super(cause);
         message = new ResourceMessage(key, reference, arguments);
     }

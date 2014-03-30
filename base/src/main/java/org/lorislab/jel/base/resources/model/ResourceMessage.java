@@ -43,7 +43,7 @@ public class ResourceMessage implements Serializable {
      * The arguments for the message.
      */
     private final Serializable[] arguments;
-
+    
     /**
      * Creates the message of resource from the resource key and the arguments.
      *
@@ -51,7 +51,7 @@ public class ResourceMessage implements Serializable {
      * @param arguments the arguments of message.
      * @param reference the reference key.
      */
-    public ResourceMessage(final Enum<?> resourceKey, final Serializable reference, final Serializable... arguments) {
+    public ResourceMessage(final Enum<?> resourceKey, final Serializable reference, final Serializable[] arguments) {
         this.resourceKey = resourceKey;
         this.reference = reference;
         this.arguments = arguments;
