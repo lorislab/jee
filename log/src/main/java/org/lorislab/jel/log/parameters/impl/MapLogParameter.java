@@ -18,12 +18,14 @@ package org.lorislab.jel.log.parameters.impl;
 import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.kohsuke.MetaInfServices;
 
 /**
  * The map instances log parameter.
  *
  * @author Andrej Petras
  */
+@MetaInfServices
 public class MapLogParameter implements InstanceOfLogParameter {
 
     /**

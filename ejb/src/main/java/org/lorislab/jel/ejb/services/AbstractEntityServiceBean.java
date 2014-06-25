@@ -28,12 +28,8 @@ import javax.persistence.PersistenceContext;
  * @author Andrej Petras <andrej@ajka-andrej.com>
  * @param <T> the entity class.
  */
-public abstract class AbstractEntityServiceBean<T extends Persistent> extends AbstractServiceBean {
+public abstract class AbstractEntityServiceBean<T extends Persistent> {
 
-    /**
-     * The UID for this class.
-     */
-    private static final long serialVersionUID = 1980534470610958672L;
     /**
      * The persistence context.
      */
@@ -51,7 +47,7 @@ public abstract class AbstractEntityServiceBean<T extends Persistent> extends Ab
      */
     protected final AbstractEAO<T> getBaseEAO() {
         if (baseEAO != null && baseEAO.getEntityManager() == null) {
-            baseEAO.setEntityManager(em);
+            baseEAO.setEntityManager(getEntityManager());
         }
         return baseEAO;
     }
@@ -64,6 +60,15 @@ public abstract class AbstractEntityServiceBean<T extends Persistent> extends Ab
         baseEAO = new AbstractEAO<>(this.getClass());
     }
 
+    /**
+     * Gets the entity manager.
+     * 
+     * @return the entity manager.
+     */
+    protected EntityManager getEntityManager() {
+        return em;
+    }
+    
     /**
      * Gets all entities.
      *

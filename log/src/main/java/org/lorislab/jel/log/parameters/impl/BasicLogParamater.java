@@ -18,12 +18,14 @@ package org.lorislab.jel.log.parameters.impl;
 import org.lorislab.jel.log.parameters.ClassLogParameter;
 import java.util.ArrayList;
 import java.util.List;
+import org.kohsuke.MetaInfServices;
 
 /**
  * The basic log parameter.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
+@MetaInfServices
 public class BasicLogParamater implements ClassLogParameter {
 
     /**

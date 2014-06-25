@@ -17,6 +17,13 @@
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
             <scope>provided</scope>
-        </dependency>  		
+        </dependency>
+		
+		<!-- META-INF SERVICES -->
+		<dependency>
+			<groupId>org.kohsuke.metainf-services</groupId>
+			<artifactId>metainf-services</artifactId>
+			<optional>true</optional>
+		</dependency>				  		
 	</dependencies>
 </project>

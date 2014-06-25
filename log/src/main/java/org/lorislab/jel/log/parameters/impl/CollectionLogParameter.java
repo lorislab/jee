@@ -17,12 +17,14 @@ package org.lorislab.jel.log.parameters.impl;
 
 import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
 import java.util.Collection;
+import org.kohsuke.MetaInfServices;
 
 /**
  * The collection log parameter.
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
+@MetaInfServices
 public class CollectionLogParameter implements InstanceOfLogParameter {
 
     /**

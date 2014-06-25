@@ -44,6 +44,14 @@
 	<dependencyManagement>
 		<dependencies>
 
+			<!-- META-INF SERVICES -->
+			<dependency>
+				<groupId>org.kohsuke.metainf-services</groupId>
+				<artifactId>metainf-services</artifactId>
+				<version>1.5</version>
+				<optional>true</optional>
+			</dependency>
+						
 			<!-- EJB/Persistence libraries -->
 			<dependency>
 				<groupId>org.jboss.spec</groupId>
@@ -74,28 +82,6 @@
 
        
 	<build>
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>src/main/java</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
-		</resources>
-		<testResources>
-			<testResource>
-				<directory>src/test/resources</directory>
-			</testResource>            
-			<testResource>
-				<directory>src/test/java</directory>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>                
-			</testResource>
-		</testResources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>                
@@ -134,26 +120,11 @@
 				<plugin>
 					<groupId>org.bsc.maven</groupId>
 					<artifactId>maven-processor-plugin</artifactId>
-					<version>2.0.5</version>
-					<executions>
-						<execution>
-							<id>process</id>
-							<goals>
-								<goal>process</goal>
-							</goals>
-							<phase>generate-sources</phase>
-							<configuration>
-								<processors>                                
-									<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
-								</processors>
-								<outputDirectory>target/generated-sources/metamodel</outputDirectory>
-							</configuration>
-						</execution>
-					</executions>
+					<version>2.2.4</version>					
 				</plugin>                 
 				<plugin>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.12.4</version>
+					<version>2.17</version>
 					<configuration>
 						<skipTests>true</skipTests>
 					</configuration>
@@ -161,82 +132,42 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.3.2</version>
+					<version>3.1</version>
 					<configuration>
 						<source>1.7</source>
 						<target>1.7</target>
 						<encoding>UTF-8</encoding>
-						<compilerArgument>-proc:none</compilerArgument>
 					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>2.1.2</version>
+					<version>2.2.1</version>
 					<inherited>true</inherited>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.8</version>
+					<version>2.9.1</version>
 					<inherited>true</inherited>
 					<configuration>
 						<aggregate>true</aggregate>
 						<links>
-							<link>http://java.sun.com/javase/7/docs/api/</link>
-							<link>http://java.sun.com/javaee/6/docs/api/</link>
+							<link>http://docs.oracle.com/javase/7/docs/api/</link>
 						</links>
 					</configuration>
 				</plugin>
 				<plugin>
 					<artifactId>maven-resources-plugin</artifactId>
-					<version>2.5</version>
+					<version>2.6</version>
 					<configuration>
 						<encoding>UTF-8</encoding>
 					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-ejb-plugin</artifactId>
-					<version>2.3</version>
-					<configuration>
-						<ejbVersion>3.1</ejbVersion>
-						<generateClient>true</generateClient>
-						<clientExcludes>
-							<clientExclude>**/*Bean.class</clientExclude>
-							<clientExclude>**/ejb/*Impl.class</clientExclude>
-							<clientExclude>**/dao/**</clientExclude>
-							<clientExclude>**/model/impl/**</clientExclude>
-							<clientExclude>META-INF/*.xml</clientExclude>
-						</clientExcludes>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-ear-plugin</artifactId>
-					<version>2.7</version>
-					<configuration>
-						<version>6</version>
-						<defaultLibBundleDir>lib</defaultLibBundleDir>
-						<unpackTypes>war,ejb</unpackTypes>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-war-plugin</artifactId>
-					<version>2.4</version>
-					<configuration>
-						<archive>
-							<manifest>
-								<classpathPrefix>lib/</classpathPrefix>
-							</manifest>
-						</archive>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.3.2</version>
+					<version>2.4</version>
 					<configuration>
 						<archive>
 							<manifest>

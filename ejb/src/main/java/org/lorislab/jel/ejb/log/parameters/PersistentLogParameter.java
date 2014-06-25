@@ -15,6 +15,7 @@
  */
 package org.lorislab.jel.ejb.log.parameters;
 
+import org.kohsuke.MetaInfServices;
 import org.lorislab.jel.jpa.model.Persistent;
 import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
 
@@ -24,6 +25,7 @@ import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
  *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
+@MetaInfServices
 public class PersistentLogParameter implements InstanceOfLogParameter {
 
     /**
