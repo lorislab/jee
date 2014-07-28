@@ -27,17 +27,19 @@ public interface ContextLogger {
     /**
      * Gets the start log string.
      *
+     * @param uuid the UUID.
      * @param user the user name.
      * @param clazz the class.
      * @param method the method.
      * @param parameters the list of parameters.
      * @return the logger string.
      */
-    String getLogStart(String user, String clazz, String method, List<String> parameters);
+    String getLogStart(String uuid, String user, String clazz, String method, List<String> parameters);
 
     /**
      * Gets the succeed log string.
      *
+     * @param uuid the UUID.
      * @param user the user name.
      * @param clazz the class.
      * @param method the method
@@ -46,11 +48,12 @@ public interface ContextLogger {
      * @param result the result value.
      * @return the logger string.
      */
-    String getLogSucceed(String user, String clazz, String method, List<String> parameters, double time, String result);
+    String getLogSucceed(String uuid, String user, String clazz, String method, List<String> parameters, double time, String result);
 
     /**
      * Gets the failed log string.
      *
+     * @param uuid the UUID.
      * @param user the user name.
      * @param clazz the class.
      * @param method the method.
@@ -58,5 +61,5 @@ public interface ContextLogger {
      * @param time the start time.
      * @return the logger string.
      */
-    String getLogFailed(String user, String clazz, String method, List<String> parameters, double time);
+    String getLogFailed(String uuid, String user, String clazz, String method, List<String> parameters, double time);
 }

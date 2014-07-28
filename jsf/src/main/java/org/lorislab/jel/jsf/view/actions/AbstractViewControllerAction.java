@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.jsf.view;
+package org.lorislab.jel.jsf.view.actions;
 
 import java.io.Serializable;
+import org.lorislab.jel.jsf.util.FacesResourceUtil;
 
 /**
  * The abstract view controller action.
  *
+ * @param <T> the view controller.
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public abstract class AbstractViewControllerAction<T> implements Serializable {
@@ -32,7 +34,7 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
      * The parent view controller.
      */
     private T parent;
-
+  
     /**
      * The default constructor.
      *
@@ -41,22 +43,23 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
     public AbstractViewControllerAction(T parent) {
         this.parent = parent;
     }
-
+  
     /**
      * Gets the parent view controller.
      *
      * @return the parent view controller.
      */
-    public T getParent() {
+    protected T getParent() {
         return parent;
     }
 
     /**
      * Gets the enabled status.
-     *
-     * @return return <code>true</code> if the action is enabled else
-     * return <code>false</code>. Default implementation return
-     * always <code>true</code>.
+     * Returns <code>true</code> if the action is enabled else return
+     * <code>false</code>. Default implementation return always
+     * <code>true</code>.
+     * 
+     * @return returns {@code true} if the action is enabled.
      */
     public boolean isEnabled() {
         return true;
@@ -65,9 +68,11 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
     /**
      * Gets the available status.
      *
-     * @return return <code>true</code> if the action is available else
-     * return <code>false</code>. Default implementation return
-     * always <code>true</code>.
+     * Returns <code>true</code> if the action is available else return
+     * <code>false</code>. Default implementation return always
+     * <code>true</code>.
+     * 
+     * @return returns {@code true} if the action is enabled.
      */
     public boolean isAvailable() {
         return true;
@@ -77,9 +82,24 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
      * The execution method of button.
      *
      * @return the value of the web site navigation.
-     * @throws Exception if the method fails.
      */
-    public Object execute() throws Exception {
+    public Object execute() {
+        Object result = null;
+        try {
+            result = doExecute();            
+        } catch (Exception ex) {
+            FacesResourceUtil.handleExceptionMessage(ex);
+        }
+        return result;
+    }
+
+    /**
+     * The execution method of button.
+     *
+     * @return the value of the web site navigation.
+     * @throws Exception if the method fails.
+     */    
+    protected Object doExecute() throws Exception {
         return null;
     }
 }

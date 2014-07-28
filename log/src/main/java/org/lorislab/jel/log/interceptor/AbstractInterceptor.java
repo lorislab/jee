@@ -18,6 +18,7 @@ package org.lorislab.jel.log.interceptor;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Logger;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
@@ -81,7 +82,7 @@ public abstract class AbstractInterceptor implements Serializable {
         String clazz = null;
         String name = null;
         List<String> logParams = null;
-        
+        String uuid = UUID.randomUUID().toString();
         Object result = null;
         Method method = ic.getMethod();
         
@@ -97,7 +98,7 @@ public abstract class AbstractInterceptor implements Serializable {
             logParams = LogService.getValues(ic.getParameters());
 
             logger = Logger.getLogger(clazz);
-            String startMsg = LogService.getContextLogger().getLogStart(user, clazz, name, logParams);
+            String startMsg = LogService.getContextLogger().getLogStart(uuid, user, clazz, name, logParams);
             logger.info(startMsg);
         }
         try {
@@ -108,12 +109,12 @@ public abstract class AbstractInterceptor implements Serializable {
                 if (!method.getReturnType().equals(Void.TYPE)) {
                     resultObject = LogService.getValue(result);
                 }
-                String succeedMsg = LogService.getContextLogger().getLogSucceed(user, clazz, name, logParams, geTime(startTime), resultObject);
+                String succeedMsg = LogService.getContextLogger().getLogSucceed(uuid, user, clazz, name, logParams, geTime(startTime), resultObject);
                 logger.info(succeedMsg);
             }
         } catch (Throwable ex) {
             if (contextLog) {
-                String failedMsg = LogService.getContextLogger().getLogFailed(user, clazz, name, logParams, geTime(startTime));
+                String failedMsg = LogService.getContextLogger().getLogFailed(uuid, user, clazz, name, logParams, geTime(startTime));
                 logger.info(failedMsg);
             }
             throw ex;

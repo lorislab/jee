@@ -15,8 +15,9 @@
  */
 package org.lorislab.jel.jsf.view;
 
+import java.io.Serializable;
+import java.util.List;
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
-import org.lorislab.jel.jpa.model.Persistent;
 
 /**
  * The abstract table view controller.
@@ -25,7 +26,7 @@ import org.lorislab.jel.jpa.model.Persistent;
  * @param <T> the model.
  * @param <S> the search criteria.
  */
-public abstract class AbstractTableSearchViewController<T extends Persistent, S extends AbstractSearchCriteria> extends AbstractTableViewController<T> {
+public abstract class AbstractSearchViewController<T, S extends AbstractSearchCriteria> implements Serializable {
 
     /**
      * The UID for this class.
@@ -35,6 +36,10 @@ public abstract class AbstractTableSearchViewController<T extends Persistent, S 
      * The search criteria.
      */
     private S criteria;
+    /**
+     * The result list.
+     */
+    private List<T> result;
 
     /**
      * Sets the search criteria.
@@ -53,4 +58,41 @@ public abstract class AbstractTableSearchViewController<T extends Persistent, S 
     public S getCriteria() {
         return criteria;
     }
+
+    /**
+     * Gets the result list.
+     *
+     * @return the result list.
+     */
+    public List<T> getResult() {
+        return result;
+    }
+
+    /**
+     * Search the results.
+     *
+     * @throws Exception is the method fails.
+     */
+    public void search() throws Exception {
+        result = doSearch();
+    }
+
+    /**
+     * Resets the results.
+     *
+     * @throws Exception if the method fails.
+     */
+    public void reset() throws Exception {
+        result = null;
+        criteria.reset();
+    }
+
+    /**
+     * Search method for the result table.
+     *
+     * @return the result list.
+     *
+     * @throws Exception if the method fails.
+     */
+    protected abstract List<T> doSearch() throws Exception;
 }

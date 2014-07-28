@@ -29,7 +29,7 @@ public class DefaultContextLogger implements ContextLogger {
      * {@inheritDoc} Output: <user>:<method>(<parameters>).
      */
     @Override
-    public String getLogStart(String user, String clazz, String method, List<String> parameters) {
+    public String getLogStart(String uuid, String user, String clazz, String method, List<String> parameters) {
         StringBuilder sb = new StringBuilder();
         sb.append(user);
         sb.append(':');
@@ -45,7 +45,7 @@ public class DefaultContextLogger implements ContextLogger {
      * succeed.
      */
     @Override
-    public String getLogSucceed(String user, String clazz, String method, List<String> parameters, double time, String result) {
+    public String getLogSucceed(String uuid, String user, String clazz, String method, List<String> parameters, double time, String result) {
         StringBuilder sb = new StringBuilder();
         sb.append(user);
         sb.append(':');
@@ -67,7 +67,7 @@ public class DefaultContextLogger implements ContextLogger {
      * {@inheritDoc} Output: <user>:<method>(<parameters>) [<time>s] failed.
      */
     @Override
-    public String getLogFailed(String user, String clazz, String method, List<String> parameters, double time) {
+    public String getLogFailed(String uuid, String user, String clazz, String method, List<String> parameters, double time) {
         StringBuilder sb = new StringBuilder();
         sb.append(user);
         sb.append(':');

@@ -19,7 +19,8 @@ import java.io.Serializable;
 
 /**
  * The abstract entity view controller.
- *
+ * @param <T> the entity type.
+ * 
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public class AbstractEntityViewController<T> implements Serializable {
