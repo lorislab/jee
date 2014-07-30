@@ -16,6 +16,7 @@
 package org.lorislab.jel.jsf.view;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 
@@ -62,7 +63,7 @@ public abstract class AbstractSearchViewController<T, S extends AbstractSearchCr
     /**
      * Gets the result list.
      *
-     * @return the result list.
+     * @return the list of results.
      */
     public List<T> getResult() {
         return result;
@@ -71,16 +72,19 @@ public abstract class AbstractSearchViewController<T, S extends AbstractSearchCr
     /**
      * Search the results.
      *
-     * @throws Exception is the method fails.
+     * @throws java.lang.Exception is the method fails.
      */
     public void search() throws Exception {
         result = doSearch();
+        if (result == null) {
+            result = new ArrayList<>();
+        }
     }
 
     /**
      * Resets the results.
      *
-     * @throws Exception if the method fails.
+     * @throws java.lang.Exception if the method fails.
      */
     public void reset() throws Exception {
         result = null;
@@ -92,7 +96,7 @@ public abstract class AbstractSearchViewController<T, S extends AbstractSearchCr
      *
      * @return the result list.
      *
-     * @throws Exception if the method fails.
+     * @throws java.lang.Exception if the method fails.
      */
     protected abstract List<T> doSearch() throws Exception;
 }

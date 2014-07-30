@@ -63,7 +63,7 @@ public abstract class AbstractTableViewController<T extends Persistent> implemen
     /**
      * Search the results.
      * 
-     * @throws Exception is the method fails.
+     * @throws java.lang.Exception is the method fails.
      */
     public void search() throws Exception {
         tmp = new HashMap<>();

@@ -34,7 +34,7 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
      * The parent view controller.
      */
     private T parent;
-  
+
     /**
      * The default constructor.
      *
@@ -43,7 +43,7 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
     public AbstractViewControllerAction(T parent) {
         this.parent = parent;
     }
-  
+
     /**
      * Gets the parent view controller.
      *
@@ -54,11 +54,10 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
     }
 
     /**
-     * Gets the enabled status.
-     * Returns <code>true</code> if the action is enabled else return
-     * <code>false</code>. Default implementation return always
-     * <code>true</code>.
-     * 
+     * Gets the enabled status. Returns <code>true</code> if the action is
+     * enabled else return <code>false</code>. Default implementation return
+     * always <code>true</code>.
+     *
      * @return returns {@code true} if the action is enabled.
      */
     public boolean isEnabled() {
@@ -71,7 +70,7 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
      * Returns <code>true</code> if the action is available else return
      * <code>false</code>. Default implementation return always
      * <code>true</code>.
-     * 
+     *
      * @return returns {@code true} if the action is enabled.
      */
     public boolean isAvailable() {
@@ -85,10 +84,12 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
      */
     public Object execute() {
         Object result = null;
-        try {
-            result = doExecute();            
-        } catch (Exception ex) {
-            FacesResourceUtil.handleExceptionMessage(ex);
+        if (isAvailable()) {
+            try {
+                result = doExecute();
+            } catch (Exception ex) {
+                FacesResourceUtil.handleExceptionMessage(ex);
+            }
         }
         return result;
     }
@@ -97,8 +98,8 @@ public abstract class AbstractViewControllerAction<T> implements Serializable {
      * The execution method of button.
      *
      * @return the value of the web site navigation.
-     * @throws Exception if the method fails.
-     */    
+     * @throws java.lang.Exception if the method fails.
+     */
     protected Object doExecute() throws Exception {
         return null;
     }
