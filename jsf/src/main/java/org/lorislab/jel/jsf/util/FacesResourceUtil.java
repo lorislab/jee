@@ -15,14 +15,17 @@
  */
 package org.lorislab.jel.jsf.util;
 
-import org.lorislab.jel.base.exception.AbstractSystemException;
-import org.lorislab.jel.base.resources.ResourceManager;
-import org.lorislab.jel.base.resources.model.ResourceMessage;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
- 
+import javax.faces.model.SelectItem;
+import org.lorislab.jel.base.exception.AbstractSystemException;
+import org.lorislab.jel.base.resources.ResourceManager;
+import org.lorislab.jel.base.resources.model.ResourceMessage;
+
 /**
  * The faces resource utility class.
  *
@@ -35,6 +38,28 @@ public final class FacesResourceUtil {
      */
     private FacesResourceUtil() {
         // empty constructor
+    }
+
+    /**
+     * Creates the list of resource keys.
+     *
+     * @param <T> the enumeration type.
+     * @param enumClass the enumeration class.
+     * @return the corresponding list of enumeration.
+     */
+    public static <T extends Enum<T>> List<SelectItem> getEnumSelectItems(Class<T> enumClass) {
+        T[] constants = enumClass.getEnumConstants();
+        List<SelectItem> selectItems = new ArrayList<>(constants.length);
+
+        Locale locale = getCurrentLocale();
+        ClassLoader loader = enumClass.getClassLoader();
+
+        for (T constant : constants) {
+            SelectItem selectItem = new SelectItem(constant, ResourceManager.getString(constant, locale, loader));
+            selectItems.add(selectItem);
+        }
+
+        return selectItems;
     }
 
     /**
@@ -85,8 +110,8 @@ public final class FacesResourceUtil {
     }
 
     /**
-     * Looks up a message resource in the associated resource bundle with the locale
-     * provided by the view root of the current.
+     * Looks up a message resource in the associated resource bundle with the
+     * locale provided by the view root of the current.
      *
      * @param key the resource key.
      * @param arguments the message arguments.
@@ -104,8 +129,8 @@ public final class FacesResourceUtil {
     }
 
     /**
-     * Looks up a message resource and wraps it in a new <code>FacesMessage</code>
-     * instance.
+     * Looks up a message resource and wraps it in a new
+     * <code>FacesMessage</code> instance.
      *
      * @param severity a severity of message.
      * @param key the resource key.
@@ -127,8 +152,9 @@ public final class FacesResourceUtil {
     }
 
     /**
-     * Looks up a message resource and wraps it in a new <code>FacesMessage</code>
-     * instance with a severity of <code>SEVERITY_INFO</code>.
+     * Looks up a message resource and wraps it in a new
+     * <code>FacesMessage</code> instance with a severity of
+     * <code>SEVERITY_INFO</code>.
      *
      * @param key the resource key.
      * @param arguments the message arguments
@@ -148,7 +174,8 @@ public final class FacesResourceUtil {
     }
 
     /**
-     * Adds a faces error message associated on the resource key with message arguments.
+     * Adds a faces error message associated on the resource key with message
+     * arguments.
      *
      * @param resourceKey the resource key.
      * @param arguments the list of arguments.
@@ -158,7 +185,8 @@ public final class FacesResourceUtil {
     }
 
     /**
-     * Adds a faces error message to the clientId associated on the resource key.
+     * Adds a faces error message to the clientId associated on the resource
+     * key.
      *
      * @param clientId the client id.
      * @param resourceKey the resource key.
@@ -187,7 +215,8 @@ public final class FacesResourceUtil {
     }
 
     /**
-     * Adds a faces info message associated on the resource key with message arguments.
+     * Adds a faces info message associated on the resource key with message
+     * arguments.
      *
      * @param resourceKey the resource key.
      * @param arguments the list of arguments.
@@ -197,8 +226,8 @@ public final class FacesResourceUtil {
     }
 
     /**
-     * Adds a  faces message to the clientId with faces severity associated on the
-     * resource key.
+     * Adds a faces message to the clientId with faces severity associated on
+     * the resource key.
      *
      * @param clientId the client id.
      * @param severity the faces severity.
@@ -210,8 +239,8 @@ public final class FacesResourceUtil {
     }
 
     /**
-     * Adds a  faces message to the clientId with faces severity associated on the
-     * resource key with message arguments.
+     * Adds a faces message to the clientId with faces severity associated on
+     * the resource key with message arguments.
      *
      * @param clientId the client id.
      * @param severity the faces severity.
@@ -220,14 +249,14 @@ public final class FacesResourceUtil {
      */
     public static void addFacesMessage(final String clientId, final Severity severity,
             final Enum<?> resourceKey, final Object... arguments) {
-            FacesMessage message = getFacesMessage(severity, resourceKey, arguments);
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(clientId, message);
+        FacesMessage message = getFacesMessage(severity, resourceKey, arguments);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(clientId, message);
     }
 
     /**
-     * Adds a  faces message to the clientId with faces severity, localized message
-     * and description.
+     * Adds a faces message to the clientId with faces severity, localized
+     * message and description.
      *
      * @param clientId the client id.
      * @param severity the faces severity.
