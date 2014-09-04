@@ -8,25 +8,28 @@
         <groupId>org.lorislab.jel</groupId>
         <artifactId>jel</artifactId>
         <version>0.0.9-SNAPSHOT</version>
-		<relativePath>../</relativePath>
+        <relativePath>../</relativePath>
     </parent>
     
     <dependencies>    
-		<dependency>
-			<groupId>org.lorislab.jel</groupId>
-			<artifactId>jel-base</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.lorislab.jel</groupId>
-			<artifactId>jel-log</artifactId>
-			<version>${project.version}</version>
-		</dependency>	
-		<dependency>
-			<groupId>org.lorislab.jel</groupId>
-			<artifactId>jel-jpa</artifactId>
-			<version>${project.version}</version>
-		</dependency>			
+        <dependency>
+            <groupId>org.lorislab.jel</groupId>
+            <artifactId>jel-base</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.lorislab.jel</groupId>
+            <artifactId>jel-log</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>	
+        <dependency>
+            <groupId>org.lorislab.jel</groupId>
+            <artifactId>jel-jpa</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>			
         <!-- CDI -->
         <dependency>
             <groupId>javax.enterprise</groupId>
