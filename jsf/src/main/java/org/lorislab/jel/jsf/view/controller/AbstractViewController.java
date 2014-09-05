@@ -40,53 +40,18 @@ public abstract class AbstractViewController implements ViewController, Serializ
     private PermissionController permissionController;
 
     /**
-     * The view controller context.
+     * The controller mode.
      */
-    private Enum context;
-
     private ControllerMode mode;
 
-    public AbstractViewController() {
-    }
-    
-    public AbstractViewController(Enum context) {
-        this.context = context;
-        initiliaseMode();
-    }
-
     /**
-     * Initialise controller mode.
+     * Change controller mode.
+     * @param mode the new controller mode.
      */
-    protected final void initiliaseMode() {
-        mode = null;
-        boolean tmp = changeToEditMode();
-        if (!tmp) {
-            changeToViewMode();
-        }
+    protected void changeToMode(ControllerMode mode) {
+        this.mode = mode;
     }
-
-    protected boolean changeToEditMode() {
-        boolean result = isEditMode();
-        if (!result) {
-            result = hasUserAction(context, Permission.EDIT);
-            if (result) {
-                mode = ControllerMode.EDIT;
-            }
-        }
-        return result;
-    }
-    
-    protected boolean changeToViewMode() {
-        boolean result = isEditMode();
-        if (!result) {
-            result = hasUserAction(context, Permission.VIEW);
-            if (result) {
-                mode = ControllerMode.VIEW;
-            }
-        }
-        return result;
-    }
-
+   
     public boolean isViewMode() {
         return ControllerMode.VIEW == mode;
     }

@@ -19,7 +19,7 @@ package org.lorislab.jel.jsf.entity.controller.action;
 import org.lorislab.jel.jsf.entity.common.EntityPermission;
 import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
 import javax.faces.context.FacesContext;
-import org.lorislab.jel.jsf.entity.controller.OpenViewController;
+import org.lorislab.jel.jsf.entity.controller.EditViewController;
 
 /**
  * The open action.
@@ -27,7 +27,7 @@ import org.lorislab.jel.jsf.entity.controller.OpenViewController;
  * @author Andrej Petras
  * @param <T> the open view controller.
  */
-public class OpenAction<T extends OpenViewController> extends AbstractAction<T> {
+public class EditAction<T extends EditViewController> extends AbstractAction<T> {
     /**
      * The UID for this class.
      */
@@ -42,8 +42,8 @@ public class OpenAction<T extends OpenViewController> extends AbstractAction<T> 
      * @param parent the parent view controller.
      * @param context the context.
      */
-    public OpenAction(T parent, Enum context) {
-        super(parent, context, EntityPermission.OPEN);
+    public EditAction(T parent, Enum context) {
+        super(parent, context, EntityPermission.EDIT);
     }
 
     /**
@@ -64,6 +64,6 @@ public class OpenAction<T extends OpenViewController> extends AbstractAction<T> 
         if (tmp == null) {
             tmp = (String) FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap().get("guid");
         }        
-        return getParent().open(tmp);
+        return getParent().edit(tmp);
     }       
 }

@@ -36,22 +36,6 @@ public class AbstractEntityViewController<T> extends AbstractViewController {
     protected T model;
 
     /**
-     * The default constructor.
-     */
-    public AbstractEntityViewController() {
-        // empty constructor.
-    }
-
-    /**
-     * The default constructor.
-     *
-     * @param context the context.
-     */
-    public AbstractEntityViewController(Enum context) {
-        super(context);
-    }
-
-    /**
      * Gets the model.
      *
      * @return the model.

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Andrej_Petras.
+ * Copyright 2014 lorislab.org.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.lorislab.jel.jsf.entity.controller;
 
-package org.lorislab.jel.jsf.entity.common;
+import org.lorislab.jel.jsf.view.controller.ViewController;
 
 /**
- * The entity permission.
- * 
- * @author Andrej_Petras
+ * The open view controller.
+ *
+ * @author Andrej Petras
  */
-public enum EntityPermission {
-    
-    EDIT,
-    
-    VIEW,
-    
-    SAVE,
-    
-    CLOSE,
-    
-    DELETE,
-    
-    CREATE,
-    
-    RESET,
-    
-    SEARCH;
+public interface EditViewController extends ViewController {
+
+    /**
+     * Open to edit the entity.
+     *
+     * @param guid the entity GUID.
+     * @return the navigation path.
+     * @throws java.lang.Exception if the method fails.
+     */
+    public Object edit(String guid) throws Exception;
 }

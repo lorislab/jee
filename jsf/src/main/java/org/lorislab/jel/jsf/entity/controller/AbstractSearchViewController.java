@@ -43,23 +43,7 @@ public abstract class AbstractSearchViewController<T, S extends AbstractSearchCr
      * The result list.
      */
     private List<T> result;
-
-    /**
-     * The default constructor.
-     */
-    public AbstractSearchViewController() {
-        // empty constructor.
-    }
-
-    /**
-     * The default constructor.
-     *
-     * @param context the context.
-     */
-    public AbstractSearchViewController(Enum context) {
-        super(context);
-    }
-
+   
     /**
      * Sets the search criteria.
      *

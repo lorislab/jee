@@ -22,14 +22,14 @@ import org.lorislab.jel.jsf.view.controller.ViewController;
  *
  * @author Andrej Petras
  */
-public interface OpenViewController extends ViewController {
+public interface ViewViewController extends ViewController {
 
     /**
-     * Open the entity.
+     * Open to view the entity.
      *
      * @param guid the entity GUID.
      * @return the navigation path.
      * @throws java.lang.Exception if the method fails.
      */
-    public Object open(String guid) throws Exception;
+    public Object view(String guid) throws Exception;
 }
