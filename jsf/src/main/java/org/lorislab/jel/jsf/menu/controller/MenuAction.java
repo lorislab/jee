@@ -13,26 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.jsf.view.controller.action;
+package org.lorislab.jel.jsf.menu.controller;
 
-import javax.faces.context.FacesContext;
-import org.lorislab.jel.jsf.view.common.Permission;
+import org.lorislab.jel.jsf.view.common.Context;
 import org.lorislab.jel.jsf.view.controller.ViewController;
+import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
 
 /**
- * The logout action.
- * 
- * @param <T> the parent type.
- * 
+ * The context menu action.
+ *
+ * @param <T> the context menu view controller type.
+ *
  * @author Andrej Petras
  */
-public class LogoutAction<T extends ViewController> extends MenuAction<T> {
+public class MenuAction<T extends ViewController> extends AbstractAction<T> {
 
     /**
      * The UID for this class.
      */
-    private static final long serialVersionUID = -9154512589848412309L;
-
+    private static final long serialVersionUID = -2570364728504344270L;
+    /**
+     * The navigation path.
+     */
+    private final String navigation;
+   
     /**
      * The default constructor.
      *
@@ -41,26 +45,39 @@ public class LogoutAction<T extends ViewController> extends MenuAction<T> {
      * @param permission the permission.
      * @param navigation the navigation path.
      */
-    public LogoutAction(T parent, Enum context, Enum permission, String navigation) {
-        super(parent, context, permission, navigation);
+    public MenuAction(T parent, Enum context, Enum permission, String navigation) {
+        super(parent, context, permission);
+        this.navigation = navigation;
     }
 
     /**
      * The default constructor.
      *
      * @param parent the parent view controller.
+     * @param permission the permission.
      * @param navigation the navigation path.
      */
-    public LogoutAction(T parent, String navigation) {
-        super(parent, Permission.LOGOUT, navigation);
+    public MenuAction(T parent, Enum permission, String navigation) {
+        this(parent, Context.MENU, permission, navigation);
+    }
+    
+    /**
+     * The default constructor.
+     *
+     * @param parent the parent view controller.
+     * @param permission the permission.
+     */
+    public MenuAction(T parent, Enum permission) {
+        this(parent, Context.MENU, permission, null);
     }
     
     /**
      * {@inheritDoc }
      */
     @Override
-    public Object doExecute() throws Exception {
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return super.execute();
+    protected Object doExecute() throws Exception {
+        return navigation;
     }
+
+   
 }

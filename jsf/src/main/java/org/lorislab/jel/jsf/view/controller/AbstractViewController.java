@@ -46,16 +46,27 @@ public abstract class AbstractViewController implements ViewController, Serializ
 
     /**
      * Change controller mode.
+     *
      * @param mode the new controller mode.
      */
     protected void changeToMode(ControllerMode mode) {
         this.mode = mode;
     }
-   
+
+    /**
+     * Returns {@code true} is the controller mode is view mode.
+     *
+     * @return {@code true} is the controller mode is view mode.
+     */
     public boolean isViewMode() {
         return ControllerMode.VIEW == mode;
     }
 
+    /**
+     * Returns {@code true} is the controller mode is edit mode.
+     *
+     * @return {@code true} is the controller mode is edit mode.
+     */
     public boolean isEditMode() {
         return ControllerMode.EDIT == mode;
     }

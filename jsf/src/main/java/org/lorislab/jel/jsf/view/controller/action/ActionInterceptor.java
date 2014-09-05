@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.jsf.view.interceptor;
+package org.lorislab.jel.jsf.view.controller.action;
 
+import org.lorislab.jel.log.interceptor.ObjectInvocationContext;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lorislab.jel.jsf.api.interceptor.FacesInterceptor;
-import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
-import org.lorislab.jel.jsf.view.controller.action.ActionInvocationContext;
 import org.lorislab.jel.log.interceptor.AbstractInterceptor;
 
 /**
@@ -47,7 +46,9 @@ public class ActionInterceptor {
      */
     public static Object doExecution(final AbstractAction action) {
         Object result = null;
-        ActionInvocationContext ic = new ActionInvocationContext(action);
+        
+        ObjectInvocationContext ic = new ObjectInvocationContext(action, "doExecute");
+        
         try {
             result = INSTANCE.methodExecution(ic);
         } catch (Exception ex) {

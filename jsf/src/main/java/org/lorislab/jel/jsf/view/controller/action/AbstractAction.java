@@ -19,7 +19,6 @@ import java.io.Serializable;
 import org.lorislab.jel.jsf.api.interceptor.annotations.FacesServiceMethod;
 import org.lorislab.jel.jsf.api.util.FacesResourceUtil;
 import org.lorislab.jel.jsf.view.controller.ViewController;
-import org.lorislab.jel.jsf.view.interceptor.ActionInterceptor;
 
 /**
  * The abstract view controller action.
