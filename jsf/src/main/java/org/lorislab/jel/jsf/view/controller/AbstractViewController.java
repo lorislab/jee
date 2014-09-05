@@ -19,7 +19,6 @@ import java.io.Serializable;
 import javax.inject.Inject;
 import org.lorislab.jel.jsf.permission.controller.PermissionController;
 import org.lorislab.jel.jsf.view.common.ControllerMode;
-import org.lorislab.jel.jsf.view.common.Permission;
 
 /**
  * The abstract view controller.
