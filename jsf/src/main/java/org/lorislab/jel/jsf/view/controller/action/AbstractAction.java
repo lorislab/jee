@@ -15,9 +15,9 @@
  */
 package org.lorislab.jel.jsf.view.controller.action;
 
+import org.lorislab.jel.jsf.view.interceptor.ActionInterceptor;
 import java.io.Serializable;
 import org.lorislab.jel.jsf.api.interceptor.annotations.FacesServiceMethod;
-import org.lorislab.jel.jsf.api.util.FacesResourceUtil;
 import org.lorislab.jel.jsf.view.controller.ViewController;
 
 /**
@@ -41,12 +41,12 @@ public abstract class AbstractAction<T extends ViewController> implements Serial
     /**
      * The action.
      */
-    private Enum action;
+    private final Enum action;
 
     /**
      * The context.
      */
-    private Enum context;
+    private final Enum context;
     
     /**
      * The default constructor.

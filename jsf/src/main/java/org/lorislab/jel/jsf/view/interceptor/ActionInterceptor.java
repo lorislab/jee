@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.jsf.view.controller.action;
+package org.lorislab.jel.jsf.view.interceptor;
 
 import org.lorislab.jel.log.interceptor.ObjectInvocationContext;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.lorislab.jel.jsf.api.interceptor.FacesInterceptor;
+import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
 import org.lorislab.jel.log.interceptor.AbstractInterceptor;
 
 /**
