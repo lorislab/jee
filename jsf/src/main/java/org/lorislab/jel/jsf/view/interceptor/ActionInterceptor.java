@@ -15,12 +15,13 @@
  */
 package org.lorislab.jel.jsf.view.interceptor;
 
-import org.lorislab.jel.log.interceptor.ObjectInvocationContext;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.interceptor.InvocationContext;
 import org.lorislab.jel.jsf.api.interceptor.FacesInterceptor;
 import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
 import org.lorislab.jel.log.interceptor.AbstractInterceptor;
+import org.lorislab.jel.log.interceptor.context.InvocationContextFactory;
 
 /**
  * The action interceptor.
@@ -46,11 +47,9 @@ public class ActionInterceptor {
      * @return the navigation path.
      */
     public static Object doExecution(final AbstractAction action) {
-        Object result = null;
-        
-        ObjectInvocationContext ic = new ObjectInvocationContext(action, "doExecute");
-        
+        Object result = null;        
         try {
+            InvocationContext ic = InvocationContextFactory.createInvocationContext(result, "doExecute");
             result = INSTANCE.methodExecution(ic);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error execute the action!", ex);

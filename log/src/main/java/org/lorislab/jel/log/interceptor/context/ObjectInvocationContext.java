@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.log.interceptor;
+package org.lorislab.jel.log.interceptor.context;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -48,17 +48,10 @@ public class ObjectInvocationContext implements InvocationContext {
      * @param method the method name.
      * @param parameters the method parameters.
      */
-    public ObjectInvocationContext(Object target, String method, Object... parameters) {
+    protected ObjectInvocationContext(Object target, Method method, Object... parameters) {
         this.target = target;
         this.parameters = parameters;
-        Method tmp = null;
-        try {
-            tmp = target.getClass().getDeclaredMethod(method);
-        } catch (Exception ex) {
-            // do nothing
-        }
-        this.method = tmp;
-        this.method.setAccessible(true);
+        this.method = method;        
     }
 
     /**
@@ -132,7 +125,15 @@ public class ObjectInvocationContext implements InvocationContext {
      */
     @Override
     public Object proceed() throws Exception {
-        return method.invoke(target, (Object[]) parameters);
+        Object result = null;
+        boolean access = method.isAccessible();
+        method.setAccessible(true);
+        try {
+            result = method.invoke(target, (Object[]) parameters);
+        } finally {
+            method.setAccessible(access);
+        }
+        return result;
     }
 
 }
