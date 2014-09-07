@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.jsf.menu.controller;
+package org.lorislab.jel.jsf.menu.controller.action;
 
 import javax.faces.context.FacesContext;
 import org.lorislab.jel.jsf.view.common.Permission;
@@ -59,7 +59,7 @@ public class LogoutAction<T extends ViewController> extends MenuAction<T> {
      * {@inheritDoc }
      */
     @Override
-    public Object doExecute() throws Exception {
+    public Object execute() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return super.execute();
     }

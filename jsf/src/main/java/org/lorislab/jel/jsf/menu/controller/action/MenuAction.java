@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.jsf.menu.controller;
+package org.lorislab.jel.jsf.menu.controller.action;
 
 import org.lorislab.jel.jsf.view.common.Context;
 import org.lorislab.jel.jsf.view.controller.ViewController;
@@ -68,16 +68,15 @@ public class MenuAction<T extends ViewController> extends AbstractAction<T> {
      * @param permission the permission.
      */
     public MenuAction(T parent, Enum permission) {
-        this(parent, Context.MENU, permission, null);
+        this(parent, Context.MENU, permission, "");
     }
     
     /**
      * {@inheritDoc }
      */
     @Override
-    protected Object doExecute() throws Exception {
+    public Object execute() {
         return navigation;
     }
-
    
 }

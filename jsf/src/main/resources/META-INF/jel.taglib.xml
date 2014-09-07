@@ -1,0 +1,27 @@
+<facelet-taglib version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/ web-facelettaglibrary_2_2.xsd">
+  
+	<namespace>http://jel.lorislab.org/jsf</namespace>
+				
+	<function>
+		<function-name>messages</function-name>
+		<function-class>org.lorislab.jel.jsf.api.functions.MessageFunctions</function-class>
+		<function-signature>List getMessages()</function-signature>
+	</function> 
+	
+	<function>
+		<function-name>message</function-name>
+		<function-class>org.lorislab.jel.jsf.api.functions.MessageFunctions</function-class>
+		<function-signature>List getMessages(java.lang.String, java.lang.String)</function-signature>
+	</function>	
+	<function>
+		<function-name>isMessage</function-name>
+		<function-class>org.lorislab.jel.jsf.api.functions.MessageFunctions</function-class>
+		<function-signature>java.lan.boolean isMessage(java.lang.String,java.lang.String)</function-signature>
+	</function>
+	<function>
+		<function-name>isNotMessage</function-name>
+		<function-class>org.lorislab.jel.jsf.api.functions.MessageFunctions</function-class>
+		<function-signature>java.lan.boolean isNotMessage(java.lang.String,java.lang.String)</function-signature>
+	</function>		 	
+</facelet-taglib>

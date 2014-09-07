@@ -32,33 +32,50 @@ public abstract class AbstractAction<T extends ViewController> implements Serial
      * The UID for this class.
      */
     private static final long serialVersionUID = -2802481738839679670L;
-    
+
     /**
      * The parent view controller.
      */
     private final T parent;
 
     /**
-     * The action.
+     * The permission.
      */
-    private final Enum action;
+    private final Enum permission;
 
     /**
      * The context.
      */
     private final Enum context;
-    
+
     /**
      * The default constructor.
      *
      * @param parent the parent view controller.
-     * @param action the action.
+     * @param permission the permission.
      * @param context the context.
      */
-    public AbstractAction(T parent, Enum context, Enum action) {
+    public AbstractAction(T parent, Enum context, Enum permission) {
         this.parent = parent;
-        this.action = action;
-        this.context = context;
+        this.permission = permission;
+        this.context = context;        
+    }
+
+    /**
+     * Gets the action permission.
+     * @return the action permission.
+     */
+    public Enum getPermission() {
+        return permission;
+    }
+
+    /**
+     * Gets the action context.
+     *
+     * @return the action context.
+     */
+    public Enum getContext() {
+        return context;
     }
 
     /**
@@ -92,7 +109,7 @@ public abstract class AbstractAction<T extends ViewController> implements Serial
      * @return returns {@code true} if the user has action and context enabled.
      */
     public boolean isAvailable() {
-        return getParent().hasUserAction(context, action);
+        return getParent().hasUserAction(context, permission);
     }
 
     /**

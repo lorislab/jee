@@ -49,7 +49,7 @@ public class ActionInterceptor {
     public static Object doExecution(final AbstractAction action) {
         Object result = null;        
         try {
-            InvocationContext ic = InvocationContextFactory.createInvocationContext(result, "doExecute");
+            InvocationContext ic = InvocationContextFactory.createInvocationContext(action, "doExecute");
             result = INSTANCE.methodExecution(ic);
         } catch (Exception ex) {
             LOGGER.log(Level.SEVERE, "Error execute the action!", ex);

@@ -20,6 +20,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 import org.lorislab.jel.log.service.LogService;
@@ -66,7 +67,7 @@ public abstract class AbstractInterceptor implements Serializable {
      * @return <code>true</code> if the context logger is enabled.
      */
     protected abstract boolean isContextLogger(Method method);
-
+    
     /**
      * The main interceptor method.
      *
