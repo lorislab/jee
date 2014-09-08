@@ -17,7 +17,7 @@
 package org.lorislab.jel.jsf.entity.controller.action;
 
 import org.lorislab.jel.jsf.entity.common.EntityPermission;
-import org.lorislab.jel.jsf.entity.controller.SaveViewController;
+import org.lorislab.jel.jsf.entity.controller.EntityViewController;
 import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
 
 /**
@@ -26,7 +26,7 @@ import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
  * @author Andrej Petras
  * @param <T> the open view controller.
  */
-public class SaveAction<T extends SaveViewController> extends AbstractAction<T> {
+public class SaveAction<T extends EntityViewController> extends AbstractAction<T> {
     /**
      * The UID for this class.
      */

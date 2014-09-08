@@ -22,7 +22,7 @@ import javax.interceptor.InvocationContext;
 /**
  * The object invocation context.
  *
- * @author Andrej_Petras
+ * @author Andrej Petras
  */
 public class ObjectInvocationContext implements InvocationContext {
 

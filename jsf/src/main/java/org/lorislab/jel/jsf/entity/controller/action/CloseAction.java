@@ -18,7 +18,7 @@ package org.lorislab.jel.jsf.entity.controller.action;
 
 import org.lorislab.jel.jsf.entity.common.EntityPermission;
 import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
-import org.lorislab.jel.jsf.entity.controller.CloseViewController;
+import org.lorislab.jel.jsf.entity.controller.EntityViewController;
 
 /**
  * The close action.
@@ -27,7 +27,7 @@ import org.lorislab.jel.jsf.entity.controller.CloseViewController;
  * 
  * @author Andrej Petras
  */
-public class CloseAction<T extends CloseViewController> extends AbstractAction<T> {
+public class CloseAction<T extends EntityViewController> extends AbstractAction<T> {
     /**
      * The UID for this class.
      */

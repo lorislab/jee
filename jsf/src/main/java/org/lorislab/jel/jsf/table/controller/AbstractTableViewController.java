@@ -16,13 +16,11 @@
 package org.lorislab.jel.jsf.table.controller;
 
 import org.lorislab.jel.jpa.model.Persistent;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.lorislab.jel.jsf.entity.controller.ResetViewController;
-import org.lorislab.jel.jsf.entity.controller.SearchViewController;
+import org.lorislab.jel.jsf.search.controller.SearchViewController;
 import org.lorislab.jel.jsf.view.controller.AbstractViewController;
 
 /**
@@ -31,7 +29,7 @@ import org.lorislab.jel.jsf.view.controller.AbstractViewController;
  * @author Andrej Petras <andrej@ajka-andrej.com>
  * @param <T> the model.
  */
-public abstract class AbstractTableViewController<T extends Persistent> extends AbstractViewController implements SearchViewController, ResetViewController {
+public abstract class AbstractTableViewController<T extends Persistent> extends AbstractViewController implements SearchViewController {
 
     /**
      * The UID for this class.

@@ -18,7 +18,7 @@ package org.lorislab.jel.jsf.view.controller;
 import java.io.Serializable;
 import javax.inject.Inject;
 import org.lorislab.jel.jsf.permission.controller.PermissionController;
-import org.lorislab.jel.jsf.view.common.ControllerMode;
+import org.lorislab.jel.jsf.view.common.ViewControllerMode;
 
 /**
  * The abstract view controller.
@@ -41,14 +41,31 @@ public abstract class AbstractViewController implements ViewController, Serializ
     /**
      * The controller mode.
      */
-    private ControllerMode mode;
+    private ViewControllerMode mode;
 
     /**
-     * Change controller mode.
-     *
-     * @param mode the new controller mode.
+     * The default constructor.
      */
-    protected void changeToMode(ControllerMode mode) {
+    public AbstractViewController() {
+        mode = ViewControllerMode.EDIT;
+    }
+
+    /**
+     * Gets the view controller mode.
+     *
+     * @return the view controller mode.
+     */
+    @Override
+    public ViewControllerMode getMode() {
+        return mode;
+    }
+
+    /**
+     * Sets view controller mode.
+     *
+     * @param mode the new view controller mode.
+     */
+    protected void setoMode(ViewControllerMode mode) {
         this.mode = mode;
     }
 
@@ -58,7 +75,7 @@ public abstract class AbstractViewController implements ViewController, Serializ
      * @return {@code true} is the controller mode is view mode.
      */
     public boolean isViewMode() {
-        return ControllerMode.VIEW == mode;
+        return ViewControllerMode.VIEW == mode;
     }
 
     /**
@@ -67,7 +84,7 @@ public abstract class AbstractViewController implements ViewController, Serializ
      * @return {@code true} is the controller mode is edit mode.
      */
     public boolean isEditMode() {
-        return ControllerMode.EDIT == mode;
+        return ViewControllerMode.EDIT == mode;
     }
 
     /**

@@ -13,23 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.lorislab.jel.jsf.entity.controller;
+package org.lorislab.jel.jsf.search.controller;
 
 import org.lorislab.jel.jsf.view.controller.ViewController;
 
 /**
- * The save view controller.
- * 
+ * The search view controller.
+ *
  * @author Andrej Petras
  */
-public interface SaveViewController extends ViewController {
-    
+public interface SearchViewController extends ViewController {
+
     /**
-     * Save the entity.
+     * Resets the results.
      *
      * @return the navigation path.
+     * 
      * @throws java.lang.Exception if the method fails.
-     */    
-    public Object save() throws Exception;
+     */
+    public Object reset() throws Exception;
+    
+    /**
+     * Search the results.
+     *
+     * @return the navigation path.
+     * 
+     * @throws java.lang.Exception if the method fails.
+     */
+    public Object search() throws Exception;
 }

@@ -17,7 +17,7 @@
 package org.lorislab.jel.jsf.entity.controller.action;
 
 import org.lorislab.jel.jsf.entity.common.EntityPermission;
-import org.lorislab.jel.jsf.entity.controller.CreateViewController;
+import org.lorislab.jel.jsf.entity.controller.EntityViewController;
 import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
 
 /**
@@ -27,7 +27,7 @@ import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
  * 
  * @author Andrej Petras
  */
-public class CreateAction<T extends CreateViewController> extends AbstractAction<T> {
+public class CreateAction<T extends EntityViewController> extends AbstractAction<T> {
     /**
      * The UID for this class.
      */

@@ -19,7 +19,7 @@ package org.lorislab.jel.jsf.entity.controller.action;
 import org.lorislab.jel.jsf.entity.common.EntityPermission;
 import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
 import javax.faces.context.FacesContext;
-import org.lorislab.jel.jsf.entity.controller.EditViewController;
+import org.lorislab.jel.jsf.entity.controller.EntityViewController;
 
 /**
  * The open action.
@@ -27,7 +27,7 @@ import org.lorislab.jel.jsf.entity.controller.EditViewController;
  * @author Andrej Petras
  * @param <T> the open view controller.
  */
-public class EditAction<T extends EditViewController> extends AbstractAction<T> {
+public class EditAction<T extends EntityViewController> extends AbstractAction<T> {
     /**
      * The UID for this class.
      */

@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package org.lorislab.jel.jsf.entity.controller.action;
+package org.lorislab.jel.jsf.search.controller.action;
 
 import org.lorislab.jel.jsf.entity.common.EntityPermission;
-import org.lorislab.jel.jsf.entity.controller.ResetViewController;
+import org.lorislab.jel.jsf.search.controller.SearchViewController;
 import org.lorislab.jel.jsf.view.controller.action.AbstractAction;
 
 /**
- * The reset action.
- * 
- * @param <T> the reset view controller type.
+ * The search action.
+ *
+ * @param <T> the search view controller type.
  * 
  * @author Andrej Petras
  */
-public class ResetAction<T extends ResetViewController> extends AbstractAction<T> {
-    
+public class SearchAction<T extends SearchViewController> extends AbstractAction<T> {
+
     /**
      * The UID for this class.
      */
@@ -36,11 +35,12 @@ public class ResetAction<T extends ResetViewController> extends AbstractAction<T
 
     /**
      * The default constructor.
+     *
      * @param parent the parent view controller.
      * @param context the context.
      */
-    public ResetAction(T parent, Enum context) {
-        super(parent, context, EntityPermission.RESET);
+    public SearchAction(T parent, Enum context) {
+        super(parent, context, EntityPermission.SEARCH);
     }
 
     /**
@@ -48,8 +48,7 @@ public class ResetAction<T extends ResetViewController> extends AbstractAction<T
      */
     @Override
     protected Object doExecute() throws Exception {
-        return getParent().reset();
+        return getParent().search();
     }
-    
-    
+
 }

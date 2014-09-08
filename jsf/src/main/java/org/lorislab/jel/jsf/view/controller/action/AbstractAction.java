@@ -15,10 +15,10 @@
  */
 package org.lorislab.jel.jsf.view.controller.action;
 
-import org.lorislab.jel.jsf.view.interceptor.ActionInterceptor;
 import java.io.Serializable;
 import org.lorislab.jel.jsf.api.interceptor.annotations.FacesServiceMethod;
 import org.lorislab.jel.jsf.view.controller.ViewController;
+import org.lorislab.jel.jsf.view.interceptor.ActionInterceptor;
 
 /**
  * The abstract view controller action.
@@ -109,7 +109,7 @@ public abstract class AbstractAction<T extends ViewController> implements Serial
      * @return returns {@code true} if the user has action and context enabled.
      */
     public boolean isAvailable() {
-        return getParent().hasUserAction(context, permission);
+        return parent.hasUserAction(context, permission);
     }
 
     /**

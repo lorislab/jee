@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.jsf.entity.controller;
+package org.lorislab.jel.jsf.search.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
 import org.lorislab.jel.jsf.api.interceptor.annotations.FacesServiceMethod;
+import org.lorislab.jel.jsf.search.controller.action.ResetAction;
+import org.lorislab.jel.jsf.search.controller.action.SearchAction;
 import org.lorislab.jel.jsf.view.controller.AbstractViewController;
 
 /**
  * The abstract table view controller.
  *
- * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @author Andrej Petras
  * @param <T> the model.
  * @param <S> the search criteria.
  */
-public abstract class AbstractSearchViewController<T, S extends AbstractSearchCriteria> extends AbstractViewController implements SearchViewController, ResetViewController {
+public abstract class AbstractSearchViewController<T, S extends AbstractSearchCriteria> extends AbstractViewController implements SearchViewController {
 
     /**
      * The UID for this class.
@@ -43,7 +45,52 @@ public abstract class AbstractSearchViewController<T, S extends AbstractSearchCr
      * The result list.
      */
     private List<T> result;
-   
+
+    /**
+     * The search action.
+     */
+    private SearchAction searchAction;
+
+    /**
+     * The reset action.
+     */
+    private ResetAction resetAction;
+
+    /**
+     * The default constructor.
+     */
+    public AbstractSearchViewController() {
+        this(null);
+    }
+
+    /**
+     * The default constructor.
+     *
+     * @param context the context.
+     */
+    public AbstractSearchViewController(Enum context) {
+        this.searchAction = new SearchAction(this, context);
+        this.resetAction = new ResetAction(this, context);
+    }
+
+    /**
+     * Gets the reset action.
+     *
+     * @return the reset action.
+     */
+    public ResetAction getResetAction() {
+        return resetAction;
+    }
+
+    /**
+     * Gets the search action.
+     *
+     * @return the search action.
+     */
+    public SearchAction getSearchAction() {
+        return searchAction;
+    }
+
     /**
      * Sets the search criteria.
      *

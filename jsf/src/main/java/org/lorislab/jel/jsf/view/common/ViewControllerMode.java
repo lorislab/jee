@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 lorislab.org.
+ * Copyright 2014 Andrej_Petras.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.jsf.entity.controller;
 
-import org.lorislab.jel.jsf.view.controller.ViewController;
+package org.lorislab.jel.jsf.view.common;
 
 /**
- * The open view controller.
- *
- * @author Andrej Petras
+ * The view controller mode.
+ * 
+ * @author Andrej_Petras
  */
-public interface ViewViewController extends ViewController {
-
+public enum ViewControllerMode {
+    
     /**
-     * Open to view the entity.
-     *
-     * @param guid the entity GUID.
-     * @return the navigation path.
-     * @throws java.lang.Exception if the method fails.
+     * The view mode.
      */
-    public Object view(String guid) throws Exception;
+    VIEW,
+    
+    /**
+     * The edit mode.
+     */
+    EDIT;
 }

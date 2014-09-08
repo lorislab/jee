@@ -23,7 +23,7 @@ import javax.interceptor.InvocationContext;
 /**
  * The invocation context factory.
  *
- * @author Andrej_Petras
+ * @author Andrej Petras
  */
 public final class InvocationContextFactory {
 

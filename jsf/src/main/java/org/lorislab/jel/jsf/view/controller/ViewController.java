@@ -15,12 +15,21 @@
  */
 package org.lorislab.jel.jsf.view.controller;
 
+import org.lorislab.jel.jsf.view.common.ViewControllerMode;
+
 /**
  * The view controller.
  *
  * @author Andrej_Petras
  */
 public interface ViewController {
+
+    /**
+     * Gets the view controller mode.
+     *
+     * @return the view controller mode.
+     */
+    public ViewControllerMode getMode();
 
     /**
      * Returns {@code true} if the user has a context and permission.

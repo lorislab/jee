@@ -16,18 +16,27 @@
 package org.lorislab.jel.jsf.api.util;
 
 import java.security.Principal;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 
 /**
  * The faces utility.
  *
- * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @author Andrej Petras
  */
 public final class FacesUtil {
 
     /**
-     * Returns
-     * <code>true</code> if the current user is in the role.
+     * The default constructor.
+     */
+    private FacesUtil() {
+        // empty constructor
+    }
+
+    
+    /**
+     * Returns <code>true</code> if the current user is in the role.
      *
      * @param role the role
      * @return <code>true</code> if the current user is in the role.
@@ -48,5 +57,13 @@ public final class FacesUtil {
             result = principal.getName();
         }
         return result;
+    }
+
+    /**
+     * Gets the bean manager instance.
+     * @return the bean manager instance.
+     */
+    public static BeanManager getBeanManager() {
+        return (BeanManager) ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getAttribute("javax.enterprise.inject.spi.BeanManager");
     }
 }

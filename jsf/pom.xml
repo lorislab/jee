@@ -29,7 +29,7 @@
             <artifactId>jel-jpa</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
-        </dependency>			
+        </dependency>       			
         <!-- CDI -->
         <dependency>
             <groupId>javax.enterprise</groupId>
@@ -43,7 +43,11 @@
             <artifactId>jboss-jsf-api_2.1_spec</artifactId>
             <scope>provided</scope>
         </dependency>
-      
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet</groupId>
+            <artifactId>jboss-servlet-api_3.0_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>  
 	
 </project>
