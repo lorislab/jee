@@ -20,6 +20,8 @@ import org.lorislab.jel.jsf.entity.controller.action.CreateAction;
 import org.lorislab.jel.jsf.entity.controller.action.DeleteAction;
 import org.lorislab.jel.jsf.entity.controller.action.EditAction;
 import org.lorislab.jel.jsf.entity.controller.action.SaveAction;
+import org.lorislab.jel.jsf.entity.controller.action.ViewAction;
+import org.lorislab.jel.jsf.view.common.ViewControllerMode;
 import org.lorislab.jel.jsf.view.controller.AbstractViewController;
 
 /**
@@ -42,9 +44,14 @@ public abstract class AbstractEntityViewController<T> extends AbstractViewContro
     protected T model;
 
     /**
-     * The open action.
+     * The view action.
      */
-    private EditAction openAction;
+    private ViewAction viewAction;
+
+    /**
+     * The edit action.
+     */
+    private EditAction editAction;
 
     /**
      * The create action.
@@ -83,7 +90,8 @@ public abstract class AbstractEntityViewController<T> extends AbstractViewContro
         closeAction = new CloseAction(this, context);
         saveAction = new SaveAction(this, context);
         deleteAction = new DeleteAction(this, context);
-        openAction = new EditAction(this, context);
+        editAction = new EditAction(this, context);
+        viewAction = new ViewAction(this, context);
     }
 
     /**
@@ -113,14 +121,14 @@ public abstract class AbstractEntityViewController<T> extends AbstractViewContro
     public boolean isEmpty() {
         return model == null;
     }
-    
-   /**
+
+    /**
      * Gets the open action.
      *
      * @return the open action.
      */
-    public EditAction getOpenAction() {
-        return openAction;
+    public EditAction getEditAction() {
+        return editAction;
     }
 
     /**
@@ -157,7 +165,16 @@ public abstract class AbstractEntityViewController<T> extends AbstractViewContro
      */
     public SaveAction getSaveAction() {
         return saveAction;
-    }    
+    }
+
+    /**
+     * Gets the view action.
+     *
+     * @return the view action.
+     */
+    public ViewAction getViewAction() {
+        return viewAction;
+    }
 
     /**
      * {@inheritDoc }
@@ -180,6 +197,7 @@ public abstract class AbstractEntityViewController<T> extends AbstractViewContro
      */
     @Override
     public Object view(String guid) throws Exception {
+        setoMode(ViewControllerMode.VIEW);
         return null;
     }
 
@@ -204,6 +222,7 @@ public abstract class AbstractEntityViewController<T> extends AbstractViewContro
      */
     @Override
     public Object edit(String guid) throws Exception {
+        setoMode(ViewControllerMode.EDIT);        
         return null;
     }
 }
