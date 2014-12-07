@@ -119,7 +119,7 @@ public class EntityPersistentConverter<T extends Persistent> implements Converte
      */    
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if (value != null) {
+        if (value != null && value instanceof Persistent) {
             return ((T) value).getGuid();
         }
         return null;
