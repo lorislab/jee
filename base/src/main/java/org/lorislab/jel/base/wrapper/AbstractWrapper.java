@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.ejb.wrapper;
+package org.lorislab.jel.base.wrapper;
 
 import java.io.Serializable;
 
@@ -59,7 +59,7 @@ public abstract class AbstractWrapper<T extends Object> implements Serializable 
      *
      * @return <code>true</code> if the model is null.
      */
-    public final boolean isModelEmpty() {
+    public final boolean isEmpty() {
         return model == null;
     }
 

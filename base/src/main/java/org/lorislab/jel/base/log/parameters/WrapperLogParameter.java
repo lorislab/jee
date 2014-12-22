@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.ejb.log.parameters;
+package org.lorislab.jel.base.log.parameters;
 
 import org.kohsuke.MetaInfServices;
-import org.lorislab.jel.ejb.wrapper.AbstractWrapper;
+import org.lorislab.jel.base.wrapper.AbstractWrapper;
 import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
 
 

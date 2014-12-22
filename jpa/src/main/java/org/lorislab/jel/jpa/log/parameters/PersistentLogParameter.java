@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.ejb.log.parameters;
+package org.lorislab.jel.jpa.log.parameters;
 
 import org.kohsuke.MetaInfServices;
 import org.lorislab.jel.jpa.model.Persistent;

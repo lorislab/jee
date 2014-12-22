@@ -8,7 +8,20 @@
         <groupId>org.lorislab.jel</groupId>
         <artifactId>jel</artifactId>
         <version>0.0.9-SNAPSHOT</version>
-		<relativePath>../</relativePath>
+        <relativePath>../</relativePath>
     </parent>
 	
+    <dependencies>
+        <dependency>
+            <groupId>org.lorislab.jel</groupId>
+            <artifactId>jel-log</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- META-INF SERVICES -->
+        <dependency>
+            <groupId>org.kohsuke.metainf-services</groupId>
+            <artifactId>metainf-services</artifactId>
+            <optional>true</optional>
+        </dependency>        
+    </dependencies>
 </project>
