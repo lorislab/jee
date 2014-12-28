@@ -16,7 +16,6 @@
 package org.lorislab.jel.base.resources;
 
 import java.io.Serializable;
-import org.lorislab.jel.base.resources.annotations.ResourceKey;
 import org.lorislab.jel.base.resources.model.ResourceList;
 import org.lorislab.jel.base.resources.model.ResourceMessage;
 import org.lorislab.jel.base.resources.util.ResourceUtil;
@@ -165,15 +164,6 @@ public final class ResourceManager {
         String bundleName = key.getClass().getName();
         String keyPrefix = key.getClass().getSimpleName();
         Class<?> clazz = key.getClass();
-        if (clazz.isAnnotationPresent(ResourceKey.class)) {
-            ResourceKey resourceKey = clazz.getAnnotation(ResourceKey.class);
-            if (resourceKey.bundleName() != null && !resourceKey.bundleName().isEmpty()) {
-                bundleName = resourceKey.bundleName();
-            }
-            if (resourceKey.keyPrefix() != null && !resourceKey.keyPrefix().isEmpty()) {
-                keyPrefix = resourceKey.keyPrefix();
-            }
-        }
         ResourceBundle bundle = lookupBundle(bundleName, locale, classLoader);
         String tmp = ResourceUtil.getBundleKey(keyPrefix, key.name());
         String value = bundle.getString(tmp);

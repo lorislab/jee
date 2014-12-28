@@ -18,17 +18,21 @@ package org.lorislab.jel.log.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * The simple reflection utility.
+ *
  * @author Andrej Petras <andrej@ajka-andrej.com>
  */
 public final class ReflectionUtil {
 
-    /** The logger for this class. */
+    /**
+     * The logger for this class.
+     */
     private static final Logger LOGGER = Logger.getLogger(ReflectionUtil.class.getName());
 
     /**
@@ -37,9 +41,10 @@ public final class ReflectionUtil {
     private ReflectionUtil() {
         // empty constructor
     }
-    
+
     /**
      * Finds all fields of the class.
+     *
      * @param objectClazz the object class.
      * @return the list of fields.
      */
@@ -60,10 +65,23 @@ public final class ReflectionUtil {
 
     /**
      * Writes the object field values to the string.
+     *
      * @param object the object.
      * @return object field values as a string.
      */
     public static String toString(Object object) {
+        return toString(object, -1);
+    }
+
+    /**
+     * Writes the object field values to the string.
+     *
+     * @param object the object.
+     * @param collectionSize special log for collection wit more items that
+     * {@code collectionSize}
+     * @return object field values as a string.
+     */
+    public static String toString(Object object, int collectionSize) {
         StringBuilder sb = new StringBuilder();
 
         if (object != null) {
@@ -87,6 +105,14 @@ public final class ReflectionUtil {
                         if (first) {
                             sb.append(',');
                         }
+                        if (value != null && collectionSize != -1 && Collection.class.isAssignableFrom(field.getType())) {
+                            Collection c = (Collection) value;
+                            if (c.size() > collectionSize) {
+                                StringBuilder sb2 = new StringBuilder();
+                                sb2.append(field.getType().getSimpleName()).append('(').append(c.size()).append(')');
+                                value =  sb2.toString();
+                            }
+                        }
                         sb.append(field.getName()).append('=').append(value);
                         first = true;
                     } catch (IllegalArgumentException | IllegalAccessException ex) {
@@ -96,6 +122,7 @@ public final class ReflectionUtil {
                 sb.append(']');
             }
         }
+
         return sb.toString();
     }
 }
