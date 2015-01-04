@@ -8,26 +8,26 @@
         <groupId>org.lorislab.jel</groupId>
         <artifactId>jel</artifactId>
         <version>0.0.9-SNAPSHOT</version>
-		<relativePath>../</relativePath>
+        <relativePath>../</relativePath>
     </parent>
     
     <dependencies>    
-		<dependency>
-			<groupId>org.lorislab.jel</groupId>
-			<artifactId>jel-base</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<!-- RS -->
         <dependency>
-            <groupId>org.jboss.spec.javax.ws.rs</groupId>
-            <artifactId>jboss-jaxrs-api_1.1_spec</artifactId>
+            <groupId>org.lorislab.jel</groupId>
+            <artifactId>jel-base</artifactId>
+            <version>${project.version}</version>
         </dependency>
-		<!-- SERVLER -->
-		<dependency>
-			<groupId>org.jboss.spec.javax.servlet</groupId>
-			<artifactId>jboss-servlet-api_3.0_spec</artifactId>
-			<scope>provided</scope>
-		</dependency>			
+        <!-- RS -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>jaxrs-api</artifactId>
+        </dependency>
+        <!-- SERVLER -->
+        <dependency>
+            <groupId>org.jboss.spec.javax.servlet</groupId>
+            <artifactId>jboss-servlet-api_3.1_spec</artifactId>
+            <scope>provided</scope>
+        </dependency>			
     </dependencies>  
 	
 </project>

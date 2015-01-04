@@ -55,12 +55,21 @@
             <!-- EJB/Persistence libraries -->
             <dependency>
                 <groupId>org.jboss.spec</groupId>
-                <artifactId>jboss-javaee-6.0</artifactId>
-                <version>3.0.1.Final</version>
+                <artifactId>jboss-javaee-7.0</artifactId>
+                <version>1.0.2.Final</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
 
+            <!-- JSF -->
+            <!-- Check the version in the org.jboss.spec:jboss-javaee-7.0:1.0.2.Final -->
+            <dependency>
+                <groupId>com.sun.faces</groupId>
+                <artifactId>jsf-impl</artifactId>
+                <version>2.2.8</version>
+                <scope>provided</scope>
+            </dependency>  
+                    
             <!-- Hibernate -->
             <dependency>
                 <groupId>org.hibernate</groupId>

@@ -15,8 +15,11 @@
  */
 package org.lorislab.jel.log.interceptor.context;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.interceptor.InvocationContext;
 
 /**
@@ -134,6 +137,21 @@ public class ObjectInvocationContext implements InvocationContext {
             method.setAccessible(access);
         }
         return result;
+    }
+
+    /**
+     * {@inheritDoc }
+     */
+    @Override
+    public Constructor<?> getConstructor() {
+        if (target != null) {
+            try {
+                return target.getClass().getConstructor();
+            } catch (NoSuchMethodException | SecurityException ex) {
+                Logger.getLogger(ObjectInvocationContext.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
 
 }

@@ -1,17 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
     
-	<artifactId>jel-log</artifactId>
-	<name>jel-log</name>
+    <artifactId>jel-log</artifactId>
+    <name>jel-log</name>
          
-	<parent>
-		<groupId>org.lorislab.jel</groupId>
-		<artifactId>jel</artifactId>
-		<version>0.0.9-SNAPSHOT</version>
-		<relativePath>../</relativePath>
-	</parent>
+    <parent>
+        <groupId>org.lorislab.jel</groupId>
+        <artifactId>jel</artifactId>
+        <version>0.0.9-SNAPSHOT</version>
+        <relativePath>../</relativePath>
+    </parent>
     
-	<dependencies>
+    <dependencies>
         <!-- CDI -->
         <dependency>
             <groupId>javax.enterprise</groupId>
@@ -19,11 +19,11 @@
             <scope>provided</scope>
         </dependency>
 		
-		<!-- META-INF SERVICES -->
-		<dependency>
-			<groupId>org.kohsuke.metainf-services</groupId>
-			<artifactId>metainf-services</artifactId>
-			<optional>true</optional>
-		</dependency>				  		
-	</dependencies>
+        <!-- META-INF SERVICES -->
+        <dependency>
+            <groupId>org.kohsuke.metainf-services</groupId>
+            <artifactId>metainf-services</artifactId>
+            <optional>true</optional>
+        </dependency>				  		
+    </dependencies>
 </project>
