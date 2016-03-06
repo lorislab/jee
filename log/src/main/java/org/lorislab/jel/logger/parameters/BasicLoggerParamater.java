@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Andrej_Petras.
+ * Copyright 2012 Andrej Petras <andrej@ajka-andrej.com>.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,35 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.base.log.parameters;
+package org.lorislab.jel.logger.parameters;
 
-import org.kohsuke.MetaInfServices;
-import org.lorislab.jel.base.criteria.AbstractSearchCriteria;
-import org.lorislab.jel.log.parameters.InstanceOfLogParameter;
-import org.lorislab.jel.log.util.ReflectionUtil;
+import javax.inject.Named;
+import org.lorislab.jel.logger.parameter.LoggerParameter;
 
 /**
- * The search criteria log parameter.
- * 
- * @author Andrej_Petras
+ * The basic log parameter.
+ *
+ * @author Andrej Petras <andrej@lorislab.org>
  */
-@MetaInfServices
-public class SearchCriteriaLogParameter implements InstanceOfLogParameter {
+@Named
+public class BasicLoggerParamater extends LoggerParameter {
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean instanceOfClasses(Object parameter) {
-        return parameter instanceof AbstractSearchCriteria;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isResult() {
-        return true;
+    public Class[] getClasses() {
+        return new Class[] { 
+            Class.class, 
+            int.class, 
+            double.class,
+            float.class,
+            boolean.class,
+            long.class,
+            Integer.class,
+            Double.class,
+            String.class,
+            Boolean.class,
+            Long.class
+        };        
     }
 
     /**
@@ -49,6 +51,6 @@ public class SearchCriteriaLogParameter implements InstanceOfLogParameter {
      */
     @Override
     public Object getObject(Object parameter) {
-        return ReflectionUtil.toString(parameter, 5);
+        return "" + parameter;
     }
 }

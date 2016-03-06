@@ -16,9 +16,6 @@
 package org.lorislab.jel.base.resources;
 
 import java.io.Serializable;
-import org.lorislab.jel.base.resources.model.ResourceList;
-import org.lorislab.jel.base.resources.model.ResourceMessage;
-import org.lorislab.jel.base.resources.util.ResourceUtil;
 import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -27,7 +24,7 @@ import java.util.ResourceBundle;
 /**
  * This class load the resources or the resource key from the class-path.
  *
- * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @author Andrej Petras <andrej@lorislab.org>
  */
 public final class ResourceManager {
 
@@ -67,7 +64,7 @@ public final class ResourceManager {
      * @return the text from the resource.
      */
     public static String getString(final Enum<?> key, final Locale locale) {
-        return getString(key, locale, null);
+        return getString(key, locale, key.getClass().getClassLoader());
     }
 
     /**
@@ -76,30 +73,16 @@ public final class ResourceManager {
      *
      * @param key the key of resource.
      * @param locale the locale for text.
-     * @param loader the loader of class.
+     * @param classLoader the class loader of class.
      * @return the text from the resource.
      */
-    public static String getString(final Enum<?> key, final Locale locale, final ClassLoader loader) {
+    public static String getString(final Enum<?> key, final Locale locale, final ClassLoader classLoader) {
         try {
-            ClassLoader classLoader = loader;
-            if (loader == null) {
-                classLoader = key.getClass().getClassLoader();
-            }
-            return getKeyString(key, locale, classLoader);
+            ResourceBundle bundle = lookupBundle(key.getClass().getName(), locale, classLoader);
+            return bundle.getString(key.name());            
         } catch (MissingResourceException ex) {
             return key.toString();
         }
-    }
-
-    /**
-     * Converts the message to a string for the specified locale.
-     *
-     * @param message the resource message.
-     * @param locale the locale of string.
-     * @return the string of this message.
-     */
-    public static String getMessage(final ResourceMessage message, final Locale locale) {
-        return getMessage(message.getResourceKey(), locale, message.getArguments());
     }
 
     /**
@@ -131,17 +114,17 @@ public final class ResourceManager {
                 classLoader = key.getClass().getClassLoader();
             }
 
-            String value = getKeyString(key, locale, classLoader);
-
-            Object[] params = createParameters(arguments);
-            if (params != null) {
+            ResourceBundle bundle = lookupBundle(key.getClass().getName(), locale, classLoader);
+            String value = bundle.getString(key.name());
+        
+            if (arguments != null) {
                 MessageFormat msgFormat;
                 if (locale != null) {
                     msgFormat = new MessageFormat(value, locale);
                 } else {
                     msgFormat = new MessageFormat(value);
                 }
-                StringBuffer bf = msgFormat.format(params, new StringBuffer(), null);
+                StringBuffer bf = msgFormat.format(arguments, new StringBuffer(), null);
                 result = bf.toString();
             } else {
                 result = value;
@@ -152,56 +135,4 @@ public final class ResourceManager {
         return result;
     }
 
-    /**
-     * Gets the string from the key by locale and class-loader.
-     *
-     * @param key the key.
-     * @param locale the locale.
-     * @param classLoader the class loader.
-     * @return the string corresponding to the key.
-     */
-    private static String getKeyString(final Enum<?> key, Locale locale, ClassLoader classLoader) {
-        String bundleName = key.getClass().getName();
-        String keyPrefix = key.getClass().getSimpleName();
-        Class<?> clazz = key.getClass();
-        ResourceBundle bundle = lookupBundle(bundleName, locale, classLoader);
-        String tmp = ResourceUtil.getBundleKey(keyPrefix, key.name());
-        String value = bundle.getString(tmp);
-        return value;
-    }
-
-    /**
-     * Creates the list of parameters for the message.
-     *
-     * @param arguments the arguments.
-     * @return the list of parameters.
-     */
-    private static Object[] createParameters(Serializable... arguments) {
-        Object[] params = null;
-        if (arguments != null && arguments.length > 0) {
-
-            params = new Object[arguments.length];
-
-            for (int i = 0; i < arguments.length; i++) {
-                Object item = arguments[i];
-                if (item instanceof ResourceList) {
-                    StringBuilder sb = new StringBuilder();
-                    ResourceList list = (ResourceList) item;
-
-                    boolean first = false;
-                    for (Object var : list.getValues()) {
-                        if (first) {
-                            sb.append(',');
-                        }
-                        sb.append(var);
-                        first = true;
-                    }
-                    params[i] = sb.toString();
-                } else {
-                    params[i] = item;
-                }
-            }
-        }
-        return params;
-    }
 }
