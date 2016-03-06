@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lorislab.jel.log.util;
+package org.lorislab.jel.base.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 /**
  * The simple reflection utility.
  *
- * @author Andrej Petras <andrej@ajka-andrej.com>
+ * @author Andrej Petras <andrej@lorislab.org>
  */
 public final class ReflectionUtil {
 
