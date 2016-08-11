@@ -7,19 +7,10 @@
     <parent>
         <groupId>org.lorislab.jel</groupId>
         <artifactId>jel</artifactId>
-        <version>0.0.9-SNAPSHOT</version>
+        <version>7.0.0-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.bsc.maven</groupId>
-                <artifactId>maven-processor-plugin</artifactId>                
-            </plugin>                           
-        </plugins>
-    </build>
-    
+	
     <dependencies>
         <dependency>
             <groupId>org.lorislab.jel</groupId>
@@ -27,34 +18,9 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.lorislab.jel</groupId>
-            <artifactId>jel-log</artifactId>
-            <version>${project.version}</version>
-        </dependency>        
-        <!-- EJB -->
-        <dependency>
-            <groupId>org.jboss.spec.javax.ejb</groupId>
-            <artifactId>jboss-ejb-api_3.2_spec</artifactId>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
-        </dependency>                        
-                                
-        <!-- JPA 2 -->
-        <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-jpamodelgen</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <!-- META-INF SERVICES -->
-        <dependency>
-            <groupId>org.kohsuke.metainf-services</groupId>
-            <artifactId>metainf-services</artifactId>
-            <optional>true</optional>
-        </dependency>
-    </dependencies>  
-	
+        </dependency>             
+    </dependencies>
 </project>

@@ -7,27 +7,20 @@
     <parent>
         <groupId>org.lorislab.jel</groupId>
         <artifactId>jel</artifactId>
-        <version>0.0.9-SNAPSHOT</version>
+        <version>7.0.0-SNAPSHOT</version>
         <relativePath>../</relativePath>
     </parent>
-    
-    <dependencies>    
+	
+    <dependencies>
         <dependency>
             <groupId>org.lorislab.jel</groupId>
             <artifactId>jel-base</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!-- RS -->
         <dependency>
-            <groupId>org.jboss.resteasy</groupId>
-            <artifactId>jaxrs-api</artifactId>
-        </dependency>
-        <!-- SERVLER -->
-        <dependency>
-            <groupId>org.jboss.spec.javax.servlet</groupId>
-            <artifactId>jboss-servlet-api_3.1_spec</artifactId>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
-        </dependency>			
-    </dependencies>  
-	
+        </dependency>       
+    </dependencies>
 </project>
