@@ -65,7 +65,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Class that creates REST proxy object for type safe RS client.
- * @author Matus Majchrak
  *
  */
 public final class ClientServiceProxyFactory implements InvocationHandler {
