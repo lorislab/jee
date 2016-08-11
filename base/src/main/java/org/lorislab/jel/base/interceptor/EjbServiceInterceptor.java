@@ -15,7 +15,6 @@
  */
 package org.lorislab.jel.base.interceptor;
 
-import java.security.Principal;
 import javax.annotation.Resource;
 import javax.ejb.EJBContext;
 

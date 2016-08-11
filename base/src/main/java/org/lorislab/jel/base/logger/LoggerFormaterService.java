@@ -25,7 +25,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import org.lorislab.jel.base.logger.LoggerContext;
 import org.lorislab.jel.base.logger.parameter.LoggerParameter;
 
 /**
@@ -108,7 +107,7 @@ public class LoggerFormaterService {
                 }
             } else {
                 // TODO: default logger parameter service
-                result = "" + parameter;
+                result = "" + parameter.getClass().getSimpleName();
             }
         }
         return result;
