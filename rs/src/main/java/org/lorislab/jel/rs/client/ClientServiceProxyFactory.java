@@ -40,7 +40,6 @@ import javax.ws.rs.HttpMethod;
 import javax.ws.rs.MatrixParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.ProcessingException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
@@ -56,12 +55,13 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import org.lorislab.jel.base.exception.ServiceException;
 import org.lorislab.jel.rs.client.resources.ClientServiceErrors;
+import org.lorislab.jel.rs.model.RestException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * Class that creates REST proxy object for type safe RS client.
@@ -69,9 +69,13 @@ import org.slf4j.LoggerFactory;
  */
 public final class ClientServiceProxyFactory implements InvocationHandler {
 
+    private static final String PROPERTY_LOG_ERROR_CONTENT = "org.lorislab.jel.rs.client.log.error.content";
+    
+    private static final boolean LOG_ERROR_CONTENT = Boolean.valueOf(System.getProperty(PROPERTY_LOG_ERROR_CONTENT, "true"));
+    
     private static final String[] EMPTY = {};
 
-    private static Logger log = LoggerFactory.getLogger(ClientServiceProxyFactory.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(ClientServiceProxyFactory.class);
 
     private final Class<?> resourceInterface;
     private final WebTarget target;
@@ -81,15 +85,15 @@ public final class ClientServiceProxyFactory implements InvocationHandler {
 
     private static final MultivaluedMap<String, Object> EMPTY_HEADERS = new MultivaluedHashMap<>();
     private static final Form EMPTY_FORM = new Form();
-    private static final List<Class> PARAM_ANNOTATION_CLASSES = Arrays.<Class> asList(PathParam.class, QueryParam.class, HeaderParam.class, CookieParam.class, MatrixParam.class, FormParam.class);
+    private static final List<Class> PARAM_ANNOTATION_CLASSES = Arrays.<Class>asList(PathParam.class, QueryParam.class, HeaderParam.class, CookieParam.class, MatrixParam.class, FormParam.class);
 
     public static <C> C newResource(final Class<C> resourceInterface, final WebTarget target) {
-        return newResource(resourceInterface, target, false, EMPTY_HEADERS, Collections.<Cookie> emptyList(), EMPTY_FORM);
+        return newResource(resourceInterface, target, false, EMPTY_HEADERS, Collections.<Cookie>emptyList(), EMPTY_FORM);
     }
 
     @SuppressWarnings("unchecked")
     public static <C> C newResource(final Class<C> resourceInterface, final WebTarget target, final boolean ignoreResourcePath, final MultivaluedMap<String, Object> headers, final List<Cookie> cookies, final Form form) {
-        return (C) Proxy.newProxyInstance(resourceInterface.getClassLoader(), new Class[] { resourceInterface }, new ClientServiceProxyFactory(resourceInterface, ignoreResourcePath ? target : addPathFromAnnotation(resourceInterface, target), headers, cookies, form));
+        return (C) Proxy.newProxyInstance(resourceInterface.getClassLoader(), new Class[]{resourceInterface}, new ClientServiceProxyFactory(resourceInterface, ignoreResourcePath ? target : addPathFromAnnotation(resourceInterface, target), headers, cookies, form));
     }
 
     private ClientServiceProxyFactory(final Class<?> resourceInterface, final WebTarget target, final MultivaluedMap<String, Object> headers, final List<Cookie> cookies, final Form form) {
@@ -273,10 +277,10 @@ public final class ClientServiceProxyFactory implements InvocationHandler {
         }
 
         Type type = method.getGenericReturnType();
-        Type actualReturnType =findActualReturnType(type);
-        
-        try {       
-            final GenericType responseGenericType = new GenericType(actualReturnType);  
+        Type actualReturnType = findActualReturnType(type);
+
+        try {
+            final GenericType responseGenericType = new GenericType(actualReturnType);
             if (entity != null) {
                 if (entityType instanceof ParameterizedType) {
                     entity = new GenericEntity(entity, entityType);
@@ -286,38 +290,76 @@ public final class ClientServiceProxyFactory implements InvocationHandler {
                 result = builder.method(httpMethod, responseGenericType);
             }
             return result;
-        } catch (WebApplicationException wae) {
-            if (isServiceExceptionDeclared(method)) {
-                log.info("catched WebApplicationException, morphing to ServiceException");
-                throw new ServiceException(ClientServiceErrors.ERROR_CLIENT_UNDEFINED, wae);
-            }
-            throw wae;
-        } catch (ResponseProcessingException rpe) {
-            if (isServiceExceptionDeclared(method)) {
-                log.info("catched ResponseProcessingException, morphing to ServiceException");
-                throw new ServiceException(ClientServiceErrors.ERROR_CLIENT_UNDEFINED, rpe);
-            }
-            throw rpe;
-        } catch (ProcessingException pe) {
-            if (isServiceExceptionDeclared(method)) {
-                log.info("catched ProcessingException, morphing to ServiceException");
-                throw new ServiceException(ClientServiceErrors.ERROR_CLIENT_UNDEFINED, pe);
-            }
-            throw pe;
-        } catch (Exception e) {
-            if (isServiceExceptionDeclared(method)) {
-                log.info("catched Exception, morphing to ServiceException");
-                throw new ServiceException(ClientServiceErrors.ERROR_CLIENT_UNDEFINED, e);
-            }
-            throw e;
-        }
+        } catch (Throwable ex) {
+            Exception exResult = null;
 
+            boolean serviceexception = isExceptionDeclared(ServiceException.class, method);
+            
+            if (serviceexception) {
+                Response response = null;
+                if (ex instanceof WebApplicationException) {
+                    WebApplicationException wae = (WebApplicationException) ex;
+                    response = wae.getResponse();
+                } else if (ex instanceof ResponseProcessingException) {
+                    ResponseProcessingException rpe = (ResponseProcessingException) ex;
+                    response = rpe.getResponse();
+                }
+
+                if (response != null) {
+                    RestException model = null;
+                    try {
+                        model = response.readEntity(RestException.class);
+                    } catch (Exception eex) {
+                        LOGGER.debug("Error execution client. Status: {} Response: error reading the RestException entity {}, ", response.getStatus(), eex.getMessage());
+                        
+                        if (LOG_ERROR_CONTENT) {
+                            try {
+                                String content = response.readEntity(String.class);
+                                LOGGER.error("Error execution client. Status: {} Response: \n{}", response.getStatus(), content);
+                            } catch (Exception eeex) {
+                                LOGGER.error("Error execution client. Status: {} Response: error read response content {}", response.getStatus(), eeex.getMessage());
+                            }
+                        }
+                        
+                        exResult = new ServiceException(ClientServiceErrors.ERROR_CLIENT_MISSING_REMOTE_EXCEPTION_MODEL, ex, ex.getMessage(), response.getStatus());
+            
+                    }
+                    if (model != null) {
+                        // load the error keys class
+                        Enum errorCode = null;
+                        try {
+                            Class clazz = Class.forName(model.errorClass);
+                            errorCode = Enum.valueOf(clazz, model.error);
+                        } catch (Exception x) {
+                            // do nothing
+                        }
+
+                        if (errorCode != null) {
+                            exResult = new ServiceException(errorCode, ex, model.parameters, model.namedParameters);
+                        } else {
+                            ServiceException e = new ServiceException(ClientServiceErrors.ERROR_CLIENT_SERVICE_REMOTE_EXCEPTION, ex, model.parameters, model.namedParameters);
+                            e.addNamedParameter(RestException.class.getName(), model);
+                            exResult = e;
+                        }
+                    }
+                }
+            }
+            
+            if (exResult == null) {
+                if (serviceexception) {
+                    exResult = new ServiceException(ClientServiceErrors.ERROR_CLIENT_SERVICE_REMOTE_EXCEPTION_UNDEFINED, ex);
+                } else {
+                    exResult = new RuntimeException(ex.getMessage(), ex);
+                }
+            }
+            throw exResult;
+        }
     }
-    
-    private Type findActualReturnType(Type type){
-        Type tempArgumentType=null;
-        Type tempRawType=null;
-        Type tempOwnerType=null;
+
+    private Type findActualReturnType(Type type) {
+        Type tempArgumentType = null;
+        Type tempRawType = null;
+        Type tempOwnerType = null;
         if (type instanceof TypeVariable) {
             // Is type generic T?
             Type[] genericInterfaces = resourceInterface.getGenericInterfaces();
@@ -329,7 +371,7 @@ public final class ClientServiceProxyFactory implements InvocationHandler {
                     return type;
                 }
             }
-        }else if (type instanceof ParameterizedType) {
+        } else if (type instanceof ParameterizedType) {
             // Is type a class that uses generic like List<T>?
             Type[] genericInterfaces = resourceInterface.getGenericInterfaces();
             if (genericInterfaces != null && genericInterfaces.length > 0) {
@@ -341,34 +383,34 @@ public final class ClientServiceProxyFactory implements InvocationHandler {
                     tempOwnerType = ((ParameterizedType) type).getOwnerType();
                 }
             }
-        }else {
+        } else {
             // If type doesn't use generics, we can return it unmodified
             return type;
         }
         final Type rawType = tempRawType;
-        final Type argumentType=tempArgumentType;
+        final Type argumentType = tempArgumentType;
         final Type ownerType = tempOwnerType;
         // Generics are compiled at runtime, so we need to create a new anonymous class instead
-        ParameterizedType paremeterizedResponseType=new ParameterizedType() {
+        ParameterizedType paremeterizedResponseType = new ParameterizedType() {
             public Type getRawType() {
                 return rawType;
             }
-            
+
             public Type getOwnerType() {
                 return ownerType;
             }
-            
+
             public Type[] getActualTypeArguments() {
                 return new Type[]{argumentType};
             }
         };
         return paremeterizedResponseType;
-        
+
     }
 
-    private boolean isServiceExceptionDeclared(Method method) {
+    private boolean isExceptionDeclared(Class exception, Method method) {
         for (Class<?> exc : method.getExceptionTypes()) {
-            if (ServiceException.class.isAssignableFrom(exc)) {
+            if (exception.isAssignableFrom(exc)) {
                 return true;
             }
         }

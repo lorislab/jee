@@ -24,7 +24,7 @@ import javax.net.ssl.SSLSession;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
-import org.lorislab.jel.rs.client.filter.ClientServiceLogInterceptor;
+import org.lorislab.jel.rs.client.filter.ClientServiceLogFilter;
 
 /**
  *
@@ -58,7 +58,7 @@ public class ClientService {
 
             // add the default interceptors.
             if (config.isDefaultLogInterceptor()) {
-                builder.register(ClientServiceLogInterceptor.class);
+                builder.register(ClientServiceLogFilter.class);
             }
 
             // add the advanced interceptors

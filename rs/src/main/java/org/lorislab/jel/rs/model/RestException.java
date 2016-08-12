@@ -25,7 +25,9 @@ import java.util.Map;
  * 
  * @author Andrej Petras
  */
-public final class RestException {
+public final class RestException implements Serializable {
+
+    private static final long serialVersionUID = -2554845699961728934L;
     
     public String requestId;
     /**
@@ -35,7 +37,7 @@ public final class RestException {
     /**
      * The object reference.
      */
-    public Map<String, Serializable> namedParameters;
+    public Map<String, Object> namedParameters;
     /**
      * The message.
      */
@@ -43,7 +45,7 @@ public final class RestException {
     /**
      * The parameters.
      */
-    public List<Serializable> parameters;    
+    public List<Object> parameters;    
     
     public String errorClass;
 }

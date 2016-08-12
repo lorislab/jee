@@ -113,7 +113,7 @@ public class RestExceptionMapper implements ExceptionMapper<Exception>, Serializ
             logger.error(LoggerRestConfiguration.PATTERN_EXCEPTION_MESSAGE, data.getClientPrincipal(), data.getClientHost(), resourceInfo.getResourceMethod().getName(), request.getRequestURI(), exception.getClass().getSimpleName(), logEx);
         }
 
-        return Response.status(Status.BAD_REQUEST)
+        return Response.status(Status.INTERNAL_SERVER_ERROR)
                 .entity(entity)
                 .type(type)
                 .header(RequestDataHeaderProperties.HEADER_EXCEPTION, RestException.class.getName())

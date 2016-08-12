@@ -38,7 +38,7 @@ public final class ResourceManager {
     }
 
     public static String getMessage(ServiceException exception, Locale locale) {
-        List<Serializable> args = exception.getParameters();
+        List<Object> args = exception.getParameters();
         Serializable[] tmp = args.toArray(new Serializable[args.size()]);
         return getMessage(exception.getKey(), locale, tmp);
     }

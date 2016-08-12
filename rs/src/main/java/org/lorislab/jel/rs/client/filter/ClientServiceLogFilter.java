@@ -35,17 +35,17 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * The rest client method log interceptor.
+ * The rest client method logger filter.
  *
  * @author Andrej_Petras
  */
 @Provider
 @LoggerService(log = false)
-public class ClientServiceLogInterceptor implements ClientRequestFilter, ClientResponseFilter, Serializable {
+public class ClientServiceLogFilter implements ClientRequestFilter, ClientResponseFilter, Serializable {
 
     private static final long serialVersionUID = 1263952252995068153L;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceLogInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientServiceLogFilter.class);
 
     @Override
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {

@@ -18,7 +18,6 @@ package org.lorislab.jel.base.exception;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,14 +39,14 @@ public class ServiceException extends Exception implements Serializable {
     /**
      * The key of resource.
      */
-    private final Enum<?> key;
+    private final Enum key;
 
     /**
      * The arguments for the message.
      */
-    private final List<Serializable> parameters = new ArrayList<>();
+    private final List<Object> parameters = new ArrayList<>();
 
-    private final Map<String, Serializable> namedParameters = new HashMap<>();
+    private final Map<String, Object> namedParameters = new HashMap<>();
 
     private boolean stackTraceLog = true;
 
@@ -58,7 +57,7 @@ public class ServiceException extends Exception implements Serializable {
      * @param parameters the resource key arguments.
      * @param cause the throw able cause.
      */
-    public ServiceException(final Enum<?> key, final Throwable cause, Serializable... parameters) {
+    public ServiceException(final Enum key, final Throwable cause, Serializable... parameters) {
         super(cause);
         this.key = key;
         if (parameters != null) {
@@ -66,6 +65,20 @@ public class ServiceException extends Exception implements Serializable {
         }
     }
 
+    /**
+     * The constructor with the resource key and cause.
+     *
+     * @param key the resource key.
+     * @param parameters the resource key arguments.
+     * @param cause the throw able cause.
+     */
+    public ServiceException(final Enum key, final Throwable cause, List<Object> parameters, Map<String, Object> namedParameters) {
+        super(cause);
+        this.key = key;
+        addParameters(parameters);
+        addNamedParameters(namedParameters);        
+    }
+    
     /**
      * Gets the key of resource.
      *
@@ -80,15 +93,30 @@ public class ServiceException extends Exception implements Serializable {
      *
      * @return the arguments of the message.
      */
-    public final List<Serializable> getParameters() {
+    public final List<Object> getParameters() {
         return parameters;
     }
     
-    public void addParameter(String name, Serializable parameter) {
+    public final void addParameter(Object parameter) {
+        parameters.add(parameter);
+    }
+    
+    public final void addParameters(List<Object> parameters) {
+        if (parameters != null) {
+            this.parameters.addAll(parameters);
+        }
+    }
+    public final void addNamedParameter(String name, Object parameter) {
         namedParameters.put(name, parameter);
     }
 
-    public Map<String, Serializable> getNamedParameters() {
+    public final void addNamedParameters(Map<String, Object> namedParameters) {
+        if (namedParameters != null) {
+            this.namedParameters.putAll(namedParameters);
+        }
+    }
+    
+    public Map<String, Object> getNamedParameters() {
         return namedParameters;
     }
     

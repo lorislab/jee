@@ -21,5 +21,7 @@ package org.lorislab.jel.rs.client.resources;
  */
 public enum ClientServiceErrors {
     
-    ERROR_CLIENT_UNDEFINED;
+    ERROR_CLIENT_MISSING_REMOTE_EXCEPTION_MODEL,
+    ERROR_CLIENT_SERVICE_REMOTE_EXCEPTION,
+    ERROR_CLIENT_SERVICE_REMOTE_EXCEPTION_UNDEFINED;
 }
