@@ -107,9 +107,6 @@ public final class ClientServiceProxyFactory implements InvocationHandler {
             return toString();
         }
 
-        // get the interface describing the resource
-        final Class<?> proxyIfc = proxy.getClass().getInterfaces()[0];
-
         // response type
         final Class<?> responseType = method.getReturnType();
 
@@ -229,7 +226,7 @@ public final class ClientServiceProxyFactory implements InvocationHandler {
         // accepted media types
         Produces produces = method.getAnnotation(Produces.class);
         if (produces == null) {
-            produces = proxyIfc.getAnnotation(Produces.class);
+            produces = resourceInterface.getAnnotation(Produces.class);
         }
         final String[] accepts = (produces == null) ? EMPTY : produces.value();
 
@@ -242,7 +239,7 @@ public final class ClientServiceProxyFactory implements InvocationHandler {
             } else {
                 Consumes consumes = method.getAnnotation(Consumes.class);
                 if (consumes == null) {
-                    consumes = proxyIfc.getAnnotation(Consumes.class);
+                    consumes = resourceInterface.getAnnotation(Consumes.class);
                 }
                 if (consumes != null && consumes.value().length > 0) {
                     contentType = consumes.value()[0];

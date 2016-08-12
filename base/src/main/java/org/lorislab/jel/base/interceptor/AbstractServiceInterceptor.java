@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.AroundTimeout;
 import javax.interceptor.InvocationContext;
+import org.lorislab.jel.base.exception.ServiceException;
 import org.lorislab.jel.base.interceptor.annotation.LoggerService;
 import org.lorislab.jel.base.interceptor.model.RequestData;
 import org.lorislab.jel.base.logger.LoggerConfiguration;
@@ -90,8 +91,17 @@ public abstract class AbstractServiceInterceptor implements Serializable {
                 context.setResult(loggerFormater.getValue(ex));
                 // log the failed message
                 logger.error(LoggerConfiguration.PATTERN_FAILED, context.getFailedParams());
-                if (ano.stacktrace()) {
-                    logger.error(LoggerConfiguration.PATTERN_TRACE_EXCEPTION, context.getId(), className, methodName, ex);
+                
+                boolean stacktrace = ano.stacktrace();
+                if (stacktrace) {                    
+                    if (ex instanceof ServiceException) {
+                        ServiceException eex = (ServiceException) ex;                        
+                        stacktrace = eex.isStackTraceLog();
+                        eex.setStackTraceLog(true);
+                    }
+                    if (stacktrace) {
+                        logger.error(LoggerConfiguration.PATTERN_TRACE_EXCEPTION, context.getId(), className, methodName, ex);
+                    }
                 }
                 throw ex;
             } finally {
@@ -136,7 +146,14 @@ public abstract class AbstractServiceInterceptor implements Serializable {
         }
         return LoggerConfiguration.PATTERN_NO_USER;
     }
-
+    
+    public static String getPrincipalName(String principal) {
+        if (principal != null) {
+            return principal;
+        }
+        return LoggerConfiguration.PATTERN_NO_USER;
+    }
+    
     public static LoggerService getLoggerServiceAno(Class<?> clazz, Method method) {
         LoggerService result = AbstractServiceInterceptor.class.getAnnotation(LoggerService.class);
         if (method != null && method.isAnnotationPresent(LoggerService.class)) {

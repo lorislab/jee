@@ -41,19 +41,20 @@ import org.slf4j.LoggerFactory;
 @Provider
 @LoggerService(log = false)
 public class RequestResponseInterceptor implements ContainerRequestFilter, ContainerResponseFilter {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestResponseInterceptor.class);
     /**
      * The HTTP-SERVLET context.
      */
     @Context
     private HttpServletRequest servletRequest;
-    
+
     /**
      * The resource info.
      */
     @Context
     private ResourceInfo resourceInfo;
-    
+
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         // load request data from request
@@ -67,8 +68,10 @@ public class RequestResponseInterceptor implements ContainerRequestFilter, Conta
                 clientHost = servletRequest.getRemoteHost();
             }
         }
-
-        RequestData requestData = RequestDataThreadHolder.createAndSet(id, clientPrincipal, clientPrincipal, client, clientHost);
+        String principal = AbstractServiceInterceptor.getPrincipalName(requestContext.getSecurityContext().getUserPrincipal());
+        clientPrincipal = AbstractServiceInterceptor.getPrincipalName(clientPrincipal);
+        
+        RequestData requestData = RequestDataThreadHolder.createAndSet(id, principal, clientPrincipal, client, clientHost);
         LoggerService ano = AbstractServiceInterceptor.getLoggerServiceAno(resourceInfo.getResourceClass(), resourceInfo.getResourceMethod());
 
         if (ano.log()) {
@@ -80,38 +83,31 @@ public class RequestResponseInterceptor implements ContainerRequestFilter, Conta
 
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
-        
+
         String principal = AbstractServiceInterceptor.getPrincipalName(servletRequest.getUserPrincipal());
         RequestData requestData = RequestDataThreadHolder.getOrCreate(principal);
-        
 
-        
-        
-        if (responseContext.getStatusInfo().getFamily() == Family.SUCCESSFUL) {
-
-            LoggerService ano = AbstractServiceInterceptor.getLoggerServiceAno(resourceInfo.getResourceClass(), resourceInfo.getResourceMethod());
-            if (ano.log()) {
-                responseContext.getHeaders().add(RequestDataHeaderProperties.HEADER_ID, requestData.getId());
+        LoggerService ano = AbstractServiceInterceptor.getLoggerServiceAno(resourceInfo.getResourceClass(), resourceInfo.getResourceMethod());
+        if (ano.log()) {
+            responseContext.getHeaders().add(RequestDataHeaderProperties.HEADER_ID, requestData.getId());
+            
+            if (responseContext.getStatusInfo().getFamily() == Family.SUCCESSFUL) {                
                 Logger logger = LoggerFactory.getLogger(resourceInfo.getResourceClass());
-                
                 String interval = LoggerContext.intervalString(requestData.getStartTime(), System.currentTimeMillis());
                 logger.info(LoggerRestConfiguration.PATTERN_SUCCEED, requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri(), interval, responseContext.getStatus());
-            }
-        } else {
-            //it is an error
-            if (resourceInfo != null) {
-
-                try {
-                    Logger logger = LoggerFactory.getLogger(resourceInfo.getResourceClass());                   
-                    String interval = LoggerContext.intervalString(requestData.getStartTime(), System.currentTimeMillis());
-                    logger.info(LoggerRestConfiguration.PATTERN_SUCCEED, requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri(), interval, responseContext.getStatus());
-                } catch (Exception e) {
+            } else {
+                if (resourceInfo != null) {
+                    try {
+                        Logger logger = LoggerFactory.getLogger(resourceInfo.getResourceClass());
+                        String interval = LoggerContext.intervalString(requestData.getStartTime(), System.currentTimeMillis());
+                        logger.info(LoggerRestConfiguration.PATTERN_SUCCEED, requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri(), interval, responseContext.getStatus());
+                    } catch (Exception e) {
+                        LOGGER.warn("No REST resouce found matching URI {}", requestContext.getUriInfo().toString());
+                    }
+                } else {
                     LOGGER.warn("No REST resouce found matching URI {}", requestContext.getUriInfo().toString());
                 }
-            } else {
-                LOGGER.warn("No REST resouce found matching URI {}", requestContext.getUriInfo().toString());
             }
         }
     }
-    
 }

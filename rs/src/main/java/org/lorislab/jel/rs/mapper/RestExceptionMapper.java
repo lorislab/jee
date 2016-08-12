@@ -102,7 +102,15 @@ public class RestExceptionMapper implements ExceptionMapper<Exception>, Serializ
         if (data != null) {
             entity.requestId = data.getId();
             Logger logger = LoggerFactory.getLogger(resourceInfo.getResourceClass());
-            logger.error(LoggerRestConfiguration.PATTERN_EXCEPTION_MESSAGE, data.getClientPrincipal(), data.getClientHost(), resourceInfo.getResourceMethod().getName(), request.getRequestURI(), exception.getClass().getSimpleName(), exception);
+            
+            Exception logEx = exception;
+            if (exception instanceof ServiceException) {
+                ServiceException ex = (ServiceException) exception;
+                if (ex.isStackTraceLog()) {
+                    logEx = null;
+                }
+            }
+            logger.error(LoggerRestConfiguration.PATTERN_EXCEPTION_MESSAGE, data.getClientPrincipal(), data.getClientHost(), resourceInfo.getResourceMethod().getName(), request.getRequestURI(), exception.getClass().getSimpleName(), logEx);
         }
 
         return Response.status(Status.BAD_REQUEST)
