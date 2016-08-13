@@ -30,6 +30,8 @@ import org.lorislab.jel.base.interceptor.annotation.LoggerService;
 @Priority(Interceptor.Priority.APPLICATION)
 public class CdiServiceInterceptor extends AbstractServiceInterceptor {
 
+    private static final long serialVersionUID = 2488602696161384535L;
+
     @Inject
     private Principal principal;
 

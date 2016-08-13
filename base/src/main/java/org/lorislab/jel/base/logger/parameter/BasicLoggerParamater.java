@@ -17,7 +17,6 @@ package org.lorislab.jel.base.logger.parameter;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
-import org.lorislab.jel.base.logger.parameter.LoggerParameter;
 
 /**
  * The basic log parameter.

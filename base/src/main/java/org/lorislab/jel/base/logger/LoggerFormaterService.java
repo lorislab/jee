@@ -25,6 +25,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
+import org.lorislab.jel.base.interceptor.annotation.LoggerService;
 import org.lorislab.jel.base.logger.parameter.LoggerParameter;
 
 /**
@@ -32,6 +33,7 @@ import org.lorislab.jel.base.logger.parameter.LoggerParameter;
  * @author Andrej Petras
  */
 @ApplicationScoped
+@LoggerService(log = false)
 public class LoggerFormaterService {
 
     private final Map<Class, LoggerParameter> classes = new HashMap<>();
@@ -44,6 +46,10 @@ public class LoggerFormaterService {
 
     @PostConstruct
     public void init() {
+        initParameters(parameters);
+    }
+    
+    protected void initParameters(Iterable<LoggerParameter> parameters) {
         if (parameters != null) {
             for (LoggerParameter parameter : parameters) {
 
