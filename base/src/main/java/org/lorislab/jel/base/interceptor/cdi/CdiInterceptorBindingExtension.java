@@ -47,7 +47,7 @@ public class CdiInterceptorBindingExtension implements Extension {
             Class clazz = annotatedType.getJavaClass();
             if (!clazz.isAnnotationPresent(LoggerService.class) &&
                 !LoggerParameter.class.isAssignableFrom(clazz)) {
-                LOGGER.info("Found bean: {} activate the  LoggerService binding. ", clazz.getName());
+                LOGGER.debug("Found bean: {} activate the  LoggerService binding. ", clazz.getName());
                 LoggerService annotation = AbstractServiceInterceptor.class.getAnnotation(LoggerService.class);
 
                 AnnotatedTypeWrapper<T> wrapper = new AnnotatedTypeWrapper<T>(annotatedType, annotatedType.getAnnotations());

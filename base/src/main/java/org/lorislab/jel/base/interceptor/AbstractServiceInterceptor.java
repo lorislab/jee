@@ -16,6 +16,7 @@
 package org.lorislab.jel.base.interceptor;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.Principal;
 import javax.inject.Inject;
@@ -50,10 +51,14 @@ public abstract class AbstractServiceInterceptor implements Serializable {
     @AroundInvoke
     @AroundTimeout
     public Object methodExecution(final InvocationContext ic) throws Exception {
+        return execution(ic, ic.getTarget().getClass());
+    }
+
+    public Object execution(final InvocationContext ic, Class clazz) throws Exception {
         Object result = null;
-        LoggerService ano = getLoggerServiceAno(ic.getTarget().getClass(), ic.getMethod());
+        LoggerService ano = getLoggerServiceAno(clazz, ic.getMethod());
         if (ano.log()) {
-            String className = getClassName(ic.getTarget().getClass());
+            String className = getClassName(clazz);
             String methodName = ic.getMethod().getName();
             String principal = getPrincipal();
             if (principal == null) {
@@ -70,7 +75,7 @@ public abstract class AbstractServiceInterceptor implements Serializable {
             String parameters = loggerFormater.getValuesString(ic.getParameters());
             LoggerContext context = new LoggerContext(data.getId(), principal, methodName, parameters);
 
-            Logger logger = LoggerFactory.getLogger(getClassName(ic.getTarget().getClass()));
+            Logger logger = LoggerFactory.getLogger(className);
             logger.info(LoggerConfiguration.PATTERN_START, context.getStartParams());
 
             context.setStartTime(System.currentTimeMillis());
@@ -86,16 +91,20 @@ public abstract class AbstractServiceInterceptor implements Serializable {
                 // log the success message
                 logger.info(LoggerConfiguration.PATTERN_SUCCEED, context.getSuccessParams());
             } catch (Exception e) {
-                Exception ex = transformException(e);
+                Exception ex = (Exception) e;
+                if (e instanceof InvocationTargetException) {
+                    InvocationTargetException ite = (InvocationTargetException) e;
+                    ex = (Exception) ite.getCause();
+                }
                 context.setEndTime(System.currentTimeMillis());
                 context.setResult(loggerFormater.getValue(ex));
                 // log the failed message
                 logger.error(LoggerConfiguration.PATTERN_FAILED, context.getFailedParams());
-                
+
                 boolean stacktrace = ano.stacktrace();
-                if (stacktrace) {                    
+                if (stacktrace) {
                     if (ex instanceof ServiceException) {
-                        ServiceException eex = (ServiceException) ex;                        
+                        ServiceException eex = (ServiceException) ex;
                         stacktrace = eex.isStackTraceLog();
                         eex.setStackTraceLog(true);
                     }
@@ -146,14 +155,14 @@ public abstract class AbstractServiceInterceptor implements Serializable {
         }
         return LoggerConfiguration.PATTERN_NO_USER;
     }
-    
+
     public static String getPrincipalName(String principal) {
         if (principal != null) {
             return principal;
         }
         return LoggerConfiguration.PATTERN_NO_USER;
     }
-    
+
     public static LoggerService getLoggerServiceAno(Class<?> clazz, Method method) {
         LoggerService result = AbstractServiceInterceptor.class.getAnnotation(LoggerService.class);
         if (method != null && method.isAnnotationPresent(LoggerService.class)) {

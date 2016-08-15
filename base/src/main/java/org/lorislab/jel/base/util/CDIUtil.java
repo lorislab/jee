@@ -15,13 +15,11 @@
  */
 package org.lorislab.jel.base.util;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Set;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
+import javax.enterprise.inject.spi.CDI;
 
 /**
  * The CDI utility class.
@@ -46,7 +44,7 @@ public final class CDIUtil {
      */    
     @SuppressWarnings("unchecked")
     public static <T> T getBean(Class<T> clazz) {
-        BeanManager bm = getBeanManager();
+        BeanManager bm = CDI.current().getBeanManager();
         return (T) getBean(clazz, bm);
     }
 
@@ -60,25 +58,10 @@ public final class CDIUtil {
      */
     @SuppressWarnings("unchecked")
     public static <T> T getBean(Class<T> clazz, BeanManager bm) {
-        Bean<T> bean = (Bean<T>) bm.getBeans(clazz).iterator().next();
-        CreationalContext<T> ctx = bm.createCreationalContext(bean);
+        final Set<Bean<?>> beans = bm.getBeans(clazz);
+        final Bean<?> bean = bm.resolve(beans);
+        CreationalContext ctx = bm.createCreationalContext(bean);
         T result = (T) bm.getReference(bean, clazz, ctx);
-        return result;
-    }
-
-    /**
-     * Gets the bean manager.
-     *
-     * @return the bean manager.
-     */
-    public static BeanManager getBeanManager() {
-        BeanManager result = null;
-        try {
-            InitialContext initialContext = new InitialContext();
-            result = (BeanManager) initialContext.lookup("java:comp/BeanManager");
-        } catch (NamingException ex) {
-            Logger.getLogger(CDIUtil.class.getName()).log(Level.SEVERE, "Error lookup the bean manager!", ex);
-        }
         return result;
     }
 
