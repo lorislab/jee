@@ -1,4 +1,3 @@
-
 package org.lorislab.jel.rs.client.cdi;
 
 import java.lang.annotation.Annotation;
@@ -39,15 +38,18 @@ public class RestClientServiceBean<T> implements Bean<T>, PassivationCapable {
      */
     private final String value;
 
+    private final boolean interceptor;
+
     /**
      * The default constructor.
      *
      * @param clazz the class.
      * @param value rest configuration name.
      */
-    public RestClientServiceBean(Class<T> clazz, String value) {
+    public RestClientServiceBean(Class<T> clazz, String value, boolean interceptor) {
         this.clazz = clazz;
         this.value = value;
+        this.interceptor = interceptor;
     }
 
     /**
@@ -121,6 +123,7 @@ public class RestClientServiceBean<T> implements Bean<T>, PassivationCapable {
 
     /**
      * Gets the set of stereotypes.
+     *
      * @return the set of stereotypes.
      */
     @Override
@@ -130,6 +133,7 @@ public class RestClientServiceBean<T> implements Bean<T>, PassivationCapable {
 
     /**
      * Gets the set of types.
+     *
      * @return the set of types.
      */
     @Override
@@ -142,6 +146,7 @@ public class RestClientServiceBean<T> implements Bean<T>, PassivationCapable {
 
     /**
      * Gets the alternative flag.
+     *
      * @return the alternative flag.
      */
     @Override
@@ -151,6 +156,7 @@ public class RestClientServiceBean<T> implements Bean<T>, PassivationCapable {
 
     /**
      * Gets the null able flag.
+     *
      * @return the null able flag.
      */
     @Override
@@ -163,16 +169,17 @@ public class RestClientServiceBean<T> implements Bean<T>, PassivationCapable {
      */
     @Override
     @SuppressWarnings("unchecked")
-    public T create(CreationalContext<T> creationalContext) {        
+    public T create(CreationalContext<T> creationalContext) {
         final RestClientConfigService rccs = CDIUtil.getBean(RestClientConfigService.class);
-        final CdiServiceInterceptor inter = CDIUtil.getBean(CdiServiceInterceptor.class);
-        
+
         ClientConfig config = rccs.getClientConfig(clazz, value);
-        T result2 = (T) ClientService.createClient(clazz, config);
-        
-         // create the proxy interceptor instance
-        T result = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new RestClientInterceptorInvocationHandler(result2, clazz, inter));
-        
+        T result = (T) ClientService.createClient(clazz, config);
+
+        if (interceptor) {
+            // create the proxy interceptor instance
+            final CdiServiceInterceptor inter = CDIUtil.getBean(CdiServiceInterceptor.class);
+            result = (T) Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{clazz}, new RestClientInterceptorInvocationHandler(result, clazz, inter));
+        }
         return result;
     }
 
@@ -181,7 +188,7 @@ public class RestClientServiceBean<T> implements Bean<T>, PassivationCapable {
      */
     @Override
     public void destroy(T instance, CreationalContext<T> creationalContext) {
-        
+
     }
 
     @Override

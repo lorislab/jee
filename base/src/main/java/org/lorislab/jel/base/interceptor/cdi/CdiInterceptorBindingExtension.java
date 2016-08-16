@@ -37,7 +37,7 @@ public class CdiInterceptorBindingExtension implements Extension {
 
     private static final String PROPERTY_CDI_AUTOBINDING = "org.lorislab.jel.base.interceptor.cdi.autobinding";
 
-    private static final boolean CDI_AUTOBINDING = Boolean.valueOf(System.getProperty(PROPERTY_CDI_AUTOBINDING, "true"));
+    public static final boolean CDI_AUTOBINDING = Boolean.valueOf(System.getProperty(PROPERTY_CDI_AUTOBINDING, "true"));
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CdiInterceptorBindingExtension.class);
 

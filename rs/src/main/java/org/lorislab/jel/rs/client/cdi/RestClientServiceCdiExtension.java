@@ -10,6 +10,7 @@ import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.enterprise.util.AnnotationLiteral;
+import org.lorislab.jel.base.interceptor.cdi.CdiInterceptorBindingExtension;
 import org.lorislab.jel.rs.client.annotation.RestClient;
 
 /**
@@ -47,7 +48,7 @@ public class RestClientServiceCdiExtension implements Extension {
                         if (!restClients.contains(id)) {
                             
                             restClients.add(id);
-                            RestClientServiceBean sbean = new RestClientServiceBean(clazz, value);
+                            RestClientServiceBean sbean = new RestClientServiceBean(clazz, value, CdiInterceptorBindingExtension.CDI_AUTOBINDING);
                             abd.addBean(sbean);                           
                         }
                     }
