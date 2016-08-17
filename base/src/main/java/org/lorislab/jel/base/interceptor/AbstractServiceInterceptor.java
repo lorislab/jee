@@ -29,6 +29,7 @@ import org.lorislab.jel.base.interceptor.model.RequestData;
 import org.lorislab.jel.base.logger.LoggerConfiguration;
 import org.lorislab.jel.base.logger.LoggerContext;
 import org.lorislab.jel.base.logger.LoggerFormaterService;
+import org.lorislab.jel.base.resources.ResourceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -103,13 +104,18 @@ public abstract class AbstractServiceInterceptor implements Serializable {
 
                 boolean stacktrace = ano.stacktrace();
                 if (stacktrace) {
+                    ServiceException sec = null;
                     if (ex instanceof ServiceException) {
-                        ServiceException eex = (ServiceException) ex;
-                        stacktrace = eex.isStackTraceLog();
-                        eex.setStackTraceLog(true);
+                        sec = (ServiceException) ex;
+                        stacktrace = sec.isStackTraceLog();
+                        sec.setStackTraceLog(true);
                     }
                     if (stacktrace) {
-                        logger.error(LoggerConfiguration.PATTERN_TRACE_EXCEPTION, context.getId(), className, methodName, ex);
+                        if (sec != null) {
+                            String msg = ResourceManager.getMessage(sec, null);
+                            logger.error(LoggerConfiguration.PATTERN_SERVICE_EXCEPTION, context.getId(), sec.getClass(), sec.getKey(), sec.getParameters(), sec.getNamedParameters(), msg);
+                        }
+                        logger.error(LoggerConfiguration.PATTERN_STACKETRACE_EXCEPTION, context.getId(), className, methodName, ex);
                     }
                 }
                 throw ex;
