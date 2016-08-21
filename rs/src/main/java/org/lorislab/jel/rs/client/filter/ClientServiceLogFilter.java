@@ -33,7 +33,6 @@ import org.lorislab.jel.rs.logger.LoggerRestConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * The rest client method logger filter.
  *
@@ -58,8 +57,12 @@ public class ClientServiceLogFilter implements ClientRequestFilter, ClientRespon
     public void filter(ClientRequestContext requestContext) throws IOException {
         RequestData requestData = RequestDataThreadHolder.getOrCreate();
         requestContext.getHeaders().add(RequestDataHeaderProperties.HEADER_ID, requestData.getId());
-        requestContext.getHeaders().add(RequestDataHeaderProperties.HEADER_CLIENT_HOST, HostNameService.getHostName());
-        requestContext.getHeaders().add(RequestDataHeaderProperties.HEADER_PRINCIPAL, requestData.getPrincipal());
+        if (LoggerRestConfiguration.CLIENT_HEADER_HOST) {
+            requestContext.getHeaders().add(RequestDataHeaderProperties.HEADER_CLIENT_HOST, HostNameService.getHostName());
+        }
+        if (LoggerRestConfiguration.CLIENT_HEADER_PRINCIPAL) {
+            requestContext.getHeaders().add(RequestDataHeaderProperties.HEADER_PRINCIPAL, requestData.getPrincipal());
+        }
         LOGGER.info("{}", LoggerRestConfiguration.msgClientStart(requestData.getPrincipal(), requestContext.getMethod(), requestContext.getUri().toString()));
     }
 }

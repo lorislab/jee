@@ -24,6 +24,10 @@ import org.lorislab.jel.base.logger.LoggerConfiguration;
  */
 public final class LoggerRestConfiguration {
 
+    private static final String PROPERTY_CLIENT_HEADER_PRINCIPAL = "org.lorislab.jel.logger.rs.client.header.principal";
+    
+    private static final String PROPERTY_CLIENT_HEADER_HOST = "org.lorislab.jel.logger.rs.client.header.host";
+    
     /**
      * The start message pattern system property.
      */
@@ -50,6 +54,9 @@ public final class LoggerRestConfiguration {
 
     private static final MessageFormat MESSAGE_EXCEPTION = new MessageFormat(System.getProperty(PROPERTY_EXCEPTION_MESSAGE, "{0}@{1} {2} {3} threw exception [{4}]."));
 
+    public static final boolean CLIENT_HEADER_PRINCIPAL = Boolean.valueOf(System.getProperty(PROPERTY_CLIENT_HEADER_PRINCIPAL, "true"));
+    public static final boolean CLIENT_HEADER_HOST = Boolean.valueOf(System.getProperty(PROPERTY_CLIENT_HEADER_HOST, "true"));
+    
     private LoggerRestConfiguration() {
     }
 
