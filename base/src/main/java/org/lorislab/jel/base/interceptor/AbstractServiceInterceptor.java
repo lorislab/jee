@@ -27,7 +27,6 @@ import org.lorislab.jel.base.exception.ServiceException;
 import org.lorislab.jel.base.interceptor.annotation.LoggerService;
 import org.lorislab.jel.base.interceptor.model.RequestData;
 import org.lorislab.jel.base.logger.LoggerConfiguration;
-import org.lorislab.jel.base.logger.LoggerContext;
 import org.lorislab.jel.base.logger.LoggerFormaterService;
 import org.lorislab.jel.base.resources.ResourceManager;
 import org.slf4j.Logger;
@@ -41,7 +40,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractServiceInterceptor implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractServiceInterceptor.class);
-
+    
     private static final long serialVersionUID = 8386921967393114384L;
 
     @Inject
@@ -57,7 +56,7 @@ public abstract class AbstractServiceInterceptor implements Serializable {
 
     public Object execution(final InvocationContext ic, Class clazz) throws Exception {
         Object result = null;
-        LoggerService ano = getLoggerServiceAno(clazz, ic.getMethod());
+        LoggerService ano = InterceptorUtil.getLoggerServiceAno(clazz, ic.getMethod());
         if (ano.log()) {
             String className = getClassName(clazz);
             String methodName = ic.getMethod().getName();
@@ -69,38 +68,37 @@ public abstract class AbstractServiceInterceptor implements Serializable {
             RequestData data = RequestDataThreadHolder.getOrCreate(principal);
 
             if (data.isTrace()) {
-                LOGGER.trace(LoggerConfiguration.PATTERN_TRACE_START, data.peekTrace(), className, methodName);
+                LOGGER.trace("{}", LoggerConfiguration.msgTraceStart(data.peekTrace(), className, methodName));
             }
             data.addTrace(className);
-
-            String parameters = loggerFormater.getValuesString(ic.getParameters());
-            LoggerContext context = new LoggerContext(data.getId(), principal, methodName, parameters);
-
+            
             Logger logger = LoggerFactory.getLogger(className);
-            logger.info(LoggerConfiguration.PATTERN_START, context.getStartParams());
-
-            context.setStartTime(System.currentTimeMillis());
+            String parameters = loggerFormater.getValuesString(ic.getParameters());
+            
+            InterceptorContext context = new InterceptorContext(data.getId(), principal, methodName, parameters);
+            logger.info("{}", LoggerConfiguration.msgStart(context.principal, context.method, context.parameters));
             try {
                 result = ic.proceed();
 
-                context.setEndTime(System.currentTimeMillis());
+                context.time = InterceptorUtil.intervalToString(context.startTime, System.currentTimeMillis());
                 if (ic.getMethod().getReturnType() == Void.TYPE) {
-                    context.setResult(LoggerConfiguration.PATTERN_RESULT_VOID);
+                    context.result = LoggerConfiguration.PATTERN_RESULT_VOID;
                 } else {
-                    context.setResult(loggerFormater.getValue(result));
+                    context.result = loggerFormater.getValue(result);
                 }
                 // log the success message
-                logger.info(LoggerConfiguration.PATTERN_SUCCEED, context.getSuccessParams());
+                logger.info("{}", LoggerConfiguration.msgSucceed(context.principal, context.method, context.parameters, context.result, context.time));
             } catch (Exception e) {
                 Exception ex = (Exception) e;
                 if (e instanceof InvocationTargetException) {
                     InvocationTargetException ite = (InvocationTargetException) e;
                     ex = (Exception) ite.getCause();
                 }
-                context.setEndTime(System.currentTimeMillis());
-                context.setResult(loggerFormater.getValue(ex));
+
+                context.time = InterceptorUtil.intervalToString(context.startTime, System.currentTimeMillis());                
+                context.result = loggerFormater.getValue(ex);
                 // log the failed message
-                logger.error(LoggerConfiguration.PATTERN_FAILED, context.getFailedParams());
+                logger.error("{}", LoggerConfiguration.msgFailed(context.principal, context.method, context.parameters, context.result, context.time));
 
                 boolean stacktrace = ano.stacktrace();
                 if (stacktrace) {
@@ -113,9 +111,9 @@ public abstract class AbstractServiceInterceptor implements Serializable {
                     if (stacktrace) {
                         if (sec != null) {
                             String msg = ResourceManager.getMessage(sec, null);
-                            logger.error(LoggerConfiguration.PATTERN_SERVICE_EXCEPTION, context.getId(), sec.getClass(), sec.getKey(), sec.getParameters(), sec.getNamedParameters(), msg);
+                            logger.error("{}", LoggerConfiguration.msgException(context.id, sec.getClass(), sec.getKey(), sec.getParameters(), sec.getNamedParameters(), msg));
                         }
-                        logger.error(LoggerConfiguration.PATTERN_STACKETRACE_EXCEPTION, context.getId(), className, methodName, ex);
+                        logger.error("Exception in [{}] {}:{} error", context.id, className, methodName, ex);
                     }
                 }
                 throw ex;
@@ -124,7 +122,7 @@ public abstract class AbstractServiceInterceptor implements Serializable {
                     data.popTrace();
                 }
                 if (data.isTrace()) {
-                    LOGGER.trace(LoggerConfiguration.PATTERN_TRACE_END, className, data.peekTrace(), methodName, context.getResult());
+                    LOGGER.trace("{}", LoggerConfiguration.msgTraceEnd(className, data.peekTrace(), methodName, context.result));
                 }
             }
         } else {
@@ -151,30 +149,6 @@ public abstract class AbstractServiceInterceptor implements Serializable {
             if (index != -1) {
                 result = result.substring(0, index);
             }
-        }
-        return result;
-    }
-
-    public static String getPrincipalName(Principal principal) {
-        if (principal != null) {
-            return principal.getName();
-        }
-        return LoggerConfiguration.PATTERN_NO_USER;
-    }
-
-    public static String getPrincipalName(String principal) {
-        if (principal != null) {
-            return principal;
-        }
-        return LoggerConfiguration.PATTERN_NO_USER;
-    }
-
-    public static LoggerService getLoggerServiceAno(Class<?> clazz, Method method) {
-        LoggerService result = AbstractServiceInterceptor.class.getAnnotation(LoggerService.class);
-        if (method != null && method.isAnnotationPresent(LoggerService.class)) {
-            result = method.getAnnotation(LoggerService.class);
-        } else if (clazz != null && clazz.isAnnotationPresent(LoggerService.class)) {
-            result = clazz.getAnnotation(LoggerService.class);
         }
         return result;
     }

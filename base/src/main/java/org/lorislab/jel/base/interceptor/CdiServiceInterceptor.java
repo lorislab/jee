@@ -37,7 +37,7 @@ public class CdiServiceInterceptor extends AbstractServiceInterceptor {
 
     @Override
     protected String getPrincipal() {
-        return getPrincipalName(principal);
+        return InterceptorUtil.getPrincipalName(principal);
     }
     
 }

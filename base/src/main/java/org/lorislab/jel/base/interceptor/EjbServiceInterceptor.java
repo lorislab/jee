@@ -38,7 +38,7 @@ public class EjbServiceInterceptor extends AbstractServiceInterceptor {
     @Override
     protected String getPrincipal() {
         if (context != null) {
-            return getPrincipalName(context.getCallerPrincipal());
+            return InterceptorUtil.getPrincipalName(context.getCallerPrincipal());
         }
         return null;
     }

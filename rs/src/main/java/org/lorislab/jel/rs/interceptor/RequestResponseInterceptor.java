@@ -25,11 +25,10 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response.Status.Family;
 import javax.ws.rs.ext.Provider;
-import org.lorislab.jel.base.interceptor.AbstractServiceInterceptor;
+import org.lorislab.jel.base.interceptor.InterceptorUtil;
 import org.lorislab.jel.base.interceptor.RequestDataThreadHolder;
 import org.lorislab.jel.base.interceptor.annotation.LoggerService;
 import org.lorislab.jel.base.interceptor.model.RequestData;
-import org.lorislab.jel.base.logger.LoggerContext;
 import org.lorislab.jel.rs.logger.LoggerRestConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,11 +67,11 @@ public class RequestResponseInterceptor implements ContainerRequestFilter, Conta
                 clientHost = servletRequest.getRemoteHost();
             }
         }
-        String principal = AbstractServiceInterceptor.getPrincipalName(requestContext.getSecurityContext().getUserPrincipal());
-        clientPrincipal = AbstractServiceInterceptor.getPrincipalName(clientPrincipal);
+        String principal = InterceptorUtil.getPrincipalName(requestContext.getSecurityContext().getUserPrincipal());
+        clientPrincipal = InterceptorUtil.getPrincipalName(clientPrincipal);
         
         RequestData requestData = RequestDataThreadHolder.createAndSet(id, principal, clientPrincipal, client, clientHost);
-        LoggerService ano = AbstractServiceInterceptor.getLoggerServiceAno(resourceInfo.getResourceClass(), resourceInfo.getResourceMethod());
+        LoggerService ano = InterceptorUtil.getLoggerServiceAno(resourceInfo.getResourceClass(), resourceInfo.getResourceMethod());
 
         if (ano.log()) {
             // create the logger
@@ -84,22 +83,22 @@ public class RequestResponseInterceptor implements ContainerRequestFilter, Conta
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
 
-        String principal = AbstractServiceInterceptor.getPrincipalName(servletRequest.getUserPrincipal());
+        String principal = InterceptorUtil.getPrincipalName(servletRequest.getUserPrincipal());
         RequestData requestData = RequestDataThreadHolder.getOrCreate(principal);
 
-        LoggerService ano = AbstractServiceInterceptor.getLoggerServiceAno(resourceInfo.getResourceClass(), resourceInfo.getResourceMethod());
+        LoggerService ano = InterceptorUtil.getLoggerServiceAno(resourceInfo.getResourceClass(), resourceInfo.getResourceMethod());
         if (ano.log()) {
             responseContext.getHeaders().add(RequestDataHeaderProperties.HEADER_ID, requestData.getId());
             
             if (responseContext.getStatusInfo().getFamily() == Family.SUCCESSFUL) {                
                 Logger logger = LoggerFactory.getLogger(resourceInfo.getResourceClass());
-                String interval = LoggerContext.intervalString(requestData.getStartTime(), System.currentTimeMillis());
+                String interval = InterceptorUtil.intervalToString(requestData.getStartTime(), System.currentTimeMillis());
                 logger.info(LoggerRestConfiguration.PATTERN_SUCCEED, requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri(), interval, responseContext.getStatus());
             } else {
                 if (resourceInfo != null) {
                     try {
                         Logger logger = LoggerFactory.getLogger(resourceInfo.getResourceClass());
-                        String interval = LoggerContext.intervalString(requestData.getStartTime(), System.currentTimeMillis());
+                        String interval = InterceptorUtil.intervalToString(requestData.getStartTime(), System.currentTimeMillis());
                         logger.info(LoggerRestConfiguration.PATTERN_SUCCEED, requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri(), interval, responseContext.getStatus());
                     } catch (Exception e) {
                         LOGGER.warn("No REST resouce found matching URI {}", requestContext.getUriInfo().toString());

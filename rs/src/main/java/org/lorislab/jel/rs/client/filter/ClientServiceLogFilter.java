@@ -22,11 +22,11 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.client.ClientResponseContext;
 import javax.ws.rs.client.ClientResponseFilter;
 import javax.ws.rs.ext.Provider;
+import org.lorislab.jel.base.interceptor.InterceptorUtil;
 import org.lorislab.jel.base.interceptor.RequestDataThreadHolder;
 import org.lorislab.jel.base.interceptor.annotation.LoggerService;
 import org.lorislab.jel.base.interceptor.model.RequestData;
 import org.lorislab.jel.base.logger.HostNameService;
-import org.lorislab.jel.base.logger.LoggerContext;
 import org.lorislab.jel.rs.interceptor.RequestDataHeaderProperties;
 import org.lorislab.jel.rs.logger.LoggerRestConfiguration;
 
@@ -50,7 +50,7 @@ public class ClientServiceLogFilter implements ClientRequestFilter, ClientRespon
     @Override
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
         RequestData requestData = RequestDataThreadHolder.getOrCreate();
-        String interval = LoggerContext.intervalString(requestData.getStartTime(), System.currentTimeMillis());
+        String interval = InterceptorUtil.intervalToString(requestData.getStartTime(), System.currentTimeMillis());
         LOGGER.info(LoggerRestConfiguration.PATTERN_CLIENT_SUCCEED, requestData.getPrincipal(), requestContext.getMethod(), requestContext.getUri().toString(), interval, responseContext.getStatus());
     }
 

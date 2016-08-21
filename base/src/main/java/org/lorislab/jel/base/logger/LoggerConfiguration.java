@@ -15,6 +15,8 @@
  */
 package org.lorislab.jel.base.logger;
 
+import java.text.MessageFormat;
+
 /**
  *
  * @author Andrej Petras
@@ -22,93 +24,95 @@ package org.lorislab.jel.base.logger;
 public final class LoggerConfiguration {
 
     /**
-     * The start message pattern.
-     */
-    private static final String START_MESSAGE_PATTERN = "{}:{}({}) started.";
-    /**
      * The start message pattern system property.
      */
     private static final String START_MESSAGE_PROPERTY = "org.lorislab.jel.logger.start";
 
     /**
-     * The start message pattern.
-     */
-    private static final String TRACE_START_MESSAGE_PATTERN = "{}->{}:{}()";
-    /**
-     * The start message pattern system property.
-     */
-    private static final String TRACE_START_MESSAGE_PROPERTY = "org.lorislab.jel.logger.trace.start";
-    /**
-     * The start message pattern.
-     */
-    private static final String TRACE_END_MESSAGE_PATTERN = "{}-->{}:{}() {}";
-    /**
-     * The start message pattern system property.
-     */
-    private static final String TRACE_END_MESSAGE_PROPERTY = "org.lorislab.jel.logger.trace.end";
-    /**
-     * The start message pattern.
-     */
-    private static final String STACKETRACE_EXCEPTION_MESSAGE_PATTERN = "Exception in [{}] {}:{} error ";
-    /**
-     * The start message pattern system property.
-     */
-    private static final String STACKETRACE_EXCEPTION_MESSAGE_PROPERTY = "org.lorislab.jel.logger.stacketrace.exception";
-    /**
-     * The succeed message pattern.
-     */
-    private static final String SUCCEED_MESSAGE_PATTERN = "{}:{}({}):{} [{}s] succeed.";
-    /**
      * The succeed message pattern system property.
      */
     private static final String SUCCEED_MESSAGE_PROPERTY = "org.lorislab.jel.logger.succeed";
-    /**
-     * The failed message pattern.
-     */
-    private static final String FAILED_MESSAGE_PATTERN = "{}:{}({}):{} [{}s] failed.";
+
     /**
      * The failed message pattern system property.
      */
     private static final String FAILED_MESSAGE_PROPERTY = "org.lorislab.jel.logger.failed";
 
-/**
-     * The start message pattern.
+    /**
+     * The start message pattern system property.
      */
-    private static final String SERVICE_EXCEPTION_MESSAGE_PATTERN = "Service exception:\nrequestId:{}\nclass:{}\nkey:{}\nparams:{}\nnparams:{}\nmsg:{}";
+    private static final String TRACE_START_MESSAGE_PROPERTY = "org.lorislab.jel.logger.trace.start";
+
+    /**
+     * The start message pattern system property.
+     */
+    private static final String TRACE_END_MESSAGE_PROPERTY = "org.lorislab.jel.logger.trace.end";
+
     /**
      * The start message pattern system property.
      */
     private static final String SERVICE_EXCEPTION_MESSAGE_PROPERTY = "org.lorislab.jel.logger.service.exception";
-    
-    private static final String RESULT_VOID = "void";
+
     private static final String RESULT_VOID_PROPERTY = "org.lorislab.jel.logger.result.void";
-    private static final String NO_USER = "anonymous";
+
     private static final String NO_USER_PROPERTY = "org.lorislab.jel.logger.nouser";
 
     public static final String PATTERN_NO_USER;
     public static final String PATTERN_RESULT_VOID;
-    public static final String PATTERN_START;
-    public static final String PATTERN_TRACE_START;
-    public static final String PATTERN_TRACE_END;
-    public static final String PATTERN_STACKETRACE_EXCEPTION;
-    public static final String PATTERN_SERVICE_EXCEPTION;
-    public static final String PATTERN_SUCCEED;
 
-    public static final String PATTERN_FAILED;
+    private static final MessageFormat MESSAGE_TRACE_START;
+    private static final MessageFormat MESSAGE_TRACE_END;
+    private static final MessageFormat MESSAGE_SERVICE_EXCEPTION;
+    private static final MessageFormat MESSAGE_START;
+    private static final MessageFormat MESSAGE_SUCCEED;
+    private static final MessageFormat MESSAGE_FAILED;
 
     static {
-        PATTERN_NO_USER = System.getProperty(NO_USER_PROPERTY, NO_USER);
-        PATTERN_RESULT_VOID = System.getProperty(RESULT_VOID_PROPERTY, RESULT_VOID);
-        PATTERN_TRACE_START = System.getProperty(TRACE_START_MESSAGE_PROPERTY, TRACE_START_MESSAGE_PATTERN);
-        PATTERN_TRACE_END = System.getProperty(TRACE_END_MESSAGE_PROPERTY, TRACE_END_MESSAGE_PATTERN);
-        PATTERN_STACKETRACE_EXCEPTION = System.getProperty(STACKETRACE_EXCEPTION_MESSAGE_PROPERTY, STACKETRACE_EXCEPTION_MESSAGE_PATTERN);
-        PATTERN_SERVICE_EXCEPTION = System.getProperty(SERVICE_EXCEPTION_MESSAGE_PROPERTY, SERVICE_EXCEPTION_MESSAGE_PATTERN);
-        PATTERN_START = System.getProperty(START_MESSAGE_PROPERTY, START_MESSAGE_PATTERN);
-        PATTERN_SUCCEED = System.getProperty(SUCCEED_MESSAGE_PROPERTY, SUCCEED_MESSAGE_PATTERN);
-        PATTERN_FAILED = System.getProperty(FAILED_MESSAGE_PROPERTY, FAILED_MESSAGE_PATTERN);
+        PATTERN_NO_USER = System.getProperty(NO_USER_PROPERTY, "anonymous");
+        PATTERN_RESULT_VOID = System.getProperty(RESULT_VOID_PROPERTY, "void");
+
+        MESSAGE_TRACE_START = new MessageFormat(System.getProperty(TRACE_START_MESSAGE_PROPERTY, "{0}->{1}:{2}()"));
+        MESSAGE_TRACE_END = new MessageFormat(System.getProperty(TRACE_END_MESSAGE_PROPERTY, "{0}-->{1}:{2}() {3}"));        
+        MESSAGE_SERVICE_EXCEPTION = new MessageFormat(System.getProperty(SERVICE_EXCEPTION_MESSAGE_PROPERTY, "Service exception:\nrequestId:{0}\nclass:{1}\nkey:{2}\nparams:{3}\nnparams:{4}\nmsg:{5}"));
+
+        MESSAGE_START = new MessageFormat(System.getProperty(START_MESSAGE_PROPERTY, "{0}:{1}({2}) started."));
+        MESSAGE_SUCCEED = new MessageFormat(System.getProperty(SUCCEED_MESSAGE_PROPERTY, "{0}:{1}({2}):{3} [{4}s] succeed."));
+        MESSAGE_FAILED = new MessageFormat(System.getProperty(FAILED_MESSAGE_PROPERTY, "{0}:{1}({2}):{3} [{4}s] failed."));
     }
 
     private LoggerConfiguration() {
     }
 
+    public static Object msgTraceStart(Object... parameters) {
+        return msg(MESSAGE_TRACE_START, parameters);
+    }
+
+    public static Object msgTraceEnd(Object... parameters) {
+        return msg(MESSAGE_TRACE_END, parameters);
+    }
+    
+    public static Object msgException(Object... parameters) {
+        return msg(MESSAGE_SERVICE_EXCEPTION, parameters);
+    }
+
+    public static Object msgFailed(Object... parameters) {
+        return msg(MESSAGE_FAILED, parameters);
+    }
+
+    public static Object msgSucceed(Object... parameters) {
+        return msg(MESSAGE_SUCCEED, parameters);
+    }
+
+    public static Object msgStart(Object... parameters) {
+        return msg(MESSAGE_START, parameters);
+    }
+
+    private static Object msg(MessageFormat mf, Object[] parameters) {
+        return new Object() {
+            @Override
+            public String toString() {
+                return mf.format(parameters, new StringBuffer(), null).toString();
+            }
+        };
+    }
 }
