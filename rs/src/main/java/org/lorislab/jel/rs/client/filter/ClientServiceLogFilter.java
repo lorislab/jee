@@ -51,7 +51,7 @@ public class ClientServiceLogFilter implements ClientRequestFilter, ClientRespon
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
         RequestData requestData = RequestDataThreadHolder.getOrCreate();
         String interval = InterceptorUtil.intervalToString(requestData.getStartTime(), System.currentTimeMillis());
-        LOGGER.info(LoggerRestConfiguration.PATTERN_CLIENT_SUCCEED, requestData.getPrincipal(), requestContext.getMethod(), requestContext.getUri().toString(), interval, responseContext.getStatus());
+        LOGGER.info("{}", LoggerRestConfiguration.msgClientSucceed(requestData.getPrincipal(), requestContext.getMethod(), requestContext.getUri().toString(), interval, responseContext.getStatus()));
     }
 
     @Override
@@ -60,6 +60,6 @@ public class ClientServiceLogFilter implements ClientRequestFilter, ClientRespon
         requestContext.getHeaders().add(RequestDataHeaderProperties.HEADER_ID, requestData.getId());
         requestContext.getHeaders().add(RequestDataHeaderProperties.HEADER_CLIENT_HOST, HostNameService.getHostName());
         requestContext.getHeaders().add(RequestDataHeaderProperties.HEADER_PRINCIPAL, requestData.getPrincipal());
-        LOGGER.info(LoggerRestConfiguration.PATTERN_CLIENT_START, requestData.getPrincipal(), requestContext.getMethod(), requestContext.getUri().toString());
+        LOGGER.info("{}", LoggerRestConfiguration.msgClientStart(requestData.getPrincipal(), requestContext.getMethod(), requestContext.getUri().toString()));
     }
 }

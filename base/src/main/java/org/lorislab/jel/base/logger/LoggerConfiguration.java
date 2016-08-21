@@ -52,34 +52,23 @@ public final class LoggerConfiguration {
      * The start message pattern system property.
      */
     private static final String SERVICE_EXCEPTION_MESSAGE_PROPERTY = "org.lorislab.jel.logger.service.exception";
-
+    private static final String EXCEPTION_MESSAGE_PROPERTY = "org.lorislab.jel.logger.exception";
     private static final String RESULT_VOID_PROPERTY = "org.lorislab.jel.logger.result.void";
 
     private static final String NO_USER_PROPERTY = "org.lorislab.jel.logger.nouser";
 
-    public static final String PATTERN_NO_USER;
-    public static final String PATTERN_RESULT_VOID;
+    public static final String PATTERN_NO_USER = System.getProperty(NO_USER_PROPERTY, "anonymous");
+    public static final String PATTERN_RESULT_VOID = System.getProperty(RESULT_VOID_PROPERTY, "void");
 
-    private static final MessageFormat MESSAGE_TRACE_START;
-    private static final MessageFormat MESSAGE_TRACE_END;
-    private static final MessageFormat MESSAGE_SERVICE_EXCEPTION;
-    private static final MessageFormat MESSAGE_START;
-    private static final MessageFormat MESSAGE_SUCCEED;
-    private static final MessageFormat MESSAGE_FAILED;
+    private static final MessageFormat MESSAGE_TRACE_START = new MessageFormat(System.getProperty(TRACE_START_MESSAGE_PROPERTY, "{0}->{1}:{2}()"));
+    private static final MessageFormat MESSAGE_TRACE_END = new MessageFormat(System.getProperty(TRACE_END_MESSAGE_PROPERTY, "{0}-->{1}:{2}() {3}"));
+    private static final MessageFormat MESSAGE_SERVICE_EXCEPTION = new MessageFormat(System.getProperty(SERVICE_EXCEPTION_MESSAGE_PROPERTY, "Service exception:\nrequestId:{0}\nclass:{1}\nkey:{2}\nparams:{3}\nnparams:{4}\nmsg:{5}"));
 
-    static {
-        PATTERN_NO_USER = System.getProperty(NO_USER_PROPERTY, "anonymous");
-        PATTERN_RESULT_VOID = System.getProperty(RESULT_VOID_PROPERTY, "void");
-
-        MESSAGE_TRACE_START = new MessageFormat(System.getProperty(TRACE_START_MESSAGE_PROPERTY, "{0}->{1}:{2}()"));
-        MESSAGE_TRACE_END = new MessageFormat(System.getProperty(TRACE_END_MESSAGE_PROPERTY, "{0}-->{1}:{2}() {3}"));        
-        MESSAGE_SERVICE_EXCEPTION = new MessageFormat(System.getProperty(SERVICE_EXCEPTION_MESSAGE_PROPERTY, "Service exception:\nrequestId:{0}\nclass:{1}\nkey:{2}\nparams:{3}\nnparams:{4}\nmsg:{5}"));
-
-        MESSAGE_START = new MessageFormat(System.getProperty(START_MESSAGE_PROPERTY, "{0}:{1}({2}) started."));
-        MESSAGE_SUCCEED = new MessageFormat(System.getProperty(SUCCEED_MESSAGE_PROPERTY, "{0}:{1}({2}):{3} [{4}s] succeed."));
-        MESSAGE_FAILED = new MessageFormat(System.getProperty(FAILED_MESSAGE_PROPERTY, "{0}:{1}({2}):{3} [{4}s] failed."));
-    }
-
+    private static final MessageFormat MESSAGE_START = new MessageFormat(System.getProperty(START_MESSAGE_PROPERTY, "{0}:{1}({2}) started."));
+    private static final MessageFormat MESSAGE_SUCCEED = new MessageFormat(System.getProperty(SUCCEED_MESSAGE_PROPERTY, "{0}:{1}({2}):{3} [{4}s] succeed."));
+    private static final MessageFormat MESSAGE_FAILED = new MessageFormat(System.getProperty(FAILED_MESSAGE_PROPERTY, "{0}:{1}({2}):{3} [{4}s] failed."));
+    private static final MessageFormat MESSAGE_EXCEPTION = new MessageFormat(System.getProperty(EXCEPTION_MESSAGE_PROPERTY, "Exception in [{0}] {1}:{2} error"));
+    
     private LoggerConfiguration() {
     }
 
@@ -90,8 +79,12 @@ public final class LoggerConfiguration {
     public static Object msgTraceEnd(Object... parameters) {
         return msg(MESSAGE_TRACE_END, parameters);
     }
-    
+
     public static Object msgException(Object... parameters) {
+        return msg(MESSAGE_EXCEPTION, parameters);
+    }
+    
+    public static Object msgServiceException(Object... parameters) {
         return msg(MESSAGE_SERVICE_EXCEPTION, parameters);
     }
 
@@ -107,7 +100,7 @@ public final class LoggerConfiguration {
         return msg(MESSAGE_START, parameters);
     }
 
-    private static Object msg(MessageFormat mf, Object[] parameters) {
+    public static Object msg(MessageFormat mf, Object[] parameters) {
         return new Object() {
             @Override
             public String toString() {

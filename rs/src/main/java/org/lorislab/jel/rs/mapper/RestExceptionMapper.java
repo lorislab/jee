@@ -61,7 +61,7 @@ public class RestExceptionMapper implements ExceptionMapper<Exception>, Serializ
 
     @Context
     private ResourceInfo resourceInfo;
-    
+
     /**
      * {@inheritDoc}
      */
@@ -96,13 +96,13 @@ public class RestExceptionMapper implements ExceptionMapper<Exception>, Serializ
         entity.message = msg;
         entity.errorClass = key.getClass().getName();
         entity.error = key.name();
-        
+
         // write the log failed message
         RequestData data = RequestDataThreadHolder.get();
         if (data != null) {
             entity.requestId = data.getId();
             Logger logger = LoggerFactory.getLogger(resourceInfo.getResourceClass());
-            
+
             Exception logEx = exception;
             if (exception instanceof ServiceException) {
                 ServiceException ex = (ServiceException) exception;
@@ -110,7 +110,7 @@ public class RestExceptionMapper implements ExceptionMapper<Exception>, Serializ
                     logEx = null;
                 }
             }
-            logger.error(LoggerRestConfiguration.PATTERN_EXCEPTION_MESSAGE, data.getClientPrincipal(), data.getClientHost(), resourceInfo.getResourceMethod().getName(), request.getRequestURI(), exception.getClass().getSimpleName(), logEx);
+            logger.error("{}", LoggerRestConfiguration.msgException(data.getClientPrincipal(), data.getClientHost(), resourceInfo.getResourceMethod().getName(), request.getRequestURI(), exception.getClass().getSimpleName()), logEx);
         }
 
         return Response.status(Status.INTERNAL_SERVER_ERROR)
@@ -120,5 +120,5 @@ public class RestExceptionMapper implements ExceptionMapper<Exception>, Serializ
                 .build();
 
     }
- 
+
 }

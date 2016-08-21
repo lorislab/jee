@@ -15,46 +15,61 @@
  */
 package org.lorislab.jel.rs.logger;
 
+import java.text.MessageFormat;
+import org.lorislab.jel.base.logger.LoggerConfiguration;
+
 /**
  *
  * @author Andrej Petras
  */
 public final class LoggerRestConfiguration {
 
-    private static final String DEFAULT_EXCEPTION_MESSAGE = "{}@{} {} {} threw exception [{}].";
     /**
      * The start message pattern system property.
      */
     private static final String PROPERTY_EXCEPTION_MESSAGE = "org.lorislab.jel.logger.rs.exception";
 
-    public static final String PATTERN_EXCEPTION_MESSAGE = System.getProperty(PROPERTY_EXCEPTION_MESSAGE, DEFAULT_EXCEPTION_MESSAGE);
-
-    private static final String DEFAULT_START = "{}@{} {} {} started.";
     /**
      * The start message pattern system property.
      */
     private static final String PROPERTY_START = "org.lorislab.jel.logger.rs.start";
 
-    public static final String PATTERN_START = System.getProperty(PROPERTY_START, DEFAULT_START);
-
-    private static final String DEFAULT_SUCCEED = "{}@{} {} {} [{}s] finished with [{}].";
     /**
      * The start message pattern system property.
      */
     private static final String PROPERTY_SUCCEED = "org.lorislab.jel.logger.rs.succeed";
 
-    public static final String PATTERN_SUCCEED = System.getProperty(PROPERTY_SUCCEED, DEFAULT_SUCCEED);
-
-    private static final String DEFAULT_CLIENT_START_PATTERN = "[outgoing] {} {} {} started.";
     private static final String PROPERTY_CLIENT_START_PATTERN = "org.lorislab.jel.logger.rs.client.start";
-    public static final String PATTERN_CLIENT_START = System.getProperty(PROPERTY_CLIENT_START_PATTERN, DEFAULT_CLIENT_START_PATTERN);
 
-    private static final String DEFAULT_CLIENT_SUCCEED_PATTERN = "[incomming] {} {} {} finished in [{}s] with [{}].";
     private static final String PROPERTY_CLIENT_SUCCEED_PATTERN = "org.lorislab.jel.logger.rs.client.start";
-    public static final String PATTERN_CLIENT_SUCCEED = System.getProperty(PROPERTY_CLIENT_SUCCEED_PATTERN, DEFAULT_CLIENT_SUCCEED_PATTERN);
 
-    
+    private static final MessageFormat MESSAGE_START = new MessageFormat(System.getProperty(PROPERTY_START, "{0}@{1} {2} {3} started."));
+    private static final MessageFormat MESSAGE_SUCCEED = new MessageFormat(System.getProperty(PROPERTY_SUCCEED, "{0}@{1} {2} {3} [{4}s] finished with [{5}]."));
+    private static final MessageFormat MESSAGE_CLIENT_START = new MessageFormat(System.getProperty(PROPERTY_CLIENT_START_PATTERN, "[outgoing] {0} {1} {2} started."));
+    private static final MessageFormat MESSAGE_CLIENT_SUCCEED = new MessageFormat(System.getProperty(PROPERTY_CLIENT_SUCCEED_PATTERN, "[incomming] {0} {1} {2} finished in [{3}s] with [{4}]."));
+
+    private static final MessageFormat MESSAGE_EXCEPTION = new MessageFormat(System.getProperty(PROPERTY_EXCEPTION_MESSAGE, "{0}@{1} {2} {3} threw exception [{4}]."));
+
     private LoggerRestConfiguration() {
     }
 
+    public static Object msgException(Object... parameters) {
+        return LoggerConfiguration.msg(MESSAGE_EXCEPTION, parameters);
+    }
+
+    public static Object msgStart(Object... parameters) {
+        return LoggerConfiguration.msg(MESSAGE_START, parameters);
+    }
+
+    public static Object msgSucceed(Object... parameters) {
+        return LoggerConfiguration.msg(MESSAGE_SUCCEED, parameters);
+    }
+
+    public static Object msgClientSucceed(Object... parameters) {
+        return LoggerConfiguration.msg(MESSAGE_CLIENT_SUCCEED, parameters);
+    }
+
+    public static Object msgClientStart(Object... parameters) {
+        return LoggerConfiguration.msg(MESSAGE_CLIENT_START, parameters);
+    }
 }

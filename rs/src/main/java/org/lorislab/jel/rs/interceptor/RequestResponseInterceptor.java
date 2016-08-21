@@ -76,7 +76,7 @@ public class RequestResponseInterceptor implements ContainerRequestFilter, Conta
         if (ano.log()) {
             // create the logger
             Logger logger = LoggerFactory.getLogger(resourceInfo.getResourceClass());
-            logger.info(LoggerRestConfiguration.PATTERN_START, requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri());
+            logger.info("{}", LoggerRestConfiguration.msgStart(requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri()));
         }
     }
 
@@ -93,15 +93,15 @@ public class RequestResponseInterceptor implements ContainerRequestFilter, Conta
             if (responseContext.getStatusInfo().getFamily() == Family.SUCCESSFUL) {                
                 Logger logger = LoggerFactory.getLogger(resourceInfo.getResourceClass());
                 String interval = InterceptorUtil.intervalToString(requestData.getStartTime(), System.currentTimeMillis());
-                logger.info(LoggerRestConfiguration.PATTERN_SUCCEED, requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri(), interval, responseContext.getStatus());
+                logger.info("{}", LoggerRestConfiguration.msgClientSucceed(requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri(), interval, responseContext.getStatus()));
             } else {
                 if (resourceInfo != null) {
                     try {
                         Logger logger = LoggerFactory.getLogger(resourceInfo.getResourceClass());
                         String interval = InterceptorUtil.intervalToString(requestData.getStartTime(), System.currentTimeMillis());
-                        logger.info(LoggerRestConfiguration.PATTERN_SUCCEED, requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri(), interval, responseContext.getStatus());
+                        logger.info("{}", LoggerRestConfiguration.msgSucceed(requestData.getClientPrincipal(), requestData.getClientHost(), servletRequest.getMethod(), requestContext.getUriInfo().getRequestUri(), interval, responseContext.getStatus()));
                     } catch (Exception e) {
-                        LOGGER.warn("No REST resouce found matching URI {}", requestContext.getUriInfo().toString());
+                        LOGGER.warn("No REST resouce found matching URI {}", requestContext.getUriInfo().toString(), e);
                     }
                 } else {
                     LOGGER.warn("No REST resouce found matching URI {}", requestContext.getUriInfo().toString());
