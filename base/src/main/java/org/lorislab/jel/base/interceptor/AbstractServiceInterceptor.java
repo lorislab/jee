@@ -111,7 +111,7 @@ public abstract class AbstractServiceInterceptor implements Serializable {
                     if (stacktrace) {
                         if (sec != null) {
                             String msg = ResourceManager.getMessage(sec, null);
-                            logger.error("{}", LoggerConfiguration.msgServiceException(context.id, sec.getClass(), sec.getKey(), sec.getParameters(), sec.getNamedParameters(), msg));
+                            logger.error("{}", LoggerConfiguration.msgServiceException(context.id, sec.getClass().getName(), sec.getKey(), sec.getParameters(), sec.getNamedParameters(), msg));
                         }
                         logger.error("{}", LoggerConfiguration.msgException(context.id, className, methodName), ex);
                     }
