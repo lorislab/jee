@@ -17,8 +17,6 @@ package org.lorislab.jel.base.interceptor;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.security.Principal;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.AroundTimeout;
