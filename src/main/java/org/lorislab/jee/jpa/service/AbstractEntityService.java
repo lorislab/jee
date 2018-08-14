@@ -40,7 +40,6 @@ import javax.persistence.criteria.Root;
 import org.lorislab.jee.exception.ServiceException;
 import org.lorislab.jee.jpa.model.AbstractPersistent;
 import org.lorislab.jee.jpa.model.AbstractPersistent_;
-import org.lorislab.jee.jpa.model.BusinessTraceable;
 
 /**
  * The abstract EAO service class using an entity type.
@@ -153,7 +152,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      * Gets all entities.
      *
      * @return the list of all entities.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @SuppressWarnings("unchecked")
     protected List<T> findAll() throws ServiceException {
@@ -173,7 +172,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param guid the entity GUID.
      * @return the entity corresponding to the GUID.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     public T findByGuid(final K guid) throws ServiceException {
         try {
@@ -189,7 +188,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param entity the entity
      * @return the saved entity.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public T save(T entity) throws ServiceException {
@@ -214,7 +213,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param entities the list of entities.
      * @return the list of saved entities.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      *
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -233,10 +232,11 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
     }
 
     /**
+     * Updates the entity.
      *
-     * @param entity
-     * @return
-     * @throws ServiceException
+     * @param entity the entity.
+     * @return the updated entity.
+     * @throws ServiceException if the method fails.
      */
     @SuppressWarnings("unchecked")
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -251,10 +251,11 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
     }
 
     /**
+     * Updates the entities.
      *
-     * @param entities
-     * @return
-     * @throws ServiceException
+     * @param entities the list of entities.
+     * @return the list of updated entities.
+     * @throws ServiceException if the method fails.
      */
     @SuppressWarnings("unchecked")
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -276,10 +277,11 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
     }
 
     /**
+     * Creates the entity.
      *
-     * @param entity
-     * @return
-     * @throws ServiceException
+     * @param entity the entity.
+     * @return the created entity.
+     * @throws ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public T create(T entity) throws ServiceException {
@@ -293,10 +295,11 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
     }
 
     /**
+     * Creates the entities.
      *
-     * @param entities
-     * @return
-     * @throws ServiceException
+     * @param entities the list of enties.
+     * @return list of created entities.
+     * @throws ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<T> create(List<T> entities) throws ServiceException {
@@ -316,7 +319,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
     /**
      * Performs persist followed by flush.
      *
-     * @param entity
+     * @param entity the entity.
      * @see EntityManager#refresh(Object)
      */
     protected void refresh(T entity) {
@@ -328,7 +331,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param guid the GUID.
      * @return <code>true</code> if the entity was correctly deleted.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean deleteByGuid(K guid) throws ServiceException {
@@ -349,7 +352,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param entity the entity.
      * @return <code>true</code> if the entity was correctly deleted.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean delete(T entity) throws ServiceException {
@@ -368,9 +371,9 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      * Performs delete operation on a list of entities. false is returned if one
      * object fails to be deleted.
      *
-     * @param entities
+     * @param entities the list of entities.
      * @return the delete flag.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean deleteAll(List<T> entities) throws ServiceException {
@@ -388,10 +391,11 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
     }
 
     /**
+     * Creates the named query.
      *
-     * @param namedQuery
-     * @param parameters
-     * @return
+     * @param namedQuery the named query.
+     * @param parameters the map of parameters.
+     * @return the query.
      */
     protected Query createNamedQuery(String namedQuery, Map<String, Object> parameters) {
         Query query = getEntityManager().createNamedQuery(namedQuery);
@@ -459,7 +463,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param guids the set of GUIDs.
      * @return the corresponding entity.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public Map<K, T> findByGuidsMap(List<K> guids) throws ServiceException {
@@ -480,7 +484,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param guids the set of GUIDs.
      * @return the corresponding list of entities.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public List<T> findByGuids(List<K> guids) throws ServiceException {
@@ -506,7 +510,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param entities the list of entities.
      * @return {@code true} if all entities removed.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      *
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -532,7 +536,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param guids the list of entities.
      * @return {@code true} if all entities removed.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      *
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -557,7 +561,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      * object fails to be deleted.
      *
      * @return {@code true} if all entities removed.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      *
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -608,7 +612,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      * Removes all entities. Check on existence is made.
      *
      * @return the number of deleted entities.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int deleteQueryAll() throws ServiceException {
@@ -627,7 +631,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param guid the GUID of the entity
      * @return true if removed.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public boolean deleteQueryByGuid(K guid) throws ServiceException {
@@ -652,7 +656,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param guids the set of GUIDs.
      * @return the number of deleted entities.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public int deleteQueryByGuids(List<K> guids) throws ServiceException {
@@ -837,7 +841,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      *
      * @param guid the GUID.
      * @return the entity.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public T loadByGuid(K guid) throws ServiceException {
@@ -850,7 +854,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      * @param guid the GUID.
      * @param entityGraphName the entity graph name.
      * @return the entity.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     protected T loadByGuid(K guid, String entityGraphName) throws ServiceException {
         if (guid != null && entityGraphName != null && !entityGraphName.isEmpty()) {
@@ -866,7 +870,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
      * @param guid the GUID.
      * @param entityGraph the entity graph.
      * @return the entity.
-     * @throws org.lorislab.jee.exception.ServiceException
+     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
      */
     protected T loadByGuid(K guid, EntityGraph<?> entityGraph) throws ServiceException {
         if (guid != null) {

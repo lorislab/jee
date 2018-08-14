@@ -22,12 +22,17 @@ public class RestClientInterceptorInvocationHandler implements InvocationHandler
      */
     private final Class clientClass;
     
+    /**
+     * The CDI service interceptor.
+     */
     private final CdiServiceInterceptor interceptor;
+    
     /**
      * The default constructor.
      *
      * @param client the client.
      * @param clientClass the client class.
+     * @param interceptor the CDI service interceptor
      */
     public RestClientInterceptorInvocationHandler(Object client, Class clientClass, CdiServiceInterceptor interceptor) {
         this.client = client;
