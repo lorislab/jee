@@ -1,5 +1,9 @@
 language: java
 
+env:
+  global:
+    - secure: "g0BfLfBxJXQ8cUP7jfwcaxfqwCFsDe1YBLnISpUEtYwTY+fWfBlbKPPTP7WiKhVJtMywrBNJxnJaicu7NO8MTTQ7coQ3n45+wcnBnpqUqhP+UQqNAoWPD881moacSOFfU5ppntyHLTAoTYOrM/2VtqY1M+N2zJo7zkdVn1chITo="
+
 jdk:
   - oraclejdk8
   
@@ -7,4 +11,11 @@ cache:
   directories:
   - $HOME/.m2
   
-install: mvn clean install
+install: 
+  - mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true
+
+script:
+  - mvn test jacoco:report
+  
+after_success:
+  - mvn coveralls:report -DrepoToken=$COVERALLS_TOKEN
