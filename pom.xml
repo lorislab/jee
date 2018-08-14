@@ -14,9 +14,9 @@
     </properties>
             
     <scm>
-        <connection>scm:git:git@bitbucket.org:lorislab/jel.git</connection>
-        <developerConnection>scm:git:git@bitbucket.org:lorislab/jel.git</developerConnection>
-        <url>https://bitbucket.org/lorislab/jel</url>
+        <connection>scm:git:git@github.com:lorislab/jel.git</connection>
+        <developerConnection>scm:git:git@github.comlorislab/jel.git</developerConnection>
+        <url>https://github.com/lorislab/jel</url>
         <tag>HEAD</tag>
     </scm>
 	
