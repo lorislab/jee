@@ -1,7 +1,7 @@
 J.E.L - Java Enterprise Library
 ===
 
-Build: [![Build Status](https://travis-ci.org/andrejpetras/jel.png?branch=master)](https://travis-ci.org/andrejpetras/jel)
+Build: [![Build Status](https://travis-ci.org/lorislab/jel.png?branch=master)](https://travis-ci.org/lorislab/jel)
 
 Description
 -------
