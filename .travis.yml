@@ -13,9 +13,6 @@ cache:
   
 install: 
   - mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true
-
-script:
-  - mvn test jacoco:report
   
 after_success:
-  - mvn coveralls:report -DrepoToken=$COVERALLS_TOKEN
+  - mvn test jacoco:report coveralls:report -DrepoToken=$COVERALLS_TOKEN
