@@ -7,25 +7,25 @@ import java.util.Objects;
  * 
  * @author Andrej Petras
  */
-public class PersistentDTO extends AbstractPersistentDTO<String> {
+public class BusinessDTO extends AbstractPersistentDTO<Long> {
 
     /**
      * The UID for this class.
      */
-    private static final long serialVersionUID = 6232914274045176825L;
-
+    private static final long serialVersionUID = -2353694526525149212L;
+    
     /**
      * The GUID.
      */
-    private String guid;
+    private Long guid;
 
     @Override
-    public void setGuid(String guid) {
+    public void setGuid(Long guid) {
         this.guid = guid;
     }
 
     @Override
-    public String getGuid() {
+    public Long getGuid() {
         return guid;
     }
 
@@ -40,8 +40,8 @@ public class PersistentDTO extends AbstractPersistentDTO<String> {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        PersistentDTO other = (PersistentDTO) obj;        
-        if (guid instanceof String) {
+        BusinessDTO other = (BusinessDTO) obj;        
+        if (guid instanceof Long) {
             if (guid == null) {
                 if (other.guid != null) {
                     return false;

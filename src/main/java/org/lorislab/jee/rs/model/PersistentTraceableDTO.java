@@ -6,7 +6,7 @@ import java.util.Date;
  *
  * @author Andrej Petras
  */
-public abstract class TraceablePersistentDTO extends PersistentDTO {
+public class PersistentTraceableDTO extends PersistentDTO {
 
     private static final long serialVersionUID = 6232914274045176825L;
 
