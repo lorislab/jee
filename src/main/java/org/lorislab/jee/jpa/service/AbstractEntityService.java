@@ -184,54 +184,6 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
     }
 
     /**
-     * Save the entity.
-     *
-     * @param entity the entity
-     * @return the saved entity.
-     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
-     */
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public T save(T entity) throws ServiceException {
-        try {
-            T loaded = null;
-            if (entity.getGuid() != null) {
-                loaded = this.findByGuid(entity.getGuid());
-            }
-            if (loaded != null) {
-                return this.update(entity);
-            }
-            this.create(entity);
-
-            return entity;
-        } catch (Exception e) {
-            throw new ServiceException(EntityServiceErrors.SAVE_ENTITY_FAILED, e);
-        }
-    }
-
-    /**
-     * Saves the list of entities.
-     *
-     * @param entities the list of entities.
-     * @return the list of saved entities.
-     * @throws org.lorislab.jee.exception.ServiceException if the method fails.
-     *
-     */
-    @TransactionAttribute(TransactionAttributeType.REQUIRED)
-    public List<T> saveAll(List<T> entities) throws ServiceException {
-        try {
-            List<T> result = new ArrayList<>();
-            if (entities != null && !entities.isEmpty()) {
-                for (int i = 0; i < entities.size(); i++) {
-                    result.add(this.save(entities.get(i)));
-                }
-            }
-            return result;
-        } catch (Exception e) {
-            throw new ServiceException(EntityServiceErrors.SAVE_ENTITIES_FAILED, e);
-        }
-    }
-
-    /**
      * Updates the entity.
      *
      * @param entity the entity.
