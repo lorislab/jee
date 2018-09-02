@@ -19,41 +19,45 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
 /**
- * The basic log parameter.
+ * The byte array log parameter.
  *
  * @author Andrej Petras
  */
 @Named
 @ApplicationScoped
-public class BasicLoggerParamater extends LoggerParameter {
-
+public class ArrayLoggerParameter extends LoggerParameter {
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public Class[] getClasses() {
         return new Class[] { 
-            Class.class, 
-            byte.class,
-            int.class, 
-            double.class,
-            float.class,
-            boolean.class,
-            long.class,
-            Integer.class,
-            Double.class,
-            String.class,
-            Boolean.class,
-            Long.class,
-            Byte.class
+            Class[].class, 
+            int[].class, 
+            double[].class,
+            float[].class,
+            boolean[].class,
+            long[].class,
+            byte[].class,
+            Integer[].class,
+            Double[].class,
+            String[].class,
+            Boolean[].class,
+            Long[].class,
+            Byte[].class
         };        
     }
 
+    
     /**
      * {@inheritDoc}
      */
     @Override
     public String getObject(Object parameter) {
-        return "" + parameter;
+        byte[] tmp = (byte[]) parameter;
+        StringBuilder sb = new StringBuilder();
+        sb.append("byte[").append(tmp.length).append(']');            
+        return sb.toString();        
     }
 }
