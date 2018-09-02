@@ -3,7 +3,8 @@ language: java
 env:
   global:
     - secure: "g0BfLfBxJXQ8cUP7jfwcaxfqwCFsDe1YBLnISpUEtYwTY+fWfBlbKPPTP7WiKhVJtMywrBNJxnJaicu7NO8MTTQ7coQ3n45+wcnBnpqUqhP+UQqNAoWPD881moacSOFfU5ppntyHLTAoTYOrM/2VtqY1M+N2zJo7zkdVn1chITo="
-
+    - secure: "fpPGmCgDVwzWufA8kiCwnsZJabS9sSiG44u3YXlsmEuy2mTU34BJL5YNu3/K5nDUauFAa65asJMQAhcaFx7GId0BmtUHByMOr0DUG2jU+MrG0oa0cKCmZTCx1VondCE38kQ04Uq1apEaIhNSdE7IBww9LeojnbqTj1jy5x1lfaY="
+    
 jdk:
   - oraclejdk8
   
@@ -11,8 +12,11 @@ cache:
   directories:
   - $HOME/.m2
   
-install: 
-  - mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true
+install: true
+
+script: 
+    - mvn clean install -DskipTests=true -Dmaven.javadoc.skip=true
   
 after_success:
   - mvn test jacoco:report coveralls:report -DrepoToken=$COVERALLS_TOKEN
+  - mvn com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml -DapiToken=$CODACY_PROJECT_TOKEN
