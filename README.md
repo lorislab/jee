@@ -4,4 +4,3 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Build Status](https://travis-ci.com/lorislab/jel8.png?branch=develop)](https://travis-ci.org/lorislab/jel)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.lorislab/jel/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.lorislab/jel)
-[![Coverage Status](https://coveralls.io/repos/github/lorislab/jel8/badge.svg?branch=develop)](https://coveralls.io/github/lorislab/jel?branch=master)
