@@ -41,7 +41,7 @@ public class ObjectInvocationContext implements InvocationContext {
      * @param method the method.
      * @param parameters the method parameters.
      */
-    protected ObjectInvocationContext(Object target, Method method, Object... parameters) {
+    ObjectInvocationContext(Object target, Method method, Object... parameters) {
         this.target = target;
         this.method = method;
         this.parameters = parameters;
@@ -104,8 +104,8 @@ public class ObjectInvocationContext implements InvocationContext {
      */
     @Override
     public Object proceed() throws Exception {
-        Object result = null;
-        boolean access = method.isAccessible();
+        Object result;
+        boolean access = method.canAccess(target);
         method.setAccessible(true);
         try {
             result = method.invoke(target, (Object[]) parameters);

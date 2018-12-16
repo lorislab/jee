@@ -22,7 +22,8 @@ package org.lorislab.jee.logger;
  */
 public abstract class LoggerParameter {
 
-    public int getPriority() {
+    @SuppressWarnings("WeakerAccess")
+    protected int getPriority() {
         return 0;
     }
     
@@ -40,5 +41,5 @@ public abstract class LoggerParameter {
      * @param parameter the service parameter.
      * @return the object value for the service parameter.
      */
-    public abstract String getObject(Object parameter);
+    public abstract Object getObject(Object parameter);
 }

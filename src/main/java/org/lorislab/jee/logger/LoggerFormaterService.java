@@ -28,6 +28,7 @@ import javax.inject.Inject;
 import org.lorislab.jee.annotation.LoggerService;
 
 /**
+ * The logger format service.
  *
  * @author Andrej Petras
  */
@@ -48,7 +49,7 @@ public class LoggerFormaterService {
         initParameters(parameters);
     }
 
-    protected void initParameters(Iterable<LoggerParameter> parameters) {
+    private void initParameters(Iterable<LoggerParameter> parameters) {
         if (parameters != null) {
             for (LoggerParameter parameter : parameters) {
 

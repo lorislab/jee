@@ -92,8 +92,8 @@ public final class ReflectionUtil {
                 sb.append('[');
                 boolean first = false;
                 for (Field field : fields) {
-                    Object value = null;
-                    boolean accessible = field.isAccessible();
+                    Object value;
+                    boolean accessible = field.canAccess(object);
                     try {
                         try {
                             field.setAccessible(true);
@@ -108,9 +108,7 @@ public final class ReflectionUtil {
                         if (value != null && collectionSize != -1 && Collection.class.isAssignableFrom(field.getType())) {
                             Collection c = (Collection) value;
                             if (c.size() > collectionSize) {
-                                StringBuilder sb2 = new StringBuilder();
-                                sb2.append(field.getType().getSimpleName()).append('(').append(c.size()).append(')');
-                                value =  sb2.toString();
+                                value =  field.getType().getSimpleName() + "(" + c.size() + ")";
                             }
                         }
                         sb.append(field.getName()).append('=').append(value);
