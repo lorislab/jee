@@ -19,6 +19,7 @@ import java.util.Set;
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
+import javax.inject.Inject;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.slf4j.Logger;
@@ -32,33 +33,10 @@ import org.slf4j.LoggerFactory;
 public final class CDIUtil {
 
     /**
-     * The logger class for this class.
-     */
-    private static final Logger LOGGER = LoggerFactory.getLogger(CDIUtil.class);
-    
-    /**
-     * The bean manager JNDI string.
-     */
-    private static final String JNDI = "java:comp/BeanManager";
-    
-    /**
      * The default constructor.
      */
     private CDIUtil() {
         // empty constructor
-    }
-
-    /**
-     * Gets the bean instance.
-     *
-     * @param <T> the bean type.
-     * @param clazz the class of the bean.
-     * @return the bean instance.
-     */    
-    @SuppressWarnings("unchecked")
-    public static <T> T getBean(Class<T> clazz) {
-        BeanManager bm = getBeanManager();
-        return (T) getBean(clazz, bm);
     }
 
     /**
@@ -74,23 +52,7 @@ public final class CDIUtil {
         final Set<Bean<?>> beans = bm.getBeans(clazz);
         final Bean<?> bean = bm.resolve(beans);
         CreationalContext ctx = bm.createCreationalContext(bean);
-        T result = (T) bm.getReference(bean, clazz, ctx);
-        return result;
+        return (T) bm.getReference(bean, clazz, ctx);
     }
 
-    /**
-     * Gets the bean manager.
-     *
-     * @return the bean manager.
-     */
-    public static BeanManager getBeanManager() {
-        BeanManager result = null;
-        try {
-            InitialContext context = new InitialContext();
-            result = (BeanManager) context.lookup(JNDI);
-        } catch (NamingException | NullPointerException ex) {
-            LOGGER.error("Error lookup the bean manager. JNDI: " + JNDI, ex);
-        }
-        return result;
-    }    
 }

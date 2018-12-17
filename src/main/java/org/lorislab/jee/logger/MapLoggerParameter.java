@@ -69,19 +69,15 @@ public class MapLoggerParameter extends LoggerParameter {
                 }                
             }
 
-            if (keyClassName == null || valueClassName == null) {
                 Entry<?, ?> item = tmp.entrySet().iterator().next();
                 // get key class name
                 if (keyClassName == null && item.getKey() != null) {
                     keyClassName = item.getKey().getClass().getSimpleName();
                 }
                 // get value class name
-                if (valueClassName == null) {
-                    if (valueClassName == null && item.getValue() != null) {
-                        valueClassName = item.getValue().getClass().getSimpleName();
-                    }
+                if (item.getValue() != null) {
+                    valueClassName = item.getValue().getClass().getSimpleName();
                 }
-            }
             sb.append(keyClassName).append('+').append(valueClassName).append(']');
         }
         return sb.toString();

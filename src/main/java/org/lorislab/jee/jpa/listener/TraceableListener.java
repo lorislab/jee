@@ -31,40 +31,13 @@ import org.lorislab.jee.jpa.model.Traceable;
  */
 public class TraceableListener implements Serializable {
 
-  
-//    /**
-//     * The logger for this class.
-//     */
-//    private static final Logger LOGGER = Logger.getLogger(TraceableListener.class.getName());
-//    /**
-//     * The JNDI of the EJB context.
-//     */
-//    private static final String JNDI_CONTEXT = "java:comp/EJBContext";
-
     @Inject
     private Principal principal;
-            
-//    /**
-//     * The initial context.
-//     */
-//    private static InitialContext ctx;
+
     /**
      * The UID for this class.
      */
     private static final long serialVersionUID = -7253672246009843767L;
-
-//    /**
-//     * The default constructor.
-//     */
-//    public TraceableListener() {
-//        try {
-//            if (ctx == null) {
-//                ctx = new InitialContext();
-//            }
-//        } catch (NamingException e) {
-//            LOGGER.log(Level.SEVERE, "Error by creating the initial contenxt");
-//        }
-//    }
 
     /**
      * Marks the entity as created.
@@ -74,7 +47,7 @@ public class TraceableListener implements Serializable {
     @PrePersist
     public void prePersist(Traceable entity) {
         Date date = new Date();
-        String user = getCallerIdentity();
+        String user = InterceptorUtil.getPrincipalName(principal);
         entity.setCreationUser(user);
         entity.setCreationDate(date);
         entity.setModificationUser(user);
@@ -88,29 +61,9 @@ public class TraceableListener implements Serializable {
      */
     @PreUpdate
     public void preUpdate(Traceable entity) {
-        String user = getCallerIdentity();
+        String user = InterceptorUtil.getPrincipalName(principal);
         entity.setModificationUser(user);
         entity.setModificationDate(new Date());
     }
 
-    /**
-     * Gets the caller identity.
-     *
-     * @return the caller identity.
-     */
-    private String getCallerIdentity() {
-//        Principal principal = null;
-//        try {
-//            if (ctx != null) {
-//                EJBContext ejbCtx = (EJBContext) ctx.lookup(JNDI_CONTEXT);
-//                principal = ejbCtx.getCallerPrincipal();
-//            }
-//        } catch (Exception e) {
-//            LOGGER.log(Level.FINEST, "Error by get caller identity", e);
-//            // do nothing
-//        }
-//        return InterceptorUtil.getPrincipalName(principal);
-          return InterceptorUtil.getPrincipalName(principal);
-    }
-   
 }
