@@ -26,17 +26,13 @@ import java.util.Set;
 import javax.annotation.PostConstruct;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.persistence.Entity;
-import javax.persistence.EntityGraph;
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
+import org.lorislab.jee.jpa.exception.ConstraintException;
 import org.lorislab.jee.exception.ServiceException;
 import org.lorislab.jee.jpa.model.AbstractPersistent;
 import org.lorislab.jee.jpa.model.AbstractPersistent_;
@@ -110,11 +106,15 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
         this.entityClass = tmp;
 
         // load the entity name
-        Entity entity = entityClass.getAnnotation(Entity.class);
-        if (entity != null && entity.name() != null && entity.name().length() > 0) {
-            this.entityName = entity.name();
+        if (entityClass != null) {
+            Entity entity = entityClass.getAnnotation(Entity.class);
+            if (entity != null && entity.name().length() > 0) {
+                this.entityName = entity.name();
+            } else {
+                this.entityName = entityClass.getSimpleName();
+            }
         } else {
-            this.entityName = entityClass.getSimpleName();
+            entityName = null;
         }
     }
 
@@ -198,7 +198,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
             flush();
             return result;
         } catch (Exception e) {
-            throw new ServiceException(EntityServiceErrors.MERGE_ENTITY_FAILED, e);
+            throw handleConstraint(e, EntityServiceErrors.MERGE_ENTITY_FAILED);
         }
     }
 
@@ -222,7 +222,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
                 flush();
                 return result;
             } catch (Exception e) {
-                throw new ServiceException(EntityServiceErrors.MERGE_ENTITY_FAILED, e);
+                throw handleConstraint(e, EntityServiceErrors.MERGE_ENTITY_FAILED);
             }
         }
         return result;
@@ -241,7 +241,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
             this.getEntityManager().persist(entity);
             this.flush();
         } catch (Exception e) {
-            throw new ServiceException(EntityServiceErrors.PERSIST_ENTITY_FAILED, e);
+            throw handleConstraint(e, EntityServiceErrors.PERSIST_ENTITY_FAILED);
         }
         return entity;
     }
@@ -262,7 +262,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
                 }
                 this.flush();
             } catch (Exception e) {
-                throw new ServiceException(EntityServiceErrors.PERSIST_ENTITY_FAILED, e);
+                throw handleConstraint(e, EntityServiceErrors.PERSIST_ENTITY_FAILED);
             }
         }
         return entities;
@@ -291,11 +291,12 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
             T loaded = this.findByGuid(guid);
             if (loaded != null) {
                 getEntityManager().remove(loaded);
+                flush();
                 return true;
             }
             return false;
         } catch (Exception e) {
-            throw new ServiceException(EntityServiceErrors.DELETE_ENTITY_BY_GUID_FAILED, e);
+            throw handleConstraint(e, EntityServiceErrors.DELETE_ENTITY_BY_GUID_FAILED);
         }
     }
 
@@ -311,11 +312,12 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
         try {
             if (entity != null) {
                 getEntityManager().remove(entity);
+                flush();
                 return true;
             }
             return false;
         } catch (Exception e) {
-            throw new ServiceException(EntityServiceErrors.DELETE_ENTITY_FAILED, e);
+            throw handleConstraint(e, EntityServiceErrors.DELETE_ENTITY_FAILED);
         }
     }
 
@@ -334,11 +336,12 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
                 for (int i = 0; i < entities.size(); i++) {
                     getEntityManager().remove(entities.get(i));
                 }
+                flush();
                 return true;
             }
             return false;
         } catch (Exception e) {
-            throw new ServiceException(EntityServiceErrors.DELETE_ENTITIES_FAILED, e);
+            throw handleConstraint(e, EntityServiceErrors.DELETE_ENTITIES_FAILED);
         }
     }
 
@@ -572,9 +575,11 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
             CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
             CriteriaDelete<T> cq = cb.createCriteriaDelete(entityClass);
             cq.from(entityClass);
-            return getEntityManager().createQuery(cq).executeUpdate();
+            int result = getEntityManager().createQuery(cq).executeUpdate();
+            flush();
+            return result;
         } catch (Exception e) {
-            throw new ServiceException(EntityServiceErrors.FAILED_TO_DELETE_ALL_QUERY, e, entityName);
+            throw handleConstraint(e, EntityServiceErrors.FAILED_TO_DELETE_ALL_QUERY, entityName);
         }
     }
 
@@ -595,9 +600,10 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
                 Root<T> root = cq.from(entityClass);
                 cq.where(cb.equal(root.get(AbstractPersistent_.guid), guid));
                 int count = getEntityManager().createQuery(cq).executeUpdate();
+                flush();
                 result = count == 1;
             } catch (Exception e) {
-                throw new ServiceException(EntityServiceErrors.FAILED_TO_DELETE_BY_GUID_QUERY, e, entityName);
+                throw handleConstraint(e, EntityServiceErrors.FAILED_TO_DELETE_BY_GUID_QUERY, entityName);
             }
         }
         return result;
@@ -618,10 +624,12 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
                 CriteriaDelete<T> cq = cb.createCriteriaDelete(entityClass);
                 Root<T> root = cq.from(entityClass);
                 cq.where(root.get(AbstractPersistent_.guid).in(guids));
-                return getEntityManager().createQuery(cq).executeUpdate();
+                int result =  getEntityManager().createQuery(cq).executeUpdate();
+                flush();
+                return result;
             }
         } catch (Exception e) {
-            throw new ServiceException(EntityServiceErrors.FAILED_TO_DELETE_ALL_BY_GUIDS_QUERY, e, entityName);
+            throw handleConstraint(e, EntityServiceErrors.FAILED_TO_DELETE_ALL_BY_GUIDS_QUERY, entityName);
         }
         return 0;
     }
@@ -831,7 +839,7 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
                 if (entityGraph != null) {
                     properties.put(HINT_LOAD_GRAPH, entityGraph);
                 }
-                T entity = (T) getEntityManager().find(entityClass, guid, properties);
+                T entity = getEntityManager().find(entityClass, guid, properties);
                 return entity;
             } catch (Exception e) {
                 throw new ServiceException(EntityServiceErrors.FAILED_TO_LOAD_ENTITY_BY_GUID, e, entityName, (Serializable) guid, entityGraph == null ? null : entityGraph.getName());
@@ -840,4 +848,37 @@ public abstract class AbstractEntityService<T extends AbstractPersistent<K>, K> 
         return null;
     }
 
+    /**
+     * Handle the JPA constraint exception.
+     * @param ex the exception.
+     * @param key the error key.
+     * @param params the parameters.
+     * @return the corresponding service exception.
+     */
+    protected ServiceException handleConstraint(Exception ex, Enum<?> key, Object ... params) {
+        ServiceException result = new ServiceException(key, ex, params);
+        if (ex instanceof PersistenceException) {
+            PersistenceException e = (PersistenceException) ex;
+            if (e.getCause() != null) {
+
+                Throwable providerException = e.getCause();
+
+                // Hibernate constraint violation exception
+                if ("org.hibernate.exception.ConstraintViolationException".equals(providerException.getClass().getName())) {
+
+                    // for the org.postgresql.util.PSQLException get the constraints message.
+                    String msg = providerException.getMessage();
+                    if (providerException.getCause() != null) {
+                        msg = providerException.getCause().getMessage();
+                        if (msg != null) {
+                            msg = msg.replaceAll("\n", "");
+                        }
+                    }
+                    // throw own constraints eception.
+                    result = new ConstraintException(msg, key, e, params);
+                }
+            }
+        }
+        return result;
+    }
 }
