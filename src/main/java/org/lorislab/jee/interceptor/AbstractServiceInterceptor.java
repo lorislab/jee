@@ -17,10 +17,13 @@ package org.lorislab.jee.interceptor;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.AroundTimeout;
 import javax.interceptor.InvocationContext;
+
+import org.lorislab.jee.exception.LoggerServiceException;
 import org.lorislab.jee.exception.ServiceException;
 import org.lorislab.jee.annotation.LoggerService;
 import org.lorislab.jee.Configuration;
@@ -34,7 +37,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Andrej Petras
  */
-@LoggerService
+//@LoggerService
 public abstract class AbstractServiceInterceptor implements Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractServiceInterceptor.class);
@@ -114,10 +117,13 @@ public abstract class AbstractServiceInterceptor implements Serializable {
                 boolean stacktrace = ano.stacktrace();
                 if (stacktrace) {
                     ServiceException sec = null;
+                    if (ex instanceof LoggerServiceException) {
+                        LoggerServiceException lex = (LoggerServiceException) ex;
+                        stacktrace = !lex.isStackTraceLog();
+                        lex.setStackTraceLog(true);
+                    }
                     if (ex instanceof ServiceException) {
                         sec = (ServiceException) ex;
-                        stacktrace = sec.isStackTraceLog();
-                        sec.setStackTraceLog(true);
                     }
                     if (stacktrace) {
                         if (sec != null) {

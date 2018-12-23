@@ -15,7 +15,13 @@
  */
 package org.lorislab.jee.cdi;
 
-import java.util.Properties;
+import org.lorislab.jee.annotation.LoggerService;
+import org.lorislab.jee.cdi.util.JelConfig;
+import org.lorislab.jee.interceptor.CdiServiceInterceptor;
+import org.lorislab.jee.logger.LoggerParameter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
@@ -24,12 +30,6 @@ import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Extension;
 import javax.enterprise.inject.spi.ProcessAnnotatedType;
 import javax.enterprise.inject.spi.WithAnnotations;
-import org.lorislab.jee.interceptor.AbstractServiceInterceptor;
-import org.lorislab.jee.annotation.LoggerService;
-import org.lorislab.jee.cdi.util.JelConfig;
-import org.lorislab.jee.logger.LoggerParameter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -52,10 +52,9 @@ public class CdiInterceptorBindingExtension implements Extension {
         if (CDI_AUTOBINDING) {
             AnnotatedType<T> annotatedType = processAnnotatedType.getAnnotatedType();
             Class clazz = annotatedType.getJavaClass();
-            if (!clazz.isAnnotationPresent(LoggerService.class) &&
-                !LoggerParameter.class.isAssignableFrom(clazz)) {
+            if (!clazz.isAnnotationPresent(LoggerService.class) && !LoggerParameter.class.isAssignableFrom(clazz)) {
                 LOGGER.debug("Found bean: {} activate the  LoggerService binding. ", clazz.getName());
-                LoggerService annotation = AbstractServiceInterceptor.class.getAnnotation(LoggerService.class);
+                LoggerService annotation = CdiServiceInterceptor.class.getAnnotation(LoggerService.class);
 
                 AnnotatedTypeWrapper<T> wrapper = new AnnotatedTypeWrapper<>(annotatedType, annotatedType.getAnnotations());
                 wrapper.addAnnotation(annotation);

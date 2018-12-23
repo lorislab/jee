@@ -29,7 +29,7 @@ import javax.ejb.ApplicationException;
  * @author Andrej Petras
  */
 @ApplicationException(rollback = true)
-public class ServiceException extends Exception implements Serializable {
+public class ServiceException extends Exception implements LoggerServiceException, Serializable {
 
     /**
      * The UID for this class.
@@ -48,7 +48,24 @@ public class ServiceException extends Exception implements Serializable {
 
     private final Map<String, Object> namedParameters = new HashMap<>();
 
-    private boolean stackTraceLog = true;
+    private boolean stackTraceLog = false;
+
+    /**
+     * The constructor with the resource key and cause.
+     *
+     * @param key the resource key.
+     * @param parameters the resource key arguments.
+     * @param stackTraceLog the stack trace log flag.
+     * @param cause the throw able cause.
+     */
+    public ServiceException(boolean stackTraceLog, final Enum key, final Throwable cause, Serializable... parameters) {
+        super(cause);
+        this.key = key;
+        this.stackTraceLog = stackTraceLog;
+        if (parameters != null) {
+            this.parameters.addAll(Arrays.asList(parameters));
+        }
+    }
 
     /**
      * The constructor with the resource key and cause.
@@ -58,11 +75,7 @@ public class ServiceException extends Exception implements Serializable {
      * @param cause the throw able cause.
      */
     public ServiceException(final Enum key, final Throwable cause, Serializable... parameters) {
-        super(cause);
-        this.key = key;
-        if (parameters != null) {
-            this.parameters.addAll(Arrays.asList(parameters));
-        }
+        this(false, key, cause, parameters);
     }
 
     /**

@@ -32,20 +32,10 @@ public class ConstraintException extends ServiceException {
      * @param constraints the constraints message.
      * @param messageKey the message key.
      * @param cause the cause exception.
-     */
-    public ConstraintException(String constraints, Enum<?> messageKey, Throwable cause) {
-        super(messageKey, cause);
-        getNamedParameters().put(PARAMETER, constraints);
-    }
-    /**
-     * The default constructor.
-     * @param constraints the constraints message.
-     * @param messageKey the message key.
-     * @param cause the cause exception.
      * @param params the exception parameters.
      */
     public ConstraintException(String constraints, Enum<?> messageKey, Throwable cause, Object... params) {
-        super(messageKey, cause, params);
+        super(true, messageKey, cause, params);
         getNamedParameters().put(PARAMETER, constraints);
     }
 
