@@ -33,8 +33,8 @@ import org.mapstruct.MappingTarget;
 /**
  * The abstract map-struct entity mapper.
  *
- * @param <ENTITY> the entity model type.
- * @param <DTO> the DTO model type.
+ * @param <ENTITY> the entity runtime type.
+ * @param <DTO> the DTO runtime type.
  * @param <K> the key type.
  * 
  * @author Andrej Petras

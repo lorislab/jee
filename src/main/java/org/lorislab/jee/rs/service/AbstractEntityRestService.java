@@ -14,8 +14,8 @@ import org.lorislab.jee.rs.model.AbstractPersistentDTO;
 /**
  * The abstract rest entity service.
  *
- * @param <ENTITY> the entity model type.
- * @param <DTO> the DTO model type.
+ * @param <ENTITY> the entity runtime type.
+ * @param <DTO> the DTO runtime type.
  * @param <K> t he key type.
  * 
  * @author Andrej Petras

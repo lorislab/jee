@@ -42,20 +42,14 @@ public class JMSMessageLoggerParameter extends LoggerParameter {
     public Object getObject(Object parameter) {
         Message tmp = (Message) parameter;
         StringBuilder sb = new StringBuilder();
-        sb.append(tmp.getClass().getName());
+        sb.append(tmp.getClass().getSimpleName());
         sb.append("[id:");
         try {
             sb.append(tmp.getJMSMessageID()).append(",c:").append(tmp.getJMSCorrelationID());
         } catch (JMSException ex) {
             sb.append("?");
         }
-        sb.append("],c:");
-        try {
-            sb.append(tmp.getJMSCorrelationID());
-        } catch (JMSException ex) {
-            sb.append("?");
-        }
-        sb.append(']');
+        sb.append("]");
         return sb.toString();
     }
 }
