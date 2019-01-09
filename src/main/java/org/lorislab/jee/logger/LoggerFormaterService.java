@@ -15,17 +15,15 @@
  */
 package org.lorislab.jee.logger;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import org.lorislab.jee.annotation.LoggerService;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import org.lorislab.jee.annotation.LoggerService;
+import java.lang.reflect.Parameter;
+import java.util.*;
 
 /**
  * The logger format service.
@@ -133,21 +131,37 @@ public class LoggerFormaterService {
     /**
      * Gets the list of string corresponding to the list of parameters.
      *
-     * @param parameters the list of parameters.
+     * @param value      the list of parameters.
+     * @param parameters the list of method parameters.
      * @return the list of string corresponding to the list of parameters.
      */
-    public String getValuesString(Object[] parameters) {
-        if (parameters != null && parameters.length > 0) {
+    public String getValuesString(Object[] value, Parameter[] parameters) {
+        if (value != null && value.length > 0) {
             StringBuilder sb = new StringBuilder();
             int index = 0;
-            sb.append(getValue(parameters[index++]));
-            for (; index < parameters.length; index++) {
+            sb.append(getValue(value[index], parameters[index]));
+            index++;
+            for (; index < value.length; index++) {
                 sb.append(',');
-                sb.append(getValue(parameters[index]));
+                sb.append(getValue(value[index], parameters[index]));
             }
             return sb.toString();
         }
         return "";
+    }
+
+    /**
+     * Get the parameter log value.
+     *
+     * @param value     the parameter value.
+     * @param parameter the method parameter.
+     * @return the corresponding log value.
+     */
+    private String getValue(Object value, Parameter parameter) {
+        if (parameter.isAnnotationPresent(LoggerService.Exclude.class)) {
+            return parameter.getName();
+        }
+        return getValue(value);
     }
 
     /**

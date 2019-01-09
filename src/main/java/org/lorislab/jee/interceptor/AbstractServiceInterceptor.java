@@ -78,8 +78,9 @@ public abstract class AbstractServiceInterceptor implements Serializable {
             }
             data.addTrace(className);
 
+
             Logger logger = LoggerFactory.getLogger(className);
-            String parameters = loggerFormater.getValuesString(ic.getParameters());
+            String parameters = loggerFormater.getValuesString(ic.getParameters(), ic.getMethod().getParameters());
 
             InterceptorContext context = new InterceptorContext(data.getId(), principal, methodName, parameters);
             logger.info("{}", Configuration.msgStart(context.principal, context.method, context.parameters));

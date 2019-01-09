@@ -33,9 +33,9 @@ public final class InterceptorUtil {
     }
 
     public static String getPrincipalName(Principal principal) {
-//        if (principal != null) {
-//            return principal.getName();
-//        }
+        if (principal != null) {
+            return principal.getName();
+        }
         return Configuration.PATTERN_NO_USER;
     }
 

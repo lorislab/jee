@@ -38,6 +38,12 @@ public @interface LoggerService {
     @Nonbinding boolean log() default true;
     
     @Nonbinding boolean stacktrace() default true;
-    
+
+    /**
+     * If present, do not include this parameter in the logger.
+     */
+    @Target(ElementType.PARAMETER)
+    @Retention(RetentionPolicy.RUNTIME)
+    @interface Exclude {}
     
 }
